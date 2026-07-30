@@ -5,14 +5,16 @@ ALTER TABLE picks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE rotation ENABLE ROW LEVEL SECURITY;
 
--- Grant table access to the anon and authenticated roles.
+-- Grant table access to the anon, authenticated, and service_role.
 -- Supabase's new default (2026+) does NOT auto-expose new tables to Data API
 -- roles, so we must explicitly grant SELECT/INSERT/UPDATE/DELETE as needed.
--- The RLS policies below still gate which rows each role can actually touch.
+-- The RLS policies below still gate which rows anon/authenticated can touch.
+-- service_role bypasses RLS entirely (used for admin operations + seeding).
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO authenticated;
 GRANT INSERT, UPDATE, DELETE ON movies, picks, reviews TO authenticated;
 GRANT INSERT, UPDATE, DELETE ON members, rotation TO authenticated;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
 
 -- Helper function: is the current user an approved member?
 CREATE OR REPLACE FUNCTION public.is_approved_member()
