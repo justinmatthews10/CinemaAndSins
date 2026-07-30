@@ -418,7 +418,55 @@
 
 ---
 
-## CAS-016: Vercel Deployment
+## CAS-016: Historical Data Entry
+
+**Status:** Not Started
+**Dependencies:** CAS-014
+
+### Acceptance Criteria
+
+- [ ] Admin can create a pick for any past month/year (not just rotation-assigned)
+- [ ] Admin can assign any approved member as the picker
+- [ ] Admin can set the watch date and picker note
+- [ ] Pick is created as "current" (unlocked) so members can review it
+- [ ] Members can review the past pick via the normal review page
+- [ ] Admin locks the pick once all reviews are in
+- [ ] TMDB search integrated for finding the movie
+- [ ] Tests for the PastPickForm component
+
+### Implementation Plan
+
+**1. PastPickForm component (new):**
+
+- TMDB search (reuse TmdbSearch component)
+- Picker dropdown (list of approved members)
+- Month/year selectors (any past month)
+- Watch date input
+- Picker note textarea
+- Creates movie (if not in DB) + pick via service role or client API
+- Pick status starts as "current" so reviews can be added
+
+**2. Admin page — new "Past Pick" tab:**
+
+- Tab alongside Rotation, Members, Picks, Content
+- Renders PastPickForm
+- After creation, shows success message with link to the pick
+
+**3. Review flow (no changes needed):**
+
+- Pick is "current" → review page allows submissions
+- Members review normally
+- Admin locks via PickManager when done
+
+### Files
+
+- `components/PastPickForm.tsx` (new)
+- `app/admin/page.tsx` (add Past Pick tab)
+- `tests/unit/components/PastPickForm.test.tsx` (new)
+
+---
+
+## CAS-017: Vercel Deployment
 
 **Status:** Not Started
 **Dependencies:** All above
@@ -469,7 +517,7 @@
 
 ---
 
-## CAS-017: CI Pipeline (GitHub Actions)
+## CAS-018: CI Pipeline (GitHub Actions)
 
 **Status:** Not Started
 **Dependencies:** CAS-001
