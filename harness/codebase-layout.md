@@ -52,16 +52,14 @@ CinemaAndSins/
 │   ├── ReviewForm.tsx            # Score slider + markdown review + tags
 │   ├── TmdbSearch.tsx            # TMDB search input + results
 │   ├── FormField.tsx             # Reusable input + label + error
-│   ├── ErrorBanner.tsx           # Reusable error alert
 │   ├── AuthFormShell.tsx         # Shared auth form layout (card, title, footer)
 │   ├── Navbar.tsx                # Top navigation with user dropdown
 │   ├── AuthProvider.tsx          # Supabase auth context provider
 │   ├── MovieCard.tsx             # (planned) Poster + title + score (history grid)
-│   ├── ReviewCard.tsx            # (planned) Individual review display
-│   ├── ReviewForm.tsx            # (planned) Score + markdown review input
-│   ├── ScoreDistribution.tsx     # (planned) Chart showing score spread
-│   ├── ScheduleTimeline.tsx      # (planned) Upcoming picks timeline
-│   └── RotationEditor.tsx        # (planned) Admin drag-to-reorder rotation
+│   ├── ReviewCard.tsx            # Individual review (name, score badge, text, tags)
+│   ├── ReviewsSection.tsx        # Sortable reviews list + distribution chart
+│   ├── ScoreDistribution.tsx     # Horizontal bar chart showing score spread
+│   └── RotationEditor.tsx        # Admin drag-to-reorder rotation
 ├── lib/                          # Shared utilities
 │   ├── supabase/
 │   │   ├── client.ts             # Browser Supabase client (anon key)

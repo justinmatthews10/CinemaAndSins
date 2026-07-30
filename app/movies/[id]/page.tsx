@@ -2,17 +2,10 @@ import { getMovieDetail } from "@/lib/supabase/getMovieDetail";
 import { PosterImage } from "@/components/PosterImage";
 import { PageHeading } from "@/components/PageHeading";
 import { ReviewsSection } from "@/components/ReviewsSection";
-import { formatScore } from "@/lib/utils";
+import { formatScore, formatDate, formatMonthYear } from "@/lib/utils";
 import { scoreBadgeColor } from "@/lib/scoring";
+import { SCORE_BADGE_TEXT } from "@/lib/ui";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
-
-const BADGE_COLORS: Record<string, string> = {
-  gold: "text-accent",
-  green: "text-green-400",
-  yellow: "text-yellow-400",
-  red: "text-accent-secondary",
-};
 
 export default async function MovieDetailPage({
   params,
@@ -39,10 +32,7 @@ export default async function MovieDetailPage({
 
   const { movie, pick, picker, reviews, averageScore, isDivisive } = data;
   const badgeColor = scoreBadgeColor(averageScore);
-  const monthName = new Date(pick.year, pick.month - 1).toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
+  const monthName = formatMonthYear(pick.month, pick.year);
 
   return (
     <main className="flex flex-1 flex-col px-6 py-12">
@@ -85,7 +75,7 @@ export default async function MovieDetailPage({
                   <p className="text-xs uppercase tracking-wide text-foreground/50">
                     Average
                   </p>
-                  <p className={`text-3xl font-bold ${BADGE_COLORS[badgeColor]}`}>
+                  <p className={`text-3xl font-bold ${SCORE_BADGE_TEXT[badgeColor]}`}>
                     {formatScore(averageScore)}
                   </p>
                 </div>

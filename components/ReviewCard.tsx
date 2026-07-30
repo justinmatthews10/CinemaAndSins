@@ -1,18 +1,12 @@
 import { scoreBadgeColor } from "@/lib/scoring";
 import { formatScore } from "@/lib/utils";
+import { SCORE_BADGE_BG } from "@/lib/ui";
 import type { Review } from "@/types/review";
 import type { Member } from "@/types/member";
 
 type ReviewCardProps = {
   review: Review;
   member: Member;
-};
-
-const BADGE_COLORS: Record<string, string> = {
-  gold: "bg-accent/20 text-accent",
-  green: "bg-green-500/20 text-green-400",
-  yellow: "bg-yellow-500/20 text-yellow-400",
-  red: "bg-accent-secondary/20 text-accent-secondary",
 };
 
 export function ReviewCard({ review, member }: ReviewCardProps) {
@@ -23,7 +17,7 @@ export function ReviewCard({ review, member }: ReviewCardProps) {
       <div className="flex items-start gap-4">
         {/* Score badge */}
         <span
-          className={`flex h-12 w-14 flex-shrink-0 items-center justify-center rounded-lg text-lg font-bold ${BADGE_COLORS[badgeColor]}`}
+          className={`flex h-12 w-14 flex-shrink-0 items-center justify-center rounded-lg text-lg font-bold ${SCORE_BADGE_BG[badgeColor]}`}
         >
           {formatScore(review.score)}
         </span>
