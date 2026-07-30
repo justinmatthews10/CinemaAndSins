@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/schedule", label: "Schedule" },
   { href: "/history", label: "History" },
   { href: "/members", label: "Members" },
+  { href: "/stats", label: "Stats" },
 ];
 
 export default function Navbar() {

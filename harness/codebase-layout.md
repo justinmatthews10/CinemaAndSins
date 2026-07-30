@@ -32,7 +32,7 @@ CinemaAndSins/
 │   │   └── [memberId]/
 │   │       └── page.tsx          # Full member profile (stats, pick/review history)
 │   ├── stats/
-│   │   └── page.tsx              # Club-wide insights (planned)
+│   │   └── page.tsx              # Club-wide insights (leaderboard, divisive, genres, trend)
 │   ├── admin/
 │   │   └── page.tsx              # Admin dashboard
 │   ├── login/
@@ -65,6 +65,10 @@ CinemaAndSins/
 │   ├── ProfileStats.tsx          # Profile stats grid (reviews, avg, vs club, genre)
 │   ├── ProfilePickHistory.tsx    # Member's pick history (posters, links to movies)
 │   ├── ProfileReviewHistory.tsx  # Sortable review history (client component)
+│   ├── StatsLeaderboard.tsx      # Highest/lowest rated movies (two columns)
+│   ├── StatsDivisive.tsx         # Most divisive movies by score variance
+│   ├── StatsGenreBreakdown.tsx   # Genre bars with count + avg score
+│   ├── StatsTrendChart.tsx       # Club average over time (bar chart)
 │   ├── ReviewsSection.tsx        # Sortable reviews list + distribution chart
 │   ├── ScoreDistribution.tsx     # Horizontal bar chart showing score spread
 │   └── RotationEditor.tsx        # Admin drag-to-reorder rotation
@@ -79,10 +83,12 @@ CinemaAndSins/
 │   │   ├── getMovieDetail.ts     # Server-side fetcher for movie detail page
 │   │   ├── getHistory.ts         # Server-side fetcher for history page
 │   │   ├── getMembers.ts         # Server-side fetcher for members page
-│   │   └── getProfile.ts         # Server-side fetcher for member profile page
+│   │   ├── getProfile.ts         # Server-side fetcher for member profile page
+│   │   └── getStats.ts           # Server-side fetcher for stats page
 │   ├── tmdb.ts                   # TMDB API client (server-side)
 │   ├── scoring.ts                # Average calculation, score distribution
 │   ├── stats.ts                  # Member stat calculations (avg, harsh/easy, genre)
+│   ├── stats-aggregate.ts        # Club-wide stat aggregations (leaderboard, divisive, genres, trend)
 │   ├── rotation.ts               # Rotation logic (next picker, skip/bump)
 │   ├── ui.ts                     # Shared CSS class constants
 │   └── utils.ts                  # General utilities (formatDate, formatScore, cn)
