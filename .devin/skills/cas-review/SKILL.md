@@ -1,6 +1,6 @@
 ---
 name: cas-review
-description: Review a CinemaAndSins PR. Runs a 6-section checklist, addresses feedback, and merges when ready.
+description: Review a CinemaAndSins PR. Runs a 7-section checklist, addresses feedback, and merges when ready.
 ---
 
 # CinemaAndSins: Review
@@ -36,6 +36,13 @@ Run the review workflow defined in `harness/workflows/review.md`.
    - `npm run build` succeeds
    - Every new component/API route has tests
    - No tests deleted or weakened
+
+   ### Code Reuse
+
+   - No duplicate logic — if the same pattern appears in 2+ files, extract to a shared utility/component
+   - Reusable UI elements are components (buttons, form fields, error displays, loading states)
+   - Shared business logic is in `lib/` not duplicated across pages
+   - No copy-pasted form/validation/error handling — centralize in `lib/` or components
 
    ### Conventions
 

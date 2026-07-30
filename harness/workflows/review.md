@@ -36,6 +36,13 @@
    - [ ] Every new component/API route has tests
    - [ ] No tests were deleted or weakened
 
+   ### Code Reuse
+
+   - [ ] No duplicate logic — same pattern in 2+ files should be extracted to shared utility/component
+   - [ ] Reusable UI elements are components (buttons, form fields, error displays, loading states)
+   - [ ] Shared business logic is in `lib/` not duplicated across pages
+   - [ ] No copy-pasted form/validation/error handling — centralize in `lib/` or components
+
    ### Conventions
 
    - [ ] Naming conventions followed (see `AGENTS.md`)
