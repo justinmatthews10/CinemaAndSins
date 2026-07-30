@@ -420,7 +420,7 @@
 
 ## CAS-016: Historical Data Entry
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-014
 
 ### Acceptance Criteria
