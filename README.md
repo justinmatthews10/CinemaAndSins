@@ -158,16 +158,27 @@ ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
 6. Click **Deploy**
 7. Wait for the build to finish (~2 minutes)
-8. Your site is live at `https://cinemaand-sins.vercel.app` (or similar)
+8. Your site is live at your Vercel URL (e.g. `https://cinema-and-sins.vercel.app`)
 
-### Step 7: Sign Up as Admin
+### Step 7: Update Supabase Auth URLs
+
+After deploying, update the auth redirect URLs so email confirmation links point to your live site instead of localhost:
+
+1. In Supabase, go to **Authentication** → **URL Configuration**
+2. Set **Site URL** to your Vercel URL (e.g. `https://cinema-and-sins.vercel.app`)
+3. Under **Redirect URLs**, add `https://cinema-and-sins.vercel.app/**`
+4. Keep `http://localhost:3000/**` in the list for local development
+5. Click **Save**
+
+### Step 8: Sign Up as Admin
 
 1. Open your deployed site
 2. Click **Login** → **Sign up**
 3. Use the same email you set in `ADMIN_EMAIL` and Step 4
-4. You're automatically approved and granted admin — no manual SQL needed
+4. Check your email for the confirmation link — clicking it auto-logs you in
+5. You're automatically approved and granted admin — no manual SQL needed
 
-### Step 8: Invite Members
+### Step 9: Invite Members
 
 1. As admin, go to **Admin** → **Rotation** tab
 2. Add members to the rotation (they need to sign up first)
@@ -175,7 +186,7 @@ ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 4. Approve them with the **Approve** button
 5. Members can now pick movies, review, and participate
 
-### Step 9: Add Historical Data (optional)
+### Step 10: Add Historical Data (optional)
 
 If your club has past meetings you want to record:
 
