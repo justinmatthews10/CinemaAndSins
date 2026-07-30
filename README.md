@@ -129,7 +129,8 @@ This configures the database so that when you sign up with your email, you're au
 2. Run this SQL (replace with your email):
 
 ```sql
-ALTER DATABASE postgres SET app.admin_email = 'your-email@example.com';
+INSERT INTO app_config (key, value) VALUES ('admin_email', 'your-email@example.com')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 ```
 
 ### Step 5: Get a TMDB API Key
