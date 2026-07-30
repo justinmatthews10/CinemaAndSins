@@ -189,7 +189,7 @@ v1 Release
 | CAS-007 | Schedule page             | Complete    | /schedule page, ScheduleTimeline, getSchedule helper, 12 unit tests    |
 | CAS-008 | Rotation management       | Complete    | /admin page, RotationEditor, up/down reorder, 10 unit tests            |
 | CAS-009 | Submit Review page        | Complete    | /review/[pickId], ReviewForm, score slider + badges, 11 unit tests     |
-| CAS-010 | Movie Detail page         | Not Started | —                                                                      |
+| CAS-010 | Movie Detail page         | Complete    | /movies/[id], ScoreDistribution, ReviewCard, ReviewsSection, 16 tests  |
 | CAS-011 | History / Archive page    | Not Started | —                                                                      |
 | CAS-012 | Member Profile page       | Not Started | —                                                                      |
 | CAS-013 | Stats / Insights page     | Not Started | —                                                                      |
