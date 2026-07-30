@@ -358,7 +358,7 @@
 
 ## CAS-014: Admin Dashboard
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-008
 
 ### Acceptance Criteria

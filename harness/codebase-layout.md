@@ -51,6 +51,9 @@ CinemaAndSins/
 │   ├── PageHeading.tsx           # Standard page heading (Playfair font)
 │   ├── ScheduleTimeline.tsx      # Schedule timeline with pick status
 │   ├── RotationEditor.tsx        # Admin rotation management (reorder, skip, toggle)
+│   ├── MemberManager.tsx         # Admin member management (approve, remove, admin)
+│   ├── PickManager.tsx           # Admin pick locking (lock/unlock months)
+│   ├── ContentManager.tsx        # Admin content management (delete movies/reviews)
 │   ├── ReviewForm.tsx            # Score slider + markdown review + tags
 │   ├── TmdbSearch.tsx            # TMDB search input + results
 │   ├── FormField.tsx             # Reusable input + label + error
