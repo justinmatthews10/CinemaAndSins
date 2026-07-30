@@ -30,9 +30,21 @@ export default async function MovieDetailPage({
     );
   }
 
-  const { movie, pick, picker, reviews, averageScore, isDivisive } = data;
+  const {
+    movie,
+    pick,
+    picker,
+    reviews,
+    averageScore,
+    isDivisive,
+    currentUserId,
+    pickLocked,
+  } = data;
   const badgeColor = scoreBadgeColor(averageScore);
   const monthName = formatMonthYear(pick.month, pick.year);
+  const userReview = currentUserId
+    ? reviews.find((r) => r.member_id === currentUserId)
+    : null;
 
   return (
     <main className="flex flex-1 flex-col px-6 py-12">
@@ -94,6 +106,16 @@ export default async function MovieDetailPage({
               <p className="text-sm text-foreground/60">
                 Watch by {formatDate(pick.watch_date)}
               </p>
+            )}
+
+            {/* Edit/submit review link */}
+            {currentUserId && !pickLocked && (
+              <Link
+                href={`/review/${pick.id}`}
+                className="text-sm text-accent hover:underline"
+              >
+                {userReview ? "Edit your review →" : "Submit a review →"}
+              </Link>
             )}
           </div>
         </div>

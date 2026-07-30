@@ -13,6 +13,8 @@ export type MovieDetailData = {
   averageScore: number;
   scoreVariance: number;
   isDivisive: boolean;
+  currentUserId: string | null;
+  pickLocked: boolean;
 } | null;
 
 /** Threshold for "most divisive" — variance above this means hot takes. */
@@ -62,6 +64,11 @@ export async function getMovieDetail(movieId: string): Promise<MovieDetailData> 
     })
     .filter((r): r is Review & { member: Member } => r !== null);
 
+  // Get current user (if logged in)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   // Calculate scoring stats
   const averageScore = calculateAverage(reviews);
   const variance = scoreVariance(reviews);
@@ -74,5 +81,7 @@ export async function getMovieDetail(movieId: string): Promise<MovieDetailData> 
     averageScore,
     scoreVariance: variance,
     isDivisive: variance > DIVISIVE_THRESHOLD,
+    currentUserId: user?.id ?? null,
+    pickLocked: pick.status === "locked",
   };
 }

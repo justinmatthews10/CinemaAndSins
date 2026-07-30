@@ -112,9 +112,12 @@ export function MovieHero({
 
           {/* User review status */}
           {userReview ? (
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex items-center gap-3 text-sm">
               <span className="text-foreground/60">Your rating:</span>
               <span className="font-bold text-accent">{userReview.score}/10</span>
+              <Link href={`/review/${pick.id}`} className="text-accent hover:underline">
+                Edit your review →
+              </Link>
             </div>
           ) : (
             <Link
