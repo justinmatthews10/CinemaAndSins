@@ -14,7 +14,6 @@ export type CurrentPickData = {
   reviewStats: { reviewed: number; total: number };
   userReview: { score: number; review_text: string | null } | null;
   nextPicker: Member | null;
-  canDelete: boolean;
 } | null;
 
 export async function getCurrentPick(userId: string | null): Promise<CurrentPickData> {
@@ -85,13 +84,6 @@ export async function getCurrentPick(userId: string | null): Promise<CurrentPick
     ? (members.find((m) => m.id === nextPickerId) ?? null)
     : null;
 
-  // Determine if user can delete (picker or admin)
-  let canDelete = false;
-  if (userId) {
-    const userMember = members.find((m) => m.id === userId);
-    canDelete = userMember?.id === pick.picker_member_id || userMember?.is_admin === true;
-  }
-
   return {
     pick,
     movie,
@@ -100,6 +92,5 @@ export async function getCurrentPick(userId: string | null): Promise<CurrentPick
     reviewStats: { reviewed, total },
     userReview,
     nextPicker,
-    canDelete,
   };
 }

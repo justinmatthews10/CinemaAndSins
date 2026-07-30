@@ -171,3 +171,90 @@ export async function createMovieAndPick(
 
   return { movieId, pickId: pick.id };
 }
+
+/**
+ * Updates an existing pick with a new movie, watch date, and picker note.
+ * Creates the movie record if it doesn't already exist.
+ */
+export async function updatePick(
+  supabase: SupabaseClient,
+  params: {
+    pickId: string;
+    movie:
+      | TmdbMovieDetails
+      | {
+          tmdb_id: null;
+          title: string;
+          year: number | null;
+          director: string | null;
+          runtime: number | null;
+          poster_url: string | null;
+          synopsis: string | null;
+          genres: string[];
+        };
+    watchDate: string | null;
+    pickerNote: string | null;
+  },
+): Promise<{ movieId: string }> {
+  const { pickId, movie, watchDate, pickerNote } = params;
+
+  // Find or create the movie
+  let movieId: string;
+
+  if (movie.tmdb_id) {
+    const { data: existing } = await supabase
+      .from("movies")
+      .select("id")
+      .eq("tmdb_id", movie.tmdb_id)
+      .maybeSingle();
+
+    if (existing) {
+      movieId = existing.id;
+    }
+  }
+
+  if (!movieId!) {
+    const { data: newMovie, error: movieError } = await supabase
+      .from("movies")
+      .insert({
+        tmdb_id: movie.tmdb_id,
+        title: movie.title,
+        year: movie.year,
+        director: movie.director,
+        runtime: movie.runtime,
+        poster_url: movie.poster_url,
+        synopsis: movie.synopsis,
+        genres: movie.genres,
+      })
+      .select("id")
+      .single();
+
+    if (movieError) throw movieError;
+    movieId = newMovie!.id;
+  }
+
+  // Update the pick
+  const { error: pickError } = await supabase
+    .from("picks")
+    .update({
+      movie_id: movieId,
+      watch_date: watchDate,
+      picker_note: pickerNote,
+    })
+    .eq("id", pickId);
+
+  if (pickError) throw pickError;
+
+  return { movieId };
+}
+
+/**
+ * Deletes a pick by ID.
+ */
+export async function deletePick(
+  supabase: SupabaseClient,
+  pickId: string,
+): Promise<void> {
+  const { error } = await supabase.from("picks").delete().eq("id", pickId);
+  if (error) throw error;
+}

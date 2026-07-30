@@ -1,26 +1,9 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MovieHero } from "@/components/MovieHero";
 import type { Movie } from "@/types/movie";
 import type { Pick } from "@/types/pick";
 import type { Member } from "@/types/member";
-
-// Mock next/navigation and supabase client
-vi.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-    refresh: vi.fn(),
-  }),
-}));
-vi.mock("@/lib/supabase/client", () => ({
-  createClient: () => ({
-    from: vi.fn(() => ({
-      delete: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ error: null })),
-      })),
-    })),
-  }),
-}));
 
 const mockMovie: Movie = {
   id: "movie-1",
@@ -67,7 +50,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -84,7 +66,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -101,7 +82,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -117,7 +97,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -133,7 +112,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -149,7 +127,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -165,7 +142,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={{ score: 9.5, review_text: "Amazing!" }}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -186,7 +162,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 0, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -212,7 +187,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={nextPicker}
-        canDelete={false}
       />,
     );
 
@@ -229,7 +203,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 
@@ -249,7 +222,6 @@ describe("MovieHero", () => {
         reviewStats={{ reviewed: 3, total: 5 }}
         userReview={null}
         nextPicker={null}
-        canDelete={false}
       />,
     );
 

@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import type { Movie } from "@/types/movie";
 import type { Pick } from "@/types/pick";
 import type { Member } from "@/types/member";
@@ -15,7 +12,6 @@ type MovieHeroProps = {
   reviewStats: { reviewed: number; total: number };
   userReview: { score: number; review_text: string | null } | null;
   nextPicker: Member | null;
-  canDelete?: boolean;
 };
 
 function getDaysLeft(watchDate: string | null): number | null {
@@ -33,25 +29,8 @@ export function MovieHero({
   reviewStats,
   userReview,
   nextPicker,
-  canDelete = false,
 }: MovieHeroProps) {
-  const router = useRouter();
-  const supabase = createClient();
-  const [deleting, setDeleting] = useState(false);
-  const [confirming, setConfirming] = useState(false);
   const daysLeft = getDaysLeft(pick.watch_date);
-
-  async function handleDelete() {
-    setDeleting(true);
-    const { error } = await supabase.from("picks").delete().eq("id", pick.id);
-    if (error) {
-      setDeleting(false);
-      setConfirming(false);
-      return;
-    }
-    router.push("/");
-    router.refresh();
-  }
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-border bg-surface">
@@ -153,37 +132,6 @@ export function MovieHero({
               Next month:{" "}
               <span className="font-medium text-foreground/80">{nextPicker.name}</span>{" "}
               picks
-            </div>
-          )}
-
-          {/* Delete button (picker or admin only) */}
-          {canDelete && (
-            <div className="mt-4 border-t border-border pt-4">
-              {confirming ? (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-foreground/70">Delete this pick?</span>
-                  <button
-                    onClick={handleDelete}
-                    disabled={deleting}
-                    className="rounded-lg bg-accent-secondary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-secondary/80 disabled:opacity-50"
-                  >
-                    {deleting ? "Deleting..." : "Confirm"}
-                  </button>
-                  <button
-                    onClick={() => setConfirming(false)}
-                    className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setConfirming(true)}
-                  className="text-sm text-foreground/40 transition-colors hover:text-accent-secondary"
-                >
-                  Remove pick
-                </button>
-              )}
             </div>
           )}
         </div>

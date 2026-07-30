@@ -66,7 +66,6 @@ export default async function Home() {
           reviewStats={currentPick.reviewStats}
           userReview={currentPick.userReview}
           nextPicker={currentPick.nextPicker}
-          canDelete={currentPick.canDelete}
         />
       </div>
     </main>
