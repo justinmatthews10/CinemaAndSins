@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PosterImage } from "@/components/PosterImage";
+import { formatMonthYear } from "@/lib/utils";
 import type { ScheduleSlot } from "@/lib/supabase/getSchedule";
 
 type ScheduleTimelineProps = {
@@ -19,13 +20,6 @@ const STATUS_COLORS: Record<ScheduleSlot["status"], string> = {
   movie_selected: "bg-accent/20 text-accent",
   locked: "bg-accent-secondary/20 text-accent-secondary",
 };
-
-function formatMonth(month: number, year: number): string {
-  return new Date(year, month - 1).toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export function ScheduleTimeline({
   slots,
@@ -118,7 +112,7 @@ function ScheduleSlotRow({ slot, canPick }: { slot: ScheduleSlot; canPick: boole
       {/* Details */}
       <div className="flex flex-1 flex-col gap-1">
         <p className="font-medium text-foreground">
-          {formatMonth(slot.month, slot.year)}
+          {formatMonthYear(slot.month, slot.year)}
         </p>
         <p className="text-sm text-foreground/60">Picked by {slot.picker.name}</p>
         {slot.movie && (

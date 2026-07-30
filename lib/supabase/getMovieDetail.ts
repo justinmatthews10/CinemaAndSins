@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { calculateAverage, scoreVariance } from "@/lib/scoring";
 import type { Movie } from "@/types/movie";
 import type { Pick } from "@/types/pick";
 import type { Review } from "@/types/review";
@@ -62,14 +63,8 @@ export async function getMovieDetail(movieId: string): Promise<MovieDetailData> 
     .filter((r): r is Review & { member: Member } => r !== null);
 
   // Calculate scoring stats
-  const scores = reviews.map((r) => r.score);
-  const averageScore =
-    scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-
-  const scoreVariance =
-    scores.length > 1
-      ? scores.reduce((acc, s) => acc + Math.pow(s - averageScore, 2), 0) / scores.length
-      : 0;
+  const averageScore = calculateAverage(reviews);
+  const variance = scoreVariance(reviews);
 
   return {
     movie,
@@ -77,7 +72,7 @@ export async function getMovieDetail(movieId: string): Promise<MovieDetailData> 
     picker,
     reviews: reviewsWithMembers,
     averageScore,
-    scoreVariance,
-    isDivisive: scoreVariance > DIVISIVE_THRESHOLD,
+    scoreVariance: variance,
+    isDivisive: variance > DIVISIVE_THRESHOLD,
   };
 }
