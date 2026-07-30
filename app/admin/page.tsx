@@ -11,14 +11,17 @@ import { PickManager } from "@/components/PickManager";
 import type { PickWithMovie } from "@/components/PickManager";
 import { ContentManager } from "@/components/ContentManager";
 import type { AdminMovie, AdminReview } from "@/components/ContentManager";
+import { PastPickForm } from "@/components/PastPickForm";
 import { PageHeading } from "@/components/PageHeading";
 import { StatusBanner } from "@/components/StatusBanner";
 import { LoadingState } from "@/components/LoadingState";
 import { getActiveRotation } from "@/lib/rotation";
+import { createMovieAndPick } from "@/lib/supabase/picks";
 import type { RotationEntry } from "@/types/rotation";
 import type { Member } from "@/types/member";
+import type { TmdbSearchResult } from "@/types/movie";
 
-type Tab = "rotation" | "members" | "picks" | "content";
+type Tab = "rotation" | "members" | "picks" | "pastpick" | "content";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -32,6 +35,7 @@ export default function AdminPage() {
   const [movies, setMovies] = useState<AdminMovie[]>([]);
   const [reviews, setReviews] = useState<AdminReview[]>([]);
   const [loadingData, setLoadingData] = useState(true);
+  const [submittingPastPick, setSubmittingPastPick] = useState(false);
   const [status, setStatus] = useState<{
     msg: string;
     variant: "error" | "success";
@@ -240,6 +244,54 @@ export default function AdminPage() {
     );
   }
 
+  // === Past Pick handler ===
+  async function handleCreatePastPick(data: {
+    movie: TmdbSearchResult;
+    pickerMemberId: string;
+    month: number;
+    year: number;
+    watchDate: string;
+    pickerNote: string;
+  }) {
+    setStatus(null);
+    setSubmittingPastPick(true);
+    try {
+      const result = await createMovieAndPick(supabase, {
+        movie: {
+          tmdb_id: data.movie.tmdb_id,
+          title: data.movie.title,
+          year: data.movie.year ?? null,
+          director: null,
+          runtime: null,
+          poster_url: data.movie.poster_url,
+          synopsis: null,
+          genres: [],
+        },
+        pickerMemberId: data.pickerMemberId,
+        month: data.month,
+        year: data.year,
+        watchDate: data.watchDate || null,
+        pickerNote: data.pickerNote || null,
+        status: "current",
+      });
+      await loadData();
+      setStatus({
+        msg: `Past pick created — ${data.movie.title} for ${data.month}/${data.year}`,
+        variant: "success",
+      });
+      // Switch to picks tab so admin can see the new pick
+      setTab("picks");
+      void result;
+    } catch (err) {
+      setStatus({
+        msg: err instanceof Error ? err.message : "Failed to create past pick",
+        variant: "error",
+      });
+    } finally {
+      setSubmittingPastPick(false);
+    }
+  }
+
   if (authLoading || loadingData) return <LoadingState />;
 
   if (!member?.is_admin) {
@@ -262,6 +314,7 @@ export default function AdminPage() {
     { key: "rotation", label: "Rotation" },
     { key: "members", label: "Members" },
     { key: "picks", label: "Picks" },
+    { key: "pastpick", label: "Past Pick" },
     { key: "content", label: "Content" },
   ];
 
@@ -307,6 +360,14 @@ export default function AdminPage() {
 
         {tab === "picks" && (
           <PickManager picks={picks} onLock={handleLock} onUnlock={handleUnlock} />
+        )}
+
+        {tab === "pastpick" && (
+          <PastPickForm
+            members={members}
+            onSubmit={handleCreatePastPick}
+            submitting={submittingPastPick}
+          />
         )}
 
         {tab === "content" && (

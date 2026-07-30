@@ -54,6 +54,7 @@ CinemaAndSins/
 │   ├── MemberManager.tsx         # Admin member management (approve, remove, admin)
 │   ├── PickManager.tsx           # Admin pick locking (lock/unlock months)
 │   ├── ContentManager.tsx        # Admin content management (delete movies/reviews)
+│   ├── PastPickForm.tsx          # Admin form for creating historical picks
 │   ├── ReviewForm.tsx            # Score slider + markdown review + tags
 │   ├── TmdbSearch.tsx            # TMDB search input + results
 │   ├── FormField.tsx             # Reusable input + label + error

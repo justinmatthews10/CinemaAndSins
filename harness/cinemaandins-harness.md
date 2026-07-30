@@ -198,7 +198,7 @@ v1 Release
 | CAS-013 | Stats / Insights page     | Complete    | /stats, leaderboard, divisive, genres, trend, 196 tests                |
 | CAS-014 | Admin Dashboard           | Complete    | Tabs: rotation, members, picks, content; 214 tests                     |
 | CAS-015 | Mobile responsive design  | Complete    | Hamburger nav, tap targets, layout fixes, 225 tests                    |
-| CAS-016 | Historical Data Entry     | Not Started | Admin form for past picks, TMDB search, picker dropdown                |
+| CAS-016 | Historical Data Entry     | Complete    | Past Pick tab on admin, PastPickForm, 233 tests                        |
 | CAS-017 | Vercel deployment         | Not Started | Admin bootstrap via ADMIN_EMAIL, full setup guide in README            |
 | CAS-018 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                                   |
 

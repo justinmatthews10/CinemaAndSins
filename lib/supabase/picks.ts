@@ -150,9 +150,18 @@ export async function createMovieAndPick(
     year: number;
     watchDate: string | null;
     pickerNote: string | null;
+    status?: "upcoming" | "current" | "locked";
   },
 ): Promise<{ movieId: string; pickId: string }> {
-  const { movie, pickerMemberId, month, year, watchDate, pickerNote } = params;
+  const {
+    movie,
+    pickerMemberId,
+    month,
+    year,
+    watchDate,
+    pickerNote,
+    status = "upcoming",
+  } = params;
 
   const movieId = await findOrCreateMovie(supabase, movie);
 
@@ -165,7 +174,7 @@ export async function createMovieAndPick(
       year,
       watch_date: watchDate,
       picker_note: pickerNote,
-      status: "upcoming",
+      status,
     })
     .select("id")
     .single();
