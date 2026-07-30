@@ -7,6 +7,9 @@ import { useAuth } from "@/components/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
 import { RotationEditor } from "@/components/RotationEditor";
 import { PageHeading } from "@/components/PageHeading";
+import { StatusBanner } from "@/components/StatusBanner";
+import { LoadingState } from "@/components/LoadingState";
+import { getActiveRotation } from "@/lib/rotation";
 import type { RotationEntry } from "@/types/rotation";
 import type { Member } from "@/types/member";
 
@@ -18,8 +21,10 @@ export default function AdminPage() {
   const [rotation, setRotation] = useState<RotationEntry[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
   const [loadingData, setLoadingData] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [status, setStatus] = useState<{
+    msg: string;
+    variant: "error" | "success";
+  } | null>(null);
 
   const loadData = useCallback(async () => {
     const [{ data: rotData }, { data: memberData }] = await Promise.all([
@@ -33,121 +38,94 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (authLoading) return;
-
-    if (!user || !member) {
-      router.push("/login");
-      return;
-    }
-
-    if (!member.is_admin) {
-      router.push("/");
-      return;
-    }
-
+    if (!user || !member) return router.push("/login");
+    if (!member.is_admin) return router.push("/");
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadData();
   }, [authLoading, user, member, router, loadData]);
 
-  function clearMessages() {
-    setError(null);
-    setSuccess(null);
+  /** Helper: run a mutation, reload data, and set success/error status. */
+  async function mutate(
+    op: () => Promise<{ error: { message: string } | null }>,
+    successMsg: string,
+  ) {
+    setStatus(null);
+    const result = await op();
+    if (result.error) {
+      setStatus({ msg: result.error.message ?? "Operation failed", variant: "error" });
+      return;
+    }
+    await loadData();
+    setStatus({ msg: successMsg, variant: "success" });
+  }
+
+  function memberName(id: string) {
+    return members.find((m) => m.id === id)?.name ?? "Unknown";
   }
 
   async function handleReorder(index: number, direction: "up" | "down") {
-    clearMessages();
-    const sorted = [...rotation].sort((a, b) => a.order_index - b.order_index);
-    const active = sorted.filter((r) => r.is_active);
+    const active = getActiveRotation(rotation);
     const swapIndex = direction === "up" ? index - 1 : index + 1;
     if (swapIndex < 0 || swapIndex >= active.length) return;
 
     const entryA = active[index];
     const entryB = active[swapIndex];
 
-    // Swap order_index values
-    const updates = [
-      { id: entryA.id, order_index: entryB.order_index },
-      { id: entryB.id, order_index: entryA.order_index },
-    ];
-
-    for (const u of updates) {
-      const { error: err } = await supabase
-        .from("rotation")
-        .update({ order_index: u.order_index })
-        .eq("id", u.id);
-      if (err) {
-        setError("Failed to reorder rotation");
-        return;
+    await mutate(async () => {
+      for (const { id, order_index } of [
+        { id: entryA.id, order_index: entryB.order_index },
+        { id: entryB.id, order_index: entryA.order_index },
+      ]) {
+        const { error } = await supabase
+          .from("rotation")
+          .update({ order_index })
+          .eq("id", id);
+        if (error) return { error };
       }
-    }
-
-    await loadData();
-    setSuccess("Rotation order updated");
+      return { error: null };
+    }, "Rotation order updated");
   }
 
   async function handleToggleActive(memberId: string, isActive: boolean) {
-    clearMessages();
-    const { error: err } = await supabase
-      .from("rotation")
-      .update({ is_active: isActive })
-      .eq("member_id", memberId);
-
-    if (err) {
-      setError("Failed to update rotation status");
-      return;
-    }
-
-    await loadData();
-    setSuccess(isActive ? "Member activated" : "Member deactivated");
+    await mutate(
+      async () =>
+        supabase
+          .from("rotation")
+          .update({ is_active: isActive })
+          .eq("member_id", memberId),
+      isActive ? "Member activated" : "Member deactivated",
+    );
   }
 
   async function handleSkip(memberId: string) {
-    clearMessages();
-    const sorted = [...rotation].sort((a, b) => a.order_index - b.order_index);
-    const active = sorted.filter((r) => r.is_active);
+    const active = getActiveRotation(rotation);
     const entry = active.find((r) => r.member_id === memberId);
     if (!entry) return;
 
-    // Bump to end of current cycle by adding active.length to order_index
-    const { error: err } = await supabase
-      .from("rotation")
-      .update({ order_index: entry.order_index + active.length })
-      .eq("id", entry.id);
-
-    if (err) {
-      setError("Failed to skip member");
-      return;
-    }
-
-    await loadData();
-    setSuccess(`${members.find((m) => m.id === memberId)?.name} skipped to next cycle`);
+    await mutate(
+      async () =>
+        supabase
+          .from("rotation")
+          .update({ order_index: entry.order_index + active.length })
+          .eq("id", entry.id),
+      `${memberName(memberId)} skipped to next cycle`,
+    );
   }
 
   async function handleAdd(memberId: string) {
-    clearMessages();
-    // Add at the end of the rotation
     const maxOrder = Math.max(0, ...rotation.map((r) => r.order_index));
-    const { error: err } = await supabase.from("rotation").insert({
-      member_id: memberId,
-      order_index: maxOrder + 1,
-      is_active: true,
-    });
-
-    if (err) {
-      setError("Failed to add member to rotation");
-      return;
-    }
-
-    await loadData();
-    setSuccess("Member added to rotation");
-  }
-
-  if (authLoading || loadingData) {
-    return (
-      <main className="flex flex-1 items-center justify-center px-6 py-24">
-        <p className="text-foreground/60">Loading...</p>
-      </main>
+    await mutate(
+      async () =>
+        supabase.from("rotation").insert({
+          member_id: memberId,
+          order_index: maxOrder + 1,
+          is_active: true,
+        }),
+      "Member added to rotation",
     );
   }
+
+  if (authLoading || loadingData) return <LoadingState />;
 
   if (!member?.is_admin) {
     return (
@@ -170,16 +148,7 @@ export default function AdminPage() {
       <div className="mx-auto w-full max-w-3xl">
         <PageHeading>Rotation Management</PageHeading>
 
-        {error && (
-          <div className="mb-4 rounded-lg border border-accent-secondary/30 bg-accent-secondary/10 p-4 text-sm text-accent-secondary">
-            {error}
-          </div>
-        )}
-        {success && (
-          <div className="mb-4 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-sm text-green-400">
-            {success}
-          </div>
-        )}
+        {status && <StatusBanner message={status.msg} variant={status.variant} />}
 
         <RotationEditor
           rotation={rotation}

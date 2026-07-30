@@ -13,9 +13,10 @@ import {
 } from "@/lib/supabase/picks";
 import { TmdbSearch } from "@/components/TmdbSearch";
 import { FormField } from "@/components/FormField";
-import { ErrorBanner } from "@/components/ErrorBanner";
+import { StatusBanner } from "@/components/StatusBanner";
 import { PosterImage } from "@/components/PosterImage";
 import { PageHeading } from "@/components/PageHeading";
+import { LoadingState } from "@/components/LoadingState";
 import { primaryButtonClass, inputClass } from "@/lib/ui";
 import { formatDate } from "@/lib/utils";
 import type { TmdbSearchResult, TmdbMovieDetails, Movie } from "@/types/movie";
@@ -280,13 +281,7 @@ export default function AddMoviePage() {
   }
 
   // Loading state
-  if (authLoading || loadingData) {
-    return (
-      <main className="flex flex-1 items-center justify-center px-6 py-24">
-        <p className="text-foreground/60">Loading...</p>
-      </main>
-    );
-  }
+  if (authLoading || loadingData) return <LoadingState />;
 
   // No assigned month
   if (!assignedMonth) {
@@ -324,7 +319,7 @@ export default function AddMoviePage() {
           </p>
         </div>
 
-        {error && <ErrorBanner message={error} />}
+        {error && <StatusBanner message={error} />}
 
         {/* Existing pick display */}
         {existingPick && !editing && (
