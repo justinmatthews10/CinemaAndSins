@@ -6,9 +6,13 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 /**
  * Determines which member is assigned to pick for a given month/year.
  *
- * The rotation is a circular list. We count how many picks exist before
- * the target month (in chronological order), then advance through the
- * active rotation by that count to find the assigned picker.
+ * The rotation is a circular list. We use the earliest existing pick as an
+ * anchor point: that pick's picker has a known position in the rotation,
+ * and we advance by the number of months between the anchor and the target
+ * (not the count of picks, which may have gaps).
+ *
+ * If no picks exist yet, the first active member in the rotation is assigned
+ * to the current month.
  */
 export function getAssignedPicker(
   rotation: RotationEntry[],
@@ -22,13 +26,66 @@ export function getAssignedPicker(
 
   if (active.length === 0) return null;
 
-  // Count picks that occurred before the target month/year
-  const pastPicks = picks.filter(
-    (p) => p.year < targetYear || (p.year === targetYear && p.month < targetMonth),
+  // If no picks exist yet, the first active member picks for the target month
+  if (picks.length === 0) {
+    return active[0].member_id;
+  }
+
+  // Find the earliest pick as the anchor
+  const earliestPick = picks.reduce((earliest, p) => {
+    if (
+      p.year < earliest.year ||
+      (p.year === earliest.year && p.month < earliest.month)
+    ) {
+      return p;
+    }
+    return earliest;
+  }, picks[0]);
+
+  // Find the anchor picker's position in the active rotation
+  const anchorPickerIndex = active.findIndex(
+    (r) => r.member_id === earliestPick.picker_member_id,
   );
 
-  const offset = pastPicks.length % active.length;
+  // If the anchor picker is no longer in the active rotation, fall back to
+  // counting months from the anchor and using that as the offset directly
+  if (anchorPickerIndex === -1) {
+    const monthsSinceAnchor = monthsBetween(
+      earliestPick.month,
+      earliestPick.year,
+      targetMonth,
+      targetYear,
+    );
+    const offset = ((monthsSinceAnchor % active.length) + active.length) % active.length;
+    return active[offset].member_id;
+  }
+
+  // Calculate months between anchor and target
+  const monthsSinceAnchor = monthsBetween(
+    earliestPick.month,
+    earliestPick.year,
+    targetMonth,
+    targetYear,
+  );
+
+  // Use proper modulo (JS % can return negative for negative operands)
+  const offset =
+    (((anchorPickerIndex + monthsSinceAnchor) % active.length) + active.length) %
+    active.length;
   return active[offset].member_id;
+}
+
+/**
+ * Calculates the number of months between two month/year points.
+ * Returns a positive number if target is after anchor, negative if before.
+ */
+function monthsBetween(
+  anchorMonth: number,
+  anchorYear: number,
+  targetMonth: number,
+  targetYear: number,
+): number {
+  return (targetYear - anchorYear) * 12 + (targetMonth - anchorMonth);
 }
 
 /**
