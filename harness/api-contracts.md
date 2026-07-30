@@ -6,18 +6,19 @@
 
 ## Environment Variables
 
-| Variable | Scope | Description |
-|----------|-------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Client + Server | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client + Server | Supabase anon key (safe for client) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server only | Supabase service role key (never expose to client) |
-| `TMDB_API_KEY` | Server only | TMDB Bearer token for API access |
+| Variable                        | Scope           | Description                                        |
+| ------------------------------- | --------------- | -------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Client + Server | Supabase project URL                               |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client + Server | Supabase anon key (safe for client)                |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Server only     | Supabase service role key (never expose to client) |
+| `TMDB_API_KEY`                  | Server only     | TMDB Bearer token for API access                   |
 
 ---
 
 ## Supabase Schema
 
 ### `members`
+
 ```sql
 CREATE TABLE members (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -31,6 +32,7 @@ CREATE TABLE members (
 ```
 
 ### `movies`
+
 ```sql
 CREATE TABLE movies (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -47,6 +49,7 @@ CREATE TABLE movies (
 ```
 
 ### `picks`
+
 ```sql
 CREATE TABLE picks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -62,6 +65,7 @@ CREATE TABLE picks (
 ```
 
 ### `reviews`
+
 ```sql
 CREATE TABLE reviews (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -77,6 +81,7 @@ CREATE TABLE reviews (
 ```
 
 ### `rotation`
+
 ```sql
 CREATE TABLE rotation (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -92,6 +97,7 @@ CREATE TABLE rotation (
 ## RLS Policies
 
 ### `members`
+
 ```sql
 -- Public can see limited member info
 CREATE POLICY "members_public_read" ON members
@@ -109,6 +115,7 @@ CREATE POLICY "members_admin_all" ON members
 ```
 
 ### `movies`
+
 ```sql
 -- Public can read
 CREATE POLICY "movies_public_read" ON movies
@@ -126,6 +133,7 @@ CREATE POLICY "movies_admin_all" ON movies
 ```
 
 ### `picks`
+
 ```sql
 -- Public can read
 CREATE POLICY "picks_public_read" ON picks
@@ -149,6 +157,7 @@ CREATE POLICY "picks_admin_all" ON picks
 ```
 
 ### `reviews`
+
 ```sql
 -- Public can read
 CREATE POLICY "reviews_public_read" ON reviews
@@ -176,6 +185,7 @@ CREATE POLICY "reviews_admin_all" ON reviews
 ```
 
 ### `rotation`
+
 ```sql
 -- Public can read
 CREATE POLICY "rotation_public_read" ON rotation
@@ -193,6 +203,7 @@ CREATE POLICY "rotation_admin_all" ON rotation
 ## TMDB API
 
 ### Base Configuration
+
 - **Base URL:** `https://api.themoviedb.org/3`
 - **Auth:** `Authorization: Bearer {TMDB_API_KEY}` header
 - **Image base URL:** `https://image.tmdb.org/t/p/w500` (posters), `https://image.tmdb.org/t/p/original` (hero)
@@ -200,24 +211,30 @@ CREATE POLICY "rotation_admin_all" ON rotation
 ### Endpoints Used
 
 #### Search Movies
+
 ```
 GET /search/movie?query={query}&page={page}
 ```
+
 Returns: `{ results: [{ id, title, poster_path, release_date, overview }] }`
 
 #### Get Movie Details
+
 ```
 GET /movie/{id}?append_to_response=credits
 ```
+
 Returns: `{ id, title, poster_path, release_date, runtime, overview, genres: [{ name }], credits: { crew: [{ job, name }] } }`
 
 ### Internal API Routes
 
 #### `GET /api/tmdb/search?query={query}`
+
 - Server-side proxy to TMDB search
 - Returns: `{ results: [{ tmdb_id, title, year, poster_url, synopsis }] }`
 
 #### `GET /api/tmdb/{id}`
+
 - Server-side proxy to TMDB movie details
 - Returns: `{ tmdb_id, title, year, director, runtime, poster_url, synopsis, genres }`
 
@@ -226,6 +243,7 @@ Returns: `{ id, title, poster_path, release_date, runtime, overview, genres: [{ 
 ## Scoring Logic
 
 ### Average Score
+
 ```typescript
 function calculateAverage(reviews: Review[]): number {
   if (reviews.length === 0) return 0;
@@ -235,12 +253,13 @@ function calculateAverage(reviews: Review[]): number {
 ```
 
 ### Score Distribution
+
 ```typescript
 function scoreDistribution(reviews: Review[]): Record<number, number> {
   // Returns count of reviews at each score point (1-10)
   const dist: Record<number, number> = {};
   for (let i = 1; i <= 10; i++) dist[i] = 0;
-  reviews.forEach(r => {
+  reviews.forEach((r) => {
     const bucket = Math.floor(r.score);
     dist[bucket] = (dist[bucket] || 0) + 1;
   });
@@ -249,6 +268,7 @@ function scoreDistribution(reviews: Review[]): Record<number, number> {
 ```
 
 ### Score Variance (for "most divisive" calculation)
+
 ```typescript
 function scoreVariance(reviews: Review[]): number {
   if (reviews.length < 2) return 0;
@@ -259,11 +279,12 @@ function scoreVariance(reviews: Review[]): number {
 ```
 
 ### Score Badge Color
+
 ```typescript
 function scoreBadgeColor(score: number): string {
-  if (score >= 9) return 'gold';
-  if (score >= 7) return 'green';
-  if (score >= 5) return 'yellow';
-  return 'red';
+  if (score >= 9) return "gold";
+  if (score >= 7) return "green";
+  if (score >= 5) return "yellow";
+  return "red";
 }
 ```

@@ -7,6 +7,7 @@
 ## Before You Start
 
 1. **Read the harness** — `harness/cinemaandins-harness.md`
+
    - Section 6 (Story Status Matrix): confirm the story's status
    - `harness/checkpoints/{ISSUE-KEY}.md` (if exists): recover prior state
    - Section 5 (Feature Dependency Graph): confirm prerequisites are done
@@ -16,6 +17,7 @@
 3. **Read AGENTS.md** — Review conventions, forbidden actions, security rules, known pitfalls.
 
 4. **Set up your branch**
+
    - `git checkout main && git pull origin main`
    - `git checkout -b feature/{ISSUE_KEY}` (or `git checkout feature/{ISSUE_KEY}` if it exists)
    - If branch exists and is behind, ask developer: merge `main` in or handle differently?

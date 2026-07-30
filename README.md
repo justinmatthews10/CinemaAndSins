@@ -4,7 +4,7 @@ A members-only web app for our movie club. Every month one of us picks a movie, 
 
 ## Tech Stack
 
-- **Frontend:** Next.js 15 (App Router) + TypeScript + Tailwind CSS 4
+- **Frontend:** Next.js 16 (App Router) + TypeScript + Tailwind CSS 4
 - **Backend/Auth/DB:** Supabase (Postgres + email auth + row-level security)
 - **Movie data:** TMDB API (posters, synopsis, metadata)
 - **Hosting:** Vercel
@@ -35,12 +35,12 @@ cp .env.example .env.local
 
 Required variables (see `.env.example`):
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key (safe for client) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server only) |
-| `TMDB_API_KEY` | TMDB Bearer token (server only) |
+| Variable                        | Description                             |
+| ------------------------------- | --------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase project URL                    |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key (safe for client)     |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Supabase service role key (server only) |
+| `TMDB_API_KEY`                  | TMDB Bearer token (server only)         |
 
 ### Development
 

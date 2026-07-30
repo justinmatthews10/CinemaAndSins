@@ -1,0 +1,19 @@
+# Build output
+.next/
+out/
+build/
+coverage/
+playwright-report/
+test-results/
+
+# Dependencies
+node_modules/
+
+# Generated
+next-env.d.ts
+*.tsbuildinfo
+package-lock.json
+
+# Assets
+public/
+app/favicon.ico

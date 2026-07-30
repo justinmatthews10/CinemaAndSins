@@ -13,8 +13,8 @@
 3. **Gap analysis** — Produce a table of what's missing:
 
    | Gap | Category | Who can provide |
-   |-----|----------|-----------------|
-   | ... | ... | ... |
+   | --- | -------- | --------------- |
+   | ... | ...      | ...             |
 
    Categories: missing AC, unclear requirement, undocumented pattern, missing dependency, scope change.
 

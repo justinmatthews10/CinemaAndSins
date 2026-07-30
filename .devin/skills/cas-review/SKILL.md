@@ -14,12 +14,14 @@ Run the review workflow defined in `harness/workflows/review.md`.
 3. **Run the checklist:**
 
    ### Code Correctness
+
    - Logic matches AC
    - Edge cases handled (empty, error, loading states)
    - No dead code or unused imports
    - Types correct and complete
 
    ### Security
+
    - No secrets in code
    - RLS policies in place for new tables
    - No TMDB calls in client components
@@ -27,6 +29,7 @@ Run the review workflow defined in `harness/workflows/review.md`.
    - No PII in logs
 
    ### Testing
+
    - `npm run test` passes
    - `npm run typecheck` passes
    - `npm run lint` passes
@@ -35,18 +38,21 @@ Run the review workflow defined in `harness/workflows/review.md`.
    - No tests deleted or weakened
 
    ### Conventions
+
    - Naming conventions followed
    - Server Components by default
    - No debugging statements
    - Files in correct directories
 
    ### Documentation
+
    - Harness Section 6 updated
    - Checkpoint updated
    - Amendment created
    - Issue tracker updated
 
    ### Merge Readiness
+
    - PR targets `main`
    - PR description matches commit
    - GitHub issue linked

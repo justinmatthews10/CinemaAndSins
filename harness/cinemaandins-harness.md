@@ -10,7 +10,7 @@
 
 - **Project:** CinemaAndSins Movie Club
 - **Repo:** `CinemaAndSins`
-- **Type:** Next.js 15 web application (App Router, TypeScript, Tailwind CSS 4)
+- **Type:** Next.js 16 web application (App Router, TypeScript, Tailwind CSS 4)
 - **Backend/Auth/DB:** Supabase (Postgres + email auth + row-level security)
 - **Movie data:** TMDB API (free) for posters, synopsis, year, director, runtime, genre
 - **Hosting:** Vercel (auto-deploys from GitHub on every push to `main`)
@@ -58,93 +58,98 @@
 ## 3. Data Model
 
 ### `members`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK, references `auth.users` |
-| email | text | unique |
-| name | text | display name |
-| avatar_url | text | nullable |
-| is_admin | boolean | default false |
-| is_approved | boolean | default false (admin must approve) |
-| created_at | timestamptz | default now() |
+
+| Column      | Type        | Notes                              |
+| ----------- | ----------- | ---------------------------------- |
+| id          | uuid        | PK, references `auth.users`        |
+| email       | text        | unique                             |
+| name        | text        | display name                       |
+| avatar_url  | text        | nullable                           |
+| is_admin    | boolean     | default false                      |
+| is_approved | boolean     | default false (admin must approve) |
+| created_at  | timestamptz | default now()                      |
 
 ### `movies`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| tmdb_id | integer | nullable (if entered manually) |
-| title | text | |
-| year | integer | |
-| director | text | |
-| runtime | integer | minutes |
-| poster_url | text | |
-| synopsis | text | |
-| genres | text[] | |
-| created_at | timestamptz | default now() |
+
+| Column     | Type        | Notes                          |
+| ---------- | ----------- | ------------------------------ |
+| id         | uuid        | PK                             |
+| tmdb_id    | integer     | nullable (if entered manually) |
+| title      | text        |                                |
+| year       | integer     |                                |
+| director   | text        |                                |
+| runtime    | integer     | minutes                        |
+| poster_url | text        |                                |
+| synopsis   | text        |                                |
+| genres     | text[]      |                                |
+| created_at | timestamptz | default now()                  |
 
 ### `picks`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| movie_id | uuid | FK → movies |
-| picker_member_id | uuid | FK → members |
-| month | integer | 1–12 |
-| year | integer | |
-| watch_date | date | meeting date |
-| picker_note | text | "Why I picked this" |
-| status | text | `upcoming` / `current` / `locked` |
-| created_at | timestamptz | default now() |
+
+| Column           | Type        | Notes                             |
+| ---------------- | ----------- | --------------------------------- |
+| id               | uuid        | PK                                |
+| movie_id         | uuid        | FK → movies                       |
+| picker_member_id | uuid        | FK → members                      |
+| month            | integer     | 1–12                              |
+| year             | integer     |                                   |
+| watch_date       | date        | meeting date                      |
+| picker_note      | text        | "Why I picked this"               |
+| status           | text        | `upcoming` / `current` / `locked` |
+| created_at       | timestamptz | default now()                     |
 
 ### `reviews`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| pick_id | uuid | FK → picks |
-| member_id | uuid | FK → members |
-| score | numeric(3,1) | 1.0–10.0 |
-| review_text | text | markdown supported |
-| tags | text[] | nullable (e.g. "rewatch", "first time") |
-| created_at | timestamptz | default now() |
-| updated_at | timestamptz | default now() |
+
+| Column      | Type         | Notes                                   |
+| ----------- | ------------ | --------------------------------------- |
+| id          | uuid         | PK                                      |
+| pick_id     | uuid         | FK → picks                              |
+| member_id   | uuid         | FK → members                            |
+| score       | numeric(3,1) | 1.0–10.0                                |
+| review_text | text         | markdown supported                      |
+| tags        | text[]       | nullable (e.g. "rewatch", "first time") |
+| created_at  | timestamptz  | default now()                           |
+| updated_at  | timestamptz  | default now()                           |
 
 ### `rotation`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| order_index | integer | position in rotation |
-| member_id | uuid | FK → members |
-| is_active | boolean | default true |
-| updated_at | timestamptz | default now() |
+
+| Column      | Type        | Notes                |
+| ----------- | ----------- | -------------------- |
+| id          | uuid        | PK                   |
+| order_index | integer     | position in rotation |
+| member_id   | uuid        | FK → members         |
+| is_active   | boolean     | default true         |
+| updated_at  | timestamptz | default now()        |
 
 ### RLS Policies (summary)
 
-| Table | Public | Member | Admin |
-|-------|--------|--------|-------|
-| members | SELECT (id, name, avatar_url, created_at) | SELECT (all own) + UPDATE (own profile) | ALL |
-| movies | SELECT | SELECT + INSERT (when assigned picker) | ALL |
-| picks | SELECT | SELECT + INSERT (when assigned picker) + UPDATE (own picks) | ALL |
-| reviews | SELECT | SELECT + INSERT/UPDATE (own reviews) | ALL |
-| rotation | SELECT | SELECT | ALL |
+| Table    | Public                                    | Member                                                      | Admin |
+| -------- | ----------------------------------------- | ----------------------------------------------------------- | ----- |
+| members  | SELECT (id, name, avatar_url, created_at) | SELECT (all own) + UPDATE (own profile)                     | ALL   |
+| movies   | SELECT                                    | SELECT + INSERT (when assigned picker)                      | ALL   |
+| picks    | SELECT                                    | SELECT + INSERT (when assigned picker) + UPDATE (own picks) | ALL   |
+| reviews  | SELECT                                    | SELECT + INSERT/UPDATE (own reviews)                        | ALL   |
+| rotation | SELECT                                    | SELECT                                                      | ALL   |
 
 ---
 
 ## 4. Page Inventory
 
-| Route | Type | Description |
-|-------|------|-------------|
-| `/` | Server Component | Home / Current Movie of the Month |
-| `/schedule` | Server Component | Upcoming picks timeline |
-| `/history` | Server Component | Archive grid with sort/filter/search |
-| `/movies/[id]` | Server Component | Movie detail with reviews |
-| `/add-movie` | Client Component | Member's pick submission (TMDB search) |
-| `/review/[pickId]` | Client Component | Submit/edit review |
-| `/profile/[memberId]` | Server Component | Member profile with stats |
-| `/stats` | Server Component | Club-wide insights |
-| `/admin` | Client Component | Admin dashboard |
-| `/login` | Client Component | Email + password login |
-| `/signup` | Client Component | Email + password signup |
-| `/api/tmdb/search` | Route Handler | TMDB movie search (server-side) |
-| `/api/tmdb/[id]` | Route Handler | TMDB movie details (server-side) |
+| Route                 | Type             | Description                            |
+| --------------------- | ---------------- | -------------------------------------- |
+| `/`                   | Server Component | Home / Current Movie of the Month      |
+| `/schedule`           | Server Component | Upcoming picks timeline                |
+| `/history`            | Server Component | Archive grid with sort/filter/search   |
+| `/movies/[id]`        | Server Component | Movie detail with reviews              |
+| `/add-movie`          | Client Component | Member's pick submission (TMDB search) |
+| `/review/[pickId]`    | Client Component | Submit/edit review                     |
+| `/profile/[memberId]` | Server Component | Member profile with stats              |
+| `/stats`              | Server Component | Club-wide insights                     |
+| `/admin`              | Client Component | Admin dashboard                        |
+| `/login`              | Client Component | Email + password login                 |
+| `/signup`             | Client Component | Email + password signup                |
+| `/api/tmdb/search`    | Route Handler    | TMDB movie search (server-side)        |
+| `/api/tmdb/[id]`      | Route Handler    | TMDB movie details (server-side)       |
 
 ---
 
@@ -173,23 +178,24 @@ v1 Release
 
 ## 6. Story Status Matrix
 
-| ID | Title | Status | Agent Checkpoint |
-| -- | ----- | ------ | ---------------- |
-| CAS-001 | Project scaffolding | Not Started | — |
-| CAS-002 | Supabase setup | Not Started | — |
-| CAS-003 | Auth (email signup/login) | Not Started | — |
-| CAS-004 | TMDB integration | Not Started | — |
-| CAS-005 | Add Movie page | Not Started | — |
-| CAS-006 | Home / Current Movie | Not Started | — |
-| CAS-007 | Schedule page | Not Started | — |
-| CAS-008 | Rotation management | Not Started | — |
-| CAS-009 | Submit Review page | Not Started | — |
-| CAS-010 | Movie Detail page | Not Started | — |
-| CAS-011 | History / Archive page | Not Started | — |
-| CAS-012 | Member Profile page | Not Started | — |
-| CAS-013 | Stats / Insights page | Not Started | — |
-| CAS-014 | Admin Dashboard | Not Started | — |
-| CAS-015 | Vercel deployment | Not Started | — |
+| ID      | Title                     | Status      | Agent Checkpoint             |
+| ------- | ------------------------- | ----------- | ---------------------------- |
+| CAS-001 | Project scaffolding       | Complete    | Tooling + test harness ready |
+| CAS-002 | Supabase setup            | Not Started | —                            |
+| CAS-003 | Auth (email signup/login) | Not Started | —                            |
+| CAS-004 | TMDB integration          | Not Started | —                            |
+| CAS-005 | Add Movie page            | Not Started | —                            |
+| CAS-006 | Home / Current Movie      | Not Started | —                            |
+| CAS-007 | Schedule page             | Not Started | —                            |
+| CAS-008 | Rotation management       | Not Started | —                            |
+| CAS-009 | Submit Review page        | Not Started | —                            |
+| CAS-010 | Movie Detail page         | Not Started | —                            |
+| CAS-011 | History / Archive page    | Not Started | —                            |
+| CAS-012 | Member Profile page       | Not Started | —                            |
+| CAS-013 | Stats / Insights page     | Not Started | —                            |
+| CAS-014 | Admin Dashboard           | Not Started | —                            |
+| CAS-015 | Vercel deployment         | Not Started | —                            |
+| CAS-016 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001         |
 
 ---
 

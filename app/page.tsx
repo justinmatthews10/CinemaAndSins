@@ -6,8 +6,8 @@ export default function Home() {
           CinemaAndSins
         </h1>
         <p className="mt-6 text-lg text-foreground/70 sm:text-xl">
-          Our movie club. Every month, one of us picks a movie, we all watch it,
-          rate it 1–10, and talk about it.
+          Our movie club. Every month, one of us picks a movie, we all watch it, rate it
+          1–10, and talk about it.
         </p>
         <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-center">
           <a
