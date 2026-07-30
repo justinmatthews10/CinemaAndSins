@@ -14,6 +14,12 @@ next-env.d.ts
 *.tsbuildinfo
 package-lock.json
 
+# Supabase
+supabase/.temp/
+
+# SQL (Prettier has no built-in SQL parser)
+*.sql
+
 # Assets
 public/
 app/favicon.ico

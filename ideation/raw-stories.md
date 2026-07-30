@@ -44,19 +44,19 @@
 
 ## CAS-002: Supabase Setup
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-001
 
 ### Acceptance Criteria
 
-- [ ] Supabase project created (local dev + production)
-- [ ] Database migrations created for all tables (members, movies, picks, reviews, rotation)
-- [ ] RLS policies created for all tables (see `harness/api-contracts.md`)
-- [ ] Supabase client libraries installed (`@supabase/supabase-js`, `@supabase/ssr`)
-- [ ] `lib/supabase/client.ts` (browser client, anon key) created
-- [ ] `lib/supabase/server.ts` (server client, service role key) created
-- [ ] Seed data script created for local dev (`supabase/seed.sql`)
-- [ ] Tests for RLS policies pass
+- [x] Supabase project created (local dev via CLI + Docker; production at deploy time)
+- [x] Database migrations created for all tables (members, movies, picks, reviews, rotation)
+- [x] RLS policies created for all tables (see `harness/api-contracts.md`)
+- [x] Supabase client libraries installed (`@supabase/supabase-js`, `@supabase/ssr`)
+- [x] `lib/supabase/client.ts` (browser client, anon key) created
+- [x] `lib/supabase/server.ts` (server client, service role key) created
+- [x] Seed data script created for local dev (`supabase/seed.sql`)
+- [x] Tests for RLS policies pass (8 integration tests against local Supabase)
 
 ### Files
 

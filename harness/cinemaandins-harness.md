@@ -178,24 +178,24 @@ v1 Release
 
 ## 6. Story Status Matrix
 
-| ID      | Title                     | Status      | Agent Checkpoint             |
-| ------- | ------------------------- | ----------- | ---------------------------- |
-| CAS-001 | Project scaffolding       | Complete    | Tooling + test harness ready |
-| CAS-002 | Supabase setup            | Not Started | —                            |
-| CAS-003 | Auth (email signup/login) | Not Started | —                            |
-| CAS-004 | TMDB integration          | Not Started | —                            |
-| CAS-005 | Add Movie page            | Not Started | —                            |
-| CAS-006 | Home / Current Movie      | Not Started | —                            |
-| CAS-007 | Schedule page             | Not Started | —                            |
-| CAS-008 | Rotation management       | Not Started | —                            |
-| CAS-009 | Submit Review page        | Not Started | —                            |
-| CAS-010 | Movie Detail page         | Not Started | —                            |
-| CAS-011 | History / Archive page    | Not Started | —                            |
-| CAS-012 | Member Profile page       | Not Started | —                            |
-| CAS-013 | Stats / Insights page     | Not Started | —                            |
-| CAS-014 | Admin Dashboard           | Not Started | —                            |
-| CAS-015 | Vercel deployment         | Not Started | —                            |
-| CAS-016 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001         |
+| ID      | Title                     | Status      | Agent Checkpoint                                               |
+| ------- | ------------------------- | ----------- | -------------------------------------------------------------- |
+| CAS-001 | Project scaffolding       | Complete    | Tooling + test harness ready                                   |
+| CAS-002 | Supabase setup            | Complete    | Local Supabase + migrations + RLS + seed + 8 integration tests |
+| CAS-003 | Auth (email signup/login) | Not Started | —                                                              |
+| CAS-004 | TMDB integration          | Not Started | —                                                              |
+| CAS-005 | Add Movie page            | Not Started | —                                                              |
+| CAS-006 | Home / Current Movie      | Not Started | —                                                              |
+| CAS-007 | Schedule page             | Not Started | —                                                              |
+| CAS-008 | Rotation management       | Not Started | —                                                              |
+| CAS-009 | Submit Review page        | Not Started | —                                                              |
+| CAS-010 | Movie Detail page         | Not Started | —                                                              |
+| CAS-011 | History / Archive page    | Not Started | —                                                              |
+| CAS-012 | Member Profile page       | Not Started | —                                                              |
+| CAS-013 | Stats / Insights page     | Not Started | —                                                              |
+| CAS-014 | Admin Dashboard           | Not Started | —                                                              |
+| CAS-015 | Vercel deployment         | Not Started | —                                                              |
+| CAS-016 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                           |
 
 ---
 
