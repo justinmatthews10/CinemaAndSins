@@ -20,7 +20,7 @@
 | CAS-014   | Admin Dashboard              | #14          | Complete    |
 | CAS-015   | Mobile Responsive Design     | #15          | Complete    |
 | CAS-016   | Historical Data Entry        | #16          | Complete    |
-| CAS-017   | Vercel Deployment            | —            | Not Started |
+| CAS-017   | Vercel Deployment            | #17          | Complete    |
 | CAS-018   | CI Pipeline (GitHub Actions) | —            | Not Started |
 
 ---
