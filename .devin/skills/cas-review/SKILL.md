@@ -1,6 +1,6 @@
 ---
 name: cas-review
-description: Review a CinemaAndSins PR. Runs an 8-section checklist, addresses feedback, and merges when ready.
+description: Review a CinemaAndSins PR. Runs a 9-section checklist, addresses feedback, and merges when ready.
 ---
 
 # CinemaAndSins: Review
@@ -66,6 +66,12 @@ Run the review workflow defined in `harness/workflows/review.md`.
    - Server Components by default
    - No debugging statements
    - Files in correct directories
+
+   ### Navigation & Discoverability
+
+   - Every new page has at least one inbound link from an existing page (home, schedule, navbar, etc.)
+   - A page with no way to reach it from the app is a blocking issue
+   - Check that posters, titles, and other natural click targets link to detail pages where applicable
 
    ### Documentation
 

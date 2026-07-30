@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { scoreBadgeColor } from "@/lib/scoring";
 import { formatScore } from "@/lib/utils";
+import { SCORE_BADGE_BG } from "@/lib/ui";
 
 type ReviewFormProps = {
   initialScore: number;
@@ -10,13 +11,6 @@ type ReviewFormProps = {
   initialTags: string[];
   locked: boolean;
   onSubmit: (data: { score: number; reviewText: string; tags: string[] }) => void;
-};
-
-const BADGE_COLORS: Record<string, string> = {
-  gold: "bg-accent/20 text-accent",
-  green: "bg-green-500/20 text-green-400",
-  yellow: "bg-yellow-500/20 text-yellow-400",
-  red: "bg-accent-secondary/20 text-accent-secondary",
 };
 
 const TAGS = [
@@ -66,7 +60,7 @@ export function ReviewForm({
             className="flex-1 accent-accent"
           />
           <span
-            className={`flex h-12 w-14 flex-shrink-0 items-center justify-center rounded-lg text-lg font-bold ${BADGE_COLORS[badgeColor]}`}
+            className={`flex h-12 w-14 flex-shrink-0 items-center justify-center rounded-lg text-lg font-bold ${SCORE_BADGE_BG[badgeColor]}`}
           >
             {formatScore(score)}
           </span>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PosterImage } from "@/components/PosterImage";
+import { formatMonthYear } from "@/lib/utils";
 import type { ScheduleSlot } from "@/lib/supabase/getSchedule";
 
 type ScheduleTimelineProps = {
@@ -19,13 +20,6 @@ const STATUS_COLORS: Record<ScheduleSlot["status"], string> = {
   movie_selected: "bg-accent/20 text-accent",
   locked: "bg-accent-secondary/20 text-accent-secondary",
 };
-
-function formatMonth(month: number, year: number): string {
-  return new Date(year, month - 1).toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export function ScheduleTimeline({
   slots,
@@ -101,12 +95,14 @@ function ScheduleSlotRow({ slot, canPick }: { slot: ScheduleSlot; canPick: boole
     <div className="flex items-center gap-4 rounded-xl border border-border bg-surface p-4">
       {/* Poster or placeholder */}
       {slot.movie ? (
-        <PosterImage
-          src={slot.movie.poster_url}
-          alt={slot.movie.title}
-          className="h-20 w-14 flex-shrink-0 rounded object-cover"
-          fallbackClassName="flex h-20 w-14 flex-shrink-0 items-center justify-center rounded bg-foreground/10 text-xs text-foreground/40"
-        />
+        <Link href={`/movies/${slot.movie.id}`} className="flex-shrink-0">
+          <PosterImage
+            src={slot.movie.poster_url}
+            alt={slot.movie.title}
+            className="h-20 w-14 flex-shrink-0 rounded object-cover transition-opacity hover:opacity-80"
+            fallbackClassName="flex h-20 w-14 flex-shrink-0 items-center justify-center rounded bg-foreground/10 text-xs text-foreground/40"
+          />
+        </Link>
       ) : (
         <div className="flex h-20 w-14 flex-shrink-0 items-center justify-center rounded bg-foreground/10 text-xs text-foreground/30">
           —
@@ -116,10 +112,17 @@ function ScheduleSlotRow({ slot, canPick }: { slot: ScheduleSlot; canPick: boole
       {/* Details */}
       <div className="flex flex-1 flex-col gap-1">
         <p className="font-medium text-foreground">
-          {formatMonth(slot.month, slot.year)}
+          {formatMonthYear(slot.month, slot.year)}
         </p>
         <p className="text-sm text-foreground/60">Picked by {slot.picker.name}</p>
-        {slot.movie && <p className="text-sm text-foreground/80">{slot.movie.title}</p>}
+        {slot.movie && (
+          <Link
+            href={`/movies/${slot.movie.id}`}
+            className="text-sm text-foreground/80 hover:text-accent hover:underline"
+          >
+            {slot.movie.title}
+          </Link>
+        )}
         {slot.pick?.picker_note && (
           <p className="text-xs italic text-foreground/50">
             &ldquo;{slot.pick.picker_note}&rdquo;

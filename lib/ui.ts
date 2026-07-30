@@ -10,3 +10,19 @@ export const navLinkClass = "text-foreground/70 transition-colors hover:text-for
 
 export const secondaryLinkClass =
   "rounded-full border border-border px-6 py-3 font-medium text-foreground transition-colors hover:bg-foreground/5";
+
+/** Score badge background+text colors by score range. */
+export const SCORE_BADGE_BG: Record<string, string> = {
+  gold: "bg-accent/20 text-accent",
+  green: "bg-green-500/20 text-green-400",
+  yellow: "bg-yellow-500/20 text-yellow-400",
+  red: "bg-accent-secondary/20 text-accent-secondary",
+};
+
+/** Score badge text-only colors by score range (for inline text, no background). */
+export const SCORE_BADGE_TEXT: Record<string, string> = {
+  gold: "text-accent",
+  green: "text-green-400",
+  yellow: "text-yellow-400",
+  red: "text-accent-secondary",
+};
