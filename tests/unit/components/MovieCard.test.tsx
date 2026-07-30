@@ -54,8 +54,11 @@ describe("MovieCard", () => {
   it("links to movie detail page", () => {
     render(<MovieCard entry={makeEntry({ movie_id: "abc-123" })} />);
 
-    const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "/movies/abc-123");
+    const movieLinks = screen.getAllByRole("link");
+    const movieLink = movieLinks.find(
+      (l) => l.getAttribute("href") === "/movies/abc-123",
+    );
+    expect(movieLink).toBeDefined();
   });
 
   it("shows 'No reviews yet' when review count is 0", () => {

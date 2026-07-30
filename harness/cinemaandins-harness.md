@@ -191,7 +191,7 @@ v1 Release
 | CAS-009 | Submit Review page        | Complete    | /review/[pickId], ReviewForm, score slider + badges, 11 unit tests     |
 | CAS-010 | Movie Detail page         | Complete    | /movies/[id], ScoreDistribution, ReviewCard, ReviewsSection, 16 tests  |
 | CAS-011 | History / Archive page    | Complete    | /history, MovieCard, HistoryControls, 21 tests                         |
-| CAS-012 | Members + Member Profile  | Not Started | —                                                                      |
+| CAS-012 | Members + Member Profile  | Complete    | /members, /profile/[memberId], MemberCard, 183 tests                   |
 | CAS-013 | Stats / Insights page     | Not Started | —                                                                      |
 | CAS-014 | Admin Dashboard           | Not Started | —                                                                      |
 | CAS-015 | Vercel deployment         | Not Started | —                                                                      |

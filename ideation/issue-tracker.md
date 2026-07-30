@@ -15,7 +15,7 @@
 | CAS-009   | Submit Review Page           | —            | Not Started |
 | CAS-010   | Movie Detail Page            | #10          | Complete    |
 | CAS-011   | History / Archive Page       | #11          | Complete    |
-| CAS-012   | Members + Member Profile     | —            | Not Started |
+| CAS-012   | Members + Member Profile     | #12          | Complete    |
 | CAS-013   | Stats / Insights Page        | —            | Not Started |
 | CAS-014   | Admin Dashboard              | —            | Not Started |
 | CAS-015   | Vercel Deployment            | —            | Not Started |

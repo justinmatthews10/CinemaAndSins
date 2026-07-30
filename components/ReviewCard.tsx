@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { scoreBadgeColor } from "@/lib/scoring";
 import { formatScore } from "@/lib/utils";
 import { SCORE_BADGE_BG } from "@/lib/ui";
@@ -24,7 +25,12 @@ export function ReviewCard({ review, member }: ReviewCardProps) {
 
         {/* Review content */}
         <div className="flex-1">
-          <p className="font-medium text-foreground">{member.name}</p>
+          <Link
+            href={`/profile/${member.id}`}
+            className="font-medium text-foreground hover:text-accent hover:underline"
+          >
+            {member.name}
+          </Link>
           {review.review_text ? (
             <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/80">
               {review.review_text}
