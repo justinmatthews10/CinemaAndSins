@@ -37,3 +37,14 @@
 
 - `lib/supabase/getRotation.ts` was not needed — admin page fetches directly using the client
 - Drag-to-reorder was replaced with up/down arrows per user preference
+
+## Additional changes
+
+### Navbar restructured with user dropdown
+
+- Main nav: Home, Schedule, History, Stats
+- User dropdown (click name): My Pick, Admin (admin only), Profile, Log Out
+- Dropdown closes on outside click
+- Chevron icon rotates when open
+- Navbar has z-50 to ensure dropdown appears above page content
+- Replaces the growing list of inline nav links with a cleaner, scalable pattern
