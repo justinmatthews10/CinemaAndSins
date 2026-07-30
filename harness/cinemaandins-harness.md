@@ -186,7 +186,7 @@ v1 Release
 | CAS-004 | TMDB integration          | Complete    | lib/tmdb.ts, 2 API routes, 19 unit tests                               |
 | CAS-005 | Add Movie page            | Complete    | /add-movie picker page, TmdbSearch, picks helpers, 18 unit tests       |
 | CAS-006 | Home / Current Movie      | Complete    | / page, MovieHero, getCurrentPick, PosterImage, ui constants, 21 tests |
-| CAS-007 | Schedule page             | Not Started | —                                                                      |
+| CAS-007 | Schedule page             | Complete    | /schedule page, ScheduleTimeline, getSchedule helper, 12 unit tests    |
 | CAS-008 | Rotation management       | Not Started | —                                                                      |
 | CAS-009 | Submit Review page        | Not Started | —                                                                      |
 | CAS-010 | Movie Detail page         | Not Started | —                                                                      |
