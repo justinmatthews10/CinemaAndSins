@@ -112,13 +112,8 @@ function ScheduleSlotRow({
         <p className="font-medium text-foreground">
           {formatMonth(slot.month, slot.year)}
         </p>
-        {slot.movie ? (
-          <p className="text-sm text-foreground/80">{slot.movie.title}</p>
-        ) : (
-          <p className="text-sm text-foreground/60">
-            {slot.picker.name}&apos;s turn to pick
-          </p>
-        )}
+        <p className="text-sm text-foreground/60">Picked by {slot.picker.name}</p>
+        {slot.movie && <p className="text-sm text-foreground/80">{slot.movie.title}</p>}
         {slot.pick?.picker_note && (
           <p className="text-xs italic text-foreground/50">
             &ldquo;{slot.pick.picker_note}&rdquo;
