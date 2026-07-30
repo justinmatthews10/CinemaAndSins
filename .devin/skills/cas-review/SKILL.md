@@ -1,6 +1,6 @@
 ---
 name: cas-review
-description: Review a CinemaAndSins PR. Runs a 7-section checklist, addresses feedback, and merges when ready.
+description: Review a CinemaAndSins PR. Runs an 8-section checklist, addresses feedback, and merges when ready.
 ---
 
 # CinemaAndSins: Review
@@ -43,6 +43,22 @@ Run the review workflow defined in `harness/workflows/review.md`.
    - Reusable UI elements are components (buttons, form fields, error displays, loading states)
    - Shared business logic is in `lib/` not duplicated across pages
    - No copy-pasted form/validation/error handling — centralize in `lib/` or components
+
+   ### Code Quality (Condensation Check)
+
+   Before marking the review as passing, actively scan for:
+
+   - **Repeated CSS class strings** across files — extract to `lib/ui.ts` constants
+   - **Repeated JSX patterns** (poster+fallback, loading screens, status banners) — extract to shared components
+   - **Repeated data-fetching patterns** (filter+sort, find-or-create, error/success handling) — extract to `lib/` helpers
+   - **Inline date formatting** — should use `formatDate` from `lib/utils.ts`
+   - **Inline error/success messages** — should use `StatusBanner` component
+   - **Inline "Loading..." markup** — should use `LoadingState` component
+   - **Functions with the same try/catch/reload/setSuccess pattern** — extract a `mutate()` helper
+   - **Unused imports or dead code** — remove
+   - **Overly verbose conditionals** that could be simplified
+
+   If any of these are found, the section FAILS. Fix them before presenting the review as passing.
 
    ### Conventions
 
