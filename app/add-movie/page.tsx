@@ -42,6 +42,10 @@ export default function AddMoviePage() {
 
   const [loadingData, setLoadingData] = useState(true);
   const [assignedPickerId, setAssignedPickerId] = useState<string | null>(null);
+  const [assignedMonth, setAssignedMonth] = useState<{
+    month: number;
+    year: number;
+  } | null>(null);
 
   const [formData, setFormData] = useState<MovieFormData>(EMPTY_FORM);
   const [manualMode, setManualMode] = useState(false);
@@ -51,19 +55,8 @@ export default function AddMoviePage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  // Default to current month/year
-  const now = new Date();
-  const [month, setMonth] = useState(now.getMonth() + 1);
-  const [year, setYear] = useState(now.getFullYear());
-
   useEffect(() => {
     if (authLoading) return;
-
-    console.log("ADD-MOVIE auth state:", {
-      user: !!user,
-      member: !!member,
-      approved: member?.is_approved,
-    });
 
     if (!user || !member) {
       router.push("/login");
@@ -83,7 +76,32 @@ export default function AddMoviePage() {
 
       const rot = (rotData ?? []) as RotationEntry[];
       const pks = (pickData ?? []) as Pick[];
-      setAssignedPickerId(getAssignedPicker(rot, pks, month, year));
+
+      // Find the next month where this user is the assigned picker
+      // and no pick has been submitted yet
+      const now = new Date();
+      let foundMonth: { month: number; year: number } | null = null;
+
+      for (let i = 0; i < 12; i++) {
+        const checkDate = new Date(now.getFullYear(), now.getMonth() + i, 1);
+        const m = checkDate.getMonth() + 1;
+        const y = checkDate.getFullYear();
+
+        const pickerId = getAssignedPicker(rot, pks, m, y);
+        const hasPick = pks.some((p) => p.month === m && p.year === y);
+
+        if (pickerId === member?.id && !hasPick) {
+          foundMonth = { month: m, year: y };
+          break;
+        }
+      }
+
+      setAssignedMonth(foundMonth);
+      setAssignedPickerId(
+        foundMonth
+          ? (member?.id ?? null)
+          : getAssignedPicker(rot, pks, now.getMonth() + 1, now.getFullYear()),
+      );
       setLoadingData(false);
     }
 
@@ -137,13 +155,18 @@ export default function AddMoviePage() {
       return;
     }
 
+    if (!assignedMonth) {
+      setError("You don't have an assigned month to pick for");
+      return;
+    }
+
     setSubmitting(true);
     try {
       await createMovieAndPick(supabase, {
         movie: formData,
         pickerMemberId: member.id,
-        month,
-        year,
+        month: assignedMonth.month,
+        year: assignedMonth.year,
         watchDate: watchDate || null,
         pickerNote: pickerNote.trim() || null,
       });
@@ -182,7 +205,7 @@ export default function AddMoviePage() {
             Not Your Turn
           </h1>
           <p className="mb-6 text-foreground/70">
-            You&apos;re not the assigned picker for {month}/{year}. Check back when
+            You don&apos;t have an assigned month to pick for right now. Check back when
             it&apos;s your turn in the rotation.
           </p>
           <Link href="/" className="text-accent hover:underline">
@@ -202,7 +225,8 @@ export default function AddMoviePage() {
             Pick Submitted!
           </h1>
           <p className="mb-8 text-foreground/70">
-            &ldquo;{formData.title}&rdquo; has been added as your pick for {month}/{year}.
+            &ldquo;{formData.title}&rdquo; has been added as your pick for{" "}
+            {assignedMonth?.month}/{assignedMonth?.year}.
           </p>
           <div className="flex justify-center gap-4">
             <button
@@ -340,35 +364,15 @@ export default function AddMoviePage() {
             </div>
           ) : null}
 
-          {/* Pick details */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="pick-month" className="mb-2 block text-sm font-medium">
-                Month
-              </label>
-              <input
-                id="pick-month"
-                type="number"
-                min={1}
-                max={12}
-                value={month}
-                onChange={(e) => setMonth(parseInt(e.target.value, 10) || 1)}
-                className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-foreground focus:border-accent focus:outline-none"
-              />
+          {/* Assigned month (read-only) */}
+          {assignedMonth && (
+            <div className="rounded-lg border border-border bg-surface px-4 py-3 text-sm">
+              <span className="text-foreground/60">Your pick month: </span>
+              <span className="font-medium text-foreground">
+                {assignedMonth.month}/{assignedMonth.year}
+              </span>
             </div>
-            <div>
-              <label htmlFor="pick-year" className="mb-2 block text-sm font-medium">
-                Year
-              </label>
-              <input
-                id="pick-year"
-                type="number"
-                value={year}
-                onChange={(e) => setYear(parseInt(e.target.value, 10) || 2026)}
-                className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-foreground focus:border-accent focus:outline-none"
-              />
-            </div>
-          </div>
+          )}
 
           <div>
             <label htmlFor="watch-date" className="mb-2 block text-sm font-medium">
