@@ -132,7 +132,7 @@ describe("ScheduleTimeline", () => {
     expect(screen.getByAltText("Inception")).toBeInTheDocument();
   });
 
-  it("shows link to /add-movie when it is user's slot and no pick", () => {
+  it("shows link to /add-movie when canPick is true", () => {
     const me = mockMember("1", "Justin");
     const slots = [noPick(8, 2026, me)];
 
@@ -142,12 +142,23 @@ describe("ScheduleTimeline", () => {
     expect(link).toHaveAttribute("href", "/add-movie");
   });
 
-  it("does not show pick link when it is not user's slot", () => {
+  it("does not show pick link when canPick is false", () => {
     const slots = [noPick(8, 2026, mockMember("2", "Sarah"))];
 
     render(<ScheduleTimeline slots={slots} currentUserId="1" pastSlots={[]} />);
 
     expect(screen.queryByRole("link", { name: /pick a movie/i })).not.toBeInTheDocument();
+  });
+
+  it("only shows pick link for the first unpicked slot, not future slots", () => {
+    const me = mockMember("1", "Justin");
+    // Two future slots for the same user, both unpicked
+    const slots = [noPick(8, 2026, me), noPick(2, 2027, me)];
+
+    render(<ScheduleTimeline slots={slots} currentUserId="1" pastSlots={[]} />);
+
+    const links = screen.getAllByRole("link", { name: /pick a movie/i });
+    expect(links).toHaveLength(1);
   });
 
   it("does not show pick link when movie already selected", () => {

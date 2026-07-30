@@ -49,13 +49,28 @@ export function ScheduleTimeline({
             Upcoming
           </h2>
           <div className="space-y-3">
-            {slots.map((slot) => (
-              <ScheduleSlotRow
-                key={`${slot.month}-${slot.year}`}
-                slot={slot}
-                currentUserId={currentUserId}
-              />
-            ))}
+            {slots.map((slot) => {
+              // Find the first upcoming slot that is the user's and has no pick.
+              // Only that slot gets the "Pick a movie" link — the /add-movie page
+              // only works for the user's next assigned month anyway.
+              const isFirstUnpicked =
+                slot.picker.id === currentUserId &&
+                slot.status === "not_picked" &&
+                !slots.some(
+                  (s) =>
+                    s.picker.id === currentUserId &&
+                    s.status === "not_picked" &&
+                    (s.year < slot.year ||
+                      (s.year === slot.year && s.month < slot.month)),
+                );
+              return (
+                <ScheduleSlotRow
+                  key={`${slot.month}-${slot.year}`}
+                  slot={slot}
+                  canPick={isFirstUnpicked}
+                />
+              );
+            })}
           </div>
         </div>
       )}
@@ -71,7 +86,7 @@ export function ScheduleTimeline({
               <ScheduleSlotRow
                 key={`${slot.month}-${slot.year}`}
                 slot={slot}
-                currentUserId={currentUserId}
+                canPick={false}
               />
             ))}
           </div>
@@ -81,16 +96,7 @@ export function ScheduleTimeline({
   );
 }
 
-function ScheduleSlotRow({
-  slot,
-  currentUserId,
-}: {
-  slot: ScheduleSlot;
-  currentUserId: string | null;
-}) {
-  const isMySlot = slot.picker.id === currentUserId;
-  const canPick = isMySlot && slot.status === "not_picked";
-
+function ScheduleSlotRow({ slot, canPick }: { slot: ScheduleSlot; canPick: boolean }) {
   return (
     <div className="flex items-center gap-4 rounded-xl border border-border bg-surface p-4">
       {/* Poster or placeholder */}
