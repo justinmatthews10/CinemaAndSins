@@ -178,24 +178,24 @@ v1 Release
 
 ## 6. Story Status Matrix
 
-| ID      | Title                     | Status      | Agent Checkpoint                                                  |
-| ------- | ------------------------- | ----------- | ----------------------------------------------------------------- |
-| CAS-001 | Project scaffolding       | Complete    | Tooling + test harness ready                                      |
-| CAS-002 | Supabase setup            | Complete    | Local Supabase + migrations + RLS + seed + 8 integration tests    |
-| CAS-003 | Auth (email signup/login) | Complete    | AuthProvider, login/signup/pending pages, proxy.ts, 11 unit tests |
-| CAS-004 | TMDB integration          | Complete    | lib/tmdb.ts, 2 API routes, 19 unit tests                          |
-| CAS-005 | Add Movie page            | Complete    | /add-movie page, TmdbSearch, picks helper, 16 unit tests          |
-| CAS-006 | Home / Current Movie      | Complete    | / page, MovieHero, getCurrentPick helper, 11 unit tests           |
-| CAS-007 | Schedule page             | Not Started | —                                                                 |
-| CAS-008 | Rotation management       | Not Started | —                                                                 |
-| CAS-009 | Submit Review page        | Not Started | —                                                                 |
-| CAS-010 | Movie Detail page         | Not Started | —                                                                 |
-| CAS-011 | History / Archive page    | Not Started | —                                                                 |
-| CAS-012 | Member Profile page       | Not Started | —                                                                 |
-| CAS-013 | Stats / Insights page     | Not Started | —                                                                 |
-| CAS-014 | Admin Dashboard           | Not Started | —                                                                 |
-| CAS-015 | Vercel deployment         | Not Started | —                                                                 |
-| CAS-016 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                              |
+| ID      | Title                     | Status      | Agent Checkpoint                                                       |
+| ------- | ------------------------- | ----------- | ---------------------------------------------------------------------- |
+| CAS-001 | Project scaffolding       | Complete    | Tooling + test harness ready                                           |
+| CAS-002 | Supabase setup            | Complete    | Local Supabase + migrations + RLS + seed + 8 integration tests         |
+| CAS-003 | Auth (email signup/login) | Complete    | AuthProvider, login/signup/pending pages, proxy.ts, 11 unit tests      |
+| CAS-004 | TMDB integration          | Complete    | lib/tmdb.ts, 2 API routes, 19 unit tests                               |
+| CAS-005 | Add Movie page            | Complete    | /add-movie picker page, TmdbSearch, picks helpers, 18 unit tests       |
+| CAS-006 | Home / Current Movie      | Complete    | / page, MovieHero, getCurrentPick, PosterImage, ui constants, 21 tests |
+| CAS-007 | Schedule page             | Not Started | —                                                                      |
+| CAS-008 | Rotation management       | Not Started | —                                                                      |
+| CAS-009 | Submit Review page        | Not Started | —                                                                      |
+| CAS-010 | Movie Detail page         | Not Started | —                                                                      |
+| CAS-011 | History / Archive page    | Not Started | —                                                                      |
+| CAS-012 | Member Profile page       | Not Started | —                                                                      |
+| CAS-013 | Stats / Insights page     | Not Started | —                                                                      |
+| CAS-014 | Admin Dashboard           | Not Started | —                                                                      |
+| CAS-015 | Vercel deployment         | Not Started | —                                                                      |
+| CAS-016 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                                   |
 
 ---
 

@@ -42,38 +42,32 @@ CinemaAndSins/
 │           └── [id]/
 │               └── route.ts      # TMDB movie details (server-side)
 ├── components/                   # Reusable React components
-│   ├── ui/                       # Primitive UI components
-│   │   ├── Button.tsx
-│   │   ├── Card.tsx
-│   │   ├── Badge.tsx             # Score badges (gold/green/yellow/red)
-│   │   ├── Input.tsx
-│   │   ├── Slider.tsx            # Score slider 1-10
-│   │   └── Modal.tsx
-│   ├── MovieCard.tsx             # Poster + title + score (history grid)
 │   ├── MovieHero.tsx             # Current movie hero banner
-│   ├── ReviewCard.tsx            # Individual review display
-│   ├── ReviewForm.tsx            # Score + markdown review input
-│   ├── ScoreDistribution.tsx     # Chart showing score spread
-│   ├── ScheduleTimeline.tsx      # Upcoming picks timeline
-│   ├── RotationEditor.tsx        # Admin drag-to-reorder rotation
-│   ├── MemberBadge.tsx           # Member name + avatar
+│   ├── PosterImage.tsx           # Poster with no-poster fallback
 │   ├── TmdbSearch.tsx            # TMDB search input + results
+│   ├── FormField.tsx             # Reusable input + label + error
+│   ├── ErrorBanner.tsx           # Reusable error alert
+│   ├── AuthFormShell.tsx         # Shared auth form layout (card, title, footer)
 │   ├── Navbar.tsx                # Top navigation
 │   ├── AuthProvider.tsx          # Supabase auth context provider
-│   └── Footer.tsx
+│   ├── MovieCard.tsx             # (planned) Poster + title + score (history grid)
+│   ├── ReviewCard.tsx            # (planned) Individual review display
+│   ├── ReviewForm.tsx            # (planned) Score + markdown review input
+│   ├── ScoreDistribution.tsx     # (planned) Chart showing score spread
+│   ├── ScheduleTimeline.tsx      # (planned) Upcoming picks timeline
+│   └── RotationEditor.tsx        # (planned) Admin drag-to-reorder rotation
 ├── lib/                          # Shared utilities
 │   ├── supabase/
 │   │   ├── client.ts             # Browser Supabase client (anon key)
 │   │   ├── server.ts             # Server Supabase client (service role)
-│   │   ├── getMovies.ts          # Query helpers
-│   │   ├── getPicks.ts
-│   │   ├── getReviews.ts
-│   │   ├── getMembers.ts
-│   │   └── getRotation.ts
+│   │   ├── auth.ts               # Auth validation + error mapping
+│   │   ├── picks.ts              # Pick CRUD + getAssignedPicker logic
+│   │   └── getCurrentPick.ts     # Server-side fetcher for home page
 │   ├── tmdb.ts                   # TMDB API client (server-side)
 │   ├── scoring.ts                # Average calculation, score distribution
 │   ├── rotation.ts               # Rotation logic (next picker, skip/bump)
-│   └── utils.ts                  # General utilities (formatting, etc.)
+│   ├── ui.ts                     # Shared CSS class constants
+│   └── utils.ts                  # General utilities (formatDate, formatScore, cn)
 ├── types/                        # TypeScript type definitions
 │   ├── movie.ts
 │   ├── pick.ts
