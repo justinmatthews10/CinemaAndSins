@@ -187,7 +187,7 @@ v1 Release
 | CAS-005 | Add Movie page            | Complete    | /add-movie picker page, TmdbSearch, picks helpers, 18 unit tests       |
 | CAS-006 | Home / Current Movie      | Complete    | / page, MovieHero, getCurrentPick, PosterImage, ui constants, 21 tests |
 | CAS-007 | Schedule page             | Complete    | /schedule page, ScheduleTimeline, getSchedule helper, 12 unit tests    |
-| CAS-008 | Rotation management       | Not Started | —                                                                      |
+| CAS-008 | Rotation management       | Complete    | /admin page, RotationEditor, up/down reorder, 10 unit tests            |
 | CAS-009 | Submit Review page        | Not Started | —                                                                      |
 | CAS-010 | Movie Detail page         | Not Started | —                                                                      |
 | CAS-011 | History / Archive page    | Not Started | —                                                                      |

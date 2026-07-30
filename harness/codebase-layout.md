@@ -20,7 +20,9 @@ CinemaAndSins/
 │   │   └── [id]/
 │   │       └── page.tsx          # Movie detail with reviews
 │   ├── add-movie/
-│   │   └── page.tsx              # Member pick submission (TMDB search)
+│   │   └── page.tsx              # Member pick page (TMDB search, change/remove)
+│   ├── admin/
+│   │   └── page.tsx              # Admin dashboard (rotation management)
 │   ├── review/
 │   │   └── [pickId]/
 │   │       └── page.tsx          # Submit/edit review
@@ -44,11 +46,14 @@ CinemaAndSins/
 ├── components/                   # Reusable React components
 │   ├── MovieHero.tsx             # Current movie hero banner
 │   ├── PosterImage.tsx           # Poster with no-poster fallback
+│   ├── PageHeading.tsx           # Standard page heading (Playfair font)
+│   ├── ScheduleTimeline.tsx      # Schedule timeline with pick status
+│   ├── RotationEditor.tsx        # Admin rotation management (reorder, skip, toggle)
 │   ├── TmdbSearch.tsx            # TMDB search input + results
 │   ├── FormField.tsx             # Reusable input + label + error
 │   ├── ErrorBanner.tsx           # Reusable error alert
 │   ├── AuthFormShell.tsx         # Shared auth form layout (card, title, footer)
-│   ├── Navbar.tsx                # Top navigation
+│   ├── Navbar.tsx                # Top navigation with user dropdown
 │   ├── AuthProvider.tsx          # Supabase auth context provider
 │   ├── MovieCard.tsx             # (planned) Poster + title + score (history grid)
 │   ├── ReviewCard.tsx            # (planned) Individual review display

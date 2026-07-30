@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ErrorBanner } from "@/components/ErrorBanner";
+import { StatusBanner } from "@/components/StatusBanner";
 import { PageHeading } from "@/components/PageHeading";
 
 type AuthFormShellProps = {
@@ -24,7 +24,7 @@ export function AuthFormShell({
       <div className="w-full max-w-md">
         <PageHeading centered>{title}</PageHeading>
 
-        {error && <ErrorBanner message={error} />}
+        {error && <StatusBanner message={error} className="mb-8" />}
 
         {children}
 
