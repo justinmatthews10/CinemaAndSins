@@ -31,6 +31,7 @@ Run the story workflow defined in `harness/workflows/story.md`.
 2. Server Components by default; `"use client"` only for interactivity
 3. Ensure RLS policies exist for new tables
 4. TMDB calls server-side only
+5. **Navigation check**: every new page must be reachable via a link from an existing page (home, schedule, navbar, etc.). A page with no inbound links is a blocking issue.
 
 ### Phase 3: Verify
 

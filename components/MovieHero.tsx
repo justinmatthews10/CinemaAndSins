@@ -39,20 +39,24 @@ export function MovieHero({
       <div className="flex flex-col md:flex-row">
         {/* Poster */}
         <div className="flex-shrink-0">
-          <PosterImage
-            src={movie.poster_url}
-            alt={movie.title}
-            className="h-full w-full object-cover md:h-auto md:w-64"
-            fallbackClassName="flex h-64 w-full items-center justify-center bg-foreground/10 md:w-64 text-sm text-foreground/40"
-          />
+          <Link href={`/movies/${movie.id}`}>
+            <PosterImage
+              src={movie.poster_url}
+              alt={movie.title}
+              className="h-full w-full object-cover transition-opacity hover:opacity-80 md:h-auto md:w-64"
+              fallbackClassName="flex h-64 w-full items-center justify-center bg-foreground/10 md:w-64 text-sm text-foreground/40"
+            />
+          </Link>
         </div>
 
         {/* Details */}
         <div className="flex flex-1 flex-col gap-4 p-6">
           <div>
-            <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-foreground">
-              {movie.title}
-            </h1>
+            <Link href={`/movies/${movie.id}`} className="hover:opacity-80">
+              <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-bold text-foreground">
+                {movie.title}
+              </h1>
+            </Link>
             {movie.year && (
               <p className="mt-1 text-lg text-foreground/60">{movie.year}</p>
             )}
@@ -101,6 +105,9 @@ export function MovieHero({
             <span>
               {reviewStats.reviewed} of {reviewStats.total} reviewed
             </span>
+            <Link href={`/movies/${movie.id}`} className="text-accent hover:underline">
+              View details &amp; reviews →
+            </Link>
           </div>
 
           {/* User review status */}
