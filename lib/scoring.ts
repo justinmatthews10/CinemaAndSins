@@ -23,8 +23,8 @@ export function scoreVariance(reviews: Review[]): number {
   return sumSquares / reviews.length;
 }
 
-export function scoreBadgeColor(score: number): "gold" | "green" | "yellow" | "red" {
-  if (score >= 9) return "gold";
+export function scoreBadgeColor(score: number): "cyan" | "green" | "yellow" | "red" {
+  if (score >= 9) return "cyan";
   if (score >= 7) return "green";
   if (score >= 5) return "yellow";
   return "red";

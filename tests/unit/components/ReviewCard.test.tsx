@@ -86,7 +86,7 @@ describe("ReviewCard", () => {
     expect(screen.queryByText(/rewatch/i)).not.toBeInTheDocument();
   });
 
-  it("applies gold badge color for score 9+", () => {
+  it("applies cyan badge color for score 9+", () => {
     render(
       <ReviewCard
         review={makeReview({ score: 10 })}
@@ -95,7 +95,7 @@ describe("ReviewCard", () => {
     );
 
     const badge = screen.getByText("10");
-    expect(badge.className).toContain("text-[#ffd700]");
+    expect(badge.className).toContain("text-cyan-400");
   });
 
   it("applies red badge color for score below 5", () => {

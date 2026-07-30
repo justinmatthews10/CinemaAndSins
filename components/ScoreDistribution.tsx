@@ -6,8 +6,8 @@ type ScoreDistributionProps = {
 };
 
 const BUCKET_COLORS: Record<number, string> = {
-  10: "bg-accent",
-  9: "bg-accent",
+  10: "bg-cyan-500",
+  9: "bg-cyan-500",
   8: "bg-green-500",
   7: "bg-green-500",
   6: "bg-yellow-500",

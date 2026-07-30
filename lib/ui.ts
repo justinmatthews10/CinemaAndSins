@@ -13,7 +13,7 @@ export const secondaryLinkClass =
 
 /** Score badge background+text colors by score range. */
 export const SCORE_BADGE_BG: Record<string, string> = {
-  gold: "bg-[#d4af37]/20 text-[#ffd700]",
+  cyan: "bg-cyan-500/20 text-cyan-400",
   green: "bg-green-500/20 text-green-400",
   yellow: "bg-yellow-500/20 text-yellow-400",
   red: "bg-accent-secondary/20 text-accent-secondary",
@@ -21,7 +21,7 @@ export const SCORE_BADGE_BG: Record<string, string> = {
 
 /** Score badge text-only colors by score range (for inline text, no background). */
 export const SCORE_BADGE_TEXT: Record<string, string> = {
-  gold: "text-[#ffd700]",
+  cyan: "text-cyan-400",
   green: "text-green-400",
   yellow: "text-yellow-400",
   red: "text-accent-secondary",

@@ -207,7 +207,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - **Posters** are the visual anchor — large, high quality.
 - **Typography:** Display serif for titles (film-poster / classic-cinema feel) + clean sans for body.
 - **Score badges:**
-  - Gold: 9–10
+  - Cyan: 9–10
   - Green: 7–8
   - Yellow: 5–6
   - Red: 1–4
