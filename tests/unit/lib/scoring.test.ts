@@ -83,9 +83,9 @@ describe("scoreVariance", () => {
 });
 
 describe("scoreBadgeColor", () => {
-  it("returns gold for 9-10", () => {
-    expect(scoreBadgeColor(9)).toBe("gold");
-    expect(scoreBadgeColor(10)).toBe("gold");
+  it("returns cyan for 9-10", () => {
+    expect(scoreBadgeColor(9)).toBe("cyan");
+    expect(scoreBadgeColor(10)).toBe("cyan");
   });
 
   it("returns green for 7-8", () => {

@@ -32,9 +32,9 @@ describe("ReviewForm", () => {
     const slider = screen.getByRole("slider");
     fireEvent.change(slider, { target: { value: "9.5" } });
 
-    // Gold badge for 9+
+    // Cyan badge for 9+
     const badge = screen.getByText(/9\.5/);
-    expect(badge.className).toContain("text-accent");
+    expect(badge.className).toContain("text-cyan-400");
   });
 
   it("shows yellow badge for score 5-6", () => {
