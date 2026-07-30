@@ -41,13 +41,13 @@ export function MemberManager({
               </div>
               <button
                 onClick={() => onApprove(member.id)}
-                className="rounded bg-accent px-3 py-1.5 text-sm font-medium text-background transition-colors hover:bg-accent/80"
+                className="rounded bg-accent px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-accent/80"
               >
                 Approve
               </button>
               <button
                 onClick={() => onRemove(member.id)}
-                className="rounded border border-border px-3 py-1.5 text-sm text-foreground/60 transition-colors hover:bg-foreground/5"
+                className="rounded border border-border px-4 py-2 text-sm text-foreground/60 transition-colors hover:bg-foreground/5"
               >
                 Remove
               </button>
@@ -79,13 +79,13 @@ export function MemberManager({
             </div>
             <button
               onClick={() => onToggleAdmin(member.id, !member.is_admin)}
-              className="rounded border border-border px-3 py-1.5 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
+              className="rounded border border-border px-4 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
             >
               {member.is_admin ? "Remove admin" : "Make admin"}
             </button>
             <button
               onClick={() => onRemove(member.id)}
-              className="rounded border border-border px-3 py-1.5 text-sm text-foreground/60 transition-colors hover:bg-foreground/5"
+              className="rounded border border-border px-4 py-2 text-sm text-foreground/60 transition-colors hover:bg-foreground/5"
             >
               Remove
             </button>

@@ -21,7 +21,9 @@ export function StatsGenreBreakdown({ genres }: StatsGenreBreakdownProps) {
         const barWidth = `${(g.count / maxCount) * 100}%`;
         return (
           <div key={g.genre} className="flex items-center gap-3">
-            <div className="w-28 flex-shrink-0 text-sm text-foreground/70">{g.genre}</div>
+            <div className="w-20 flex-shrink-0 text-sm text-foreground/70 sm:w-28">
+              {g.genre}
+            </div>
             <div className="relative h-6 flex-1 overflow-hidden rounded bg-foreground/5">
               <div
                 className="flex h-full items-center justify-end rounded bg-accent/30 px-2 transition-all"

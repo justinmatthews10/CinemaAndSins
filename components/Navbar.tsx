@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 import { navLinkClass } from "@/lib/ui";
+import { MobileMenu } from "@/components/MobileMenu";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -42,15 +43,16 @@ export default function Navbar() {
 
   return (
     <nav className="relative z-50 border-b border-border bg-surface">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
-          className="font-[family-name:var(--font-playfair)] text-xl font-bold text-foreground"
+          className="font-[family-name:var(--font-playfair)] text-lg font-bold text-foreground sm:text-xl"
         >
           Cinema and Sins
         </Link>
 
-        <div className="flex items-center gap-6 text-sm">
+        {/* Desktop nav (sm and up) */}
+        <div className="hidden items-center gap-6 text-sm sm:flex">
           {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href} className={navLinkClass}>
               {link.label}
@@ -64,7 +66,7 @@ export default function Navbar() {
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
-                  className="flex items-center gap-2 rounded-full border border-border px-4 py-2 font-medium text-foreground transition-colors hover:bg-foreground/5"
+                  className="flex items-center gap-2 rounded-full border border-border px-4 py-2.5 font-medium text-foreground transition-colors hover:bg-foreground/5"
                 >
                   {member?.name}
                   <svg
@@ -87,7 +89,7 @@ export default function Navbar() {
                     <Link
                       href="/add-movie"
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
+                      className="block px-4 py-2.5 text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
                     >
                       My Pick
                     </Link>
@@ -95,7 +97,7 @@ export default function Navbar() {
                       <Link
                         href="/admin"
                         onClick={() => setMenuOpen(false)}
-                        className="block px-4 py-2 text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
+                        className="block px-4 py-2.5 text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
                       >
                         Admin
                       </Link>
@@ -103,14 +105,14 @@ export default function Navbar() {
                     <Link
                       href={`/profile/${member?.id}`}
                       onClick={() => setMenuOpen(false)}
-                      className="block px-4 py-2 text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
+                      className="block px-4 py-2.5 text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
                     >
                       Profile
                     </Link>
                     <div className="my-1 border-t border-border" />
                     <button
                       onClick={handleSignOut}
-                      className="block w-full px-4 py-2 text-left text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
+                      className="block w-full px-4 py-2.5 text-left text-sm text-foreground/80 transition-colors hover:bg-foreground/5"
                     >
                       Log Out
                     </button>
@@ -120,7 +122,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/pending"
-                className="rounded-full bg-accent-secondary px-4 py-2 font-medium text-white"
+                className="rounded-full bg-accent-secondary px-4 py-2.5 font-medium text-white"
               >
                 Pending
               </Link>
@@ -128,12 +130,21 @@ export default function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="rounded-full bg-accent px-4 py-2 font-medium text-background transition-colors hover:bg-accent/80"
+              className="rounded-full bg-accent px-4 py-2.5 font-medium text-background transition-colors hover:bg-accent/80"
             >
               Login
             </Link>
           )}
         </div>
+
+        {/* Mobile hamburger menu (below sm) */}
+        <MobileMenu
+          navLinks={NAV_LINKS}
+          user={user ? { id: user.id } : null}
+          member={member}
+          loading={loading}
+          onSignOut={handleSignOut}
+        />
       </div>
     </nav>
   );

@@ -99,7 +99,7 @@ export function HistoryControls({ entries, pickers, genres }: HistoryControlsPro
             setSearch(e.target.value);
             setVisibleCount(PAGE_SIZE);
           }}
-          className="min-w-[200px] flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm text-foreground focus:border-accent focus:outline-none"
+          className="min-w-[140px] flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm text-foreground focus:border-accent focus:outline-none"
         />
 
         <label className="flex items-center gap-2 text-sm text-foreground/60">

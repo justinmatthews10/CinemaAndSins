@@ -40,13 +40,13 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
             <div className="flex gap-2">
               <button
                 onClick={() => setSortMode("score")}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${sortMode === "score" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
+                className={`rounded-full px-4 py-2 text-xs font-medium transition-colors ${sortMode === "score" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
               >
                 By Score
               </button>
               <button
                 onClick={() => setSortMode("name")}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${sortMode === "name" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
+                className={`rounded-full px-4 py-2 text-xs font-medium transition-colors ${sortMode === "name" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
               >
                 By Name
               </button>
