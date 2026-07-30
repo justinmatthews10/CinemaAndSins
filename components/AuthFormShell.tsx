@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ErrorBanner } from "@/components/ErrorBanner";
+import { PageHeading } from "@/components/PageHeading";
 
 type AuthFormShellProps = {
   title: string;
@@ -21,9 +22,7 @@ export function AuthFormShell({
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-24">
       <div className="w-full max-w-md">
-        <h1 className="mb-8 text-center font-[family-name:var(--font-playfair)] text-3xl font-bold">
-          {title}
-        </h1>
+        <PageHeading centered>{title}</PageHeading>
 
         {error && <ErrorBanner message={error} />}
 

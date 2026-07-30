@@ -15,6 +15,7 @@ import { TmdbSearch } from "@/components/TmdbSearch";
 import { FormField } from "@/components/FormField";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { PosterImage } from "@/components/PosterImage";
+import { PageHeading } from "@/components/PageHeading";
 import { primaryButtonClass, inputClass } from "@/lib/ui";
 import { formatDate } from "@/lib/utils";
 import type { TmdbSearchResult, TmdbMovieDetails, Movie } from "@/types/movie";
@@ -292,9 +293,9 @@ export default function AddMoviePage() {
     return (
       <main className="flex flex-1 items-center justify-center px-6 py-24">
         <div className="w-full max-w-md text-center">
-          <h1 className="mb-4 text-center font-[family-name:var(--font-playfair)] text-3xl font-bold">
+          <PageHeading centered className="mb-4">
             Not Your Turn
-          </h1>
+          </PageHeading>
           <p className="mb-6 text-foreground/70">
             You don&apos;t have an assigned month to pick for right now. Check back when
             it&apos;s your turn in the rotation.
@@ -313,9 +314,9 @@ export default function AddMoviePage() {
     <main className="flex flex-1 flex-col items-center px-6 py-12">
       <div className="w-full max-w-2xl">
         <div className="mb-8">
-          <h1 className="font-[family-name:var(--font-playfair)] text-3xl font-bold">
+          <PageHeading className="">
             Your Pick for {assignedMonth.month}/{assignedMonth.year}
-          </h1>
+          </PageHeading>
           <p className="mt-2 text-sm text-foreground/60">
             {existingPick && !editing
               ? "You can change or remove your pick below."

@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/AuthProvider";
+import { PageHeading } from "@/components/PageHeading";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -29,9 +30,9 @@ export default function PendingPage() {
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-24">
       <div className="w-full max-w-md text-center">
-        <h1 className="mb-4 font-[family-name:var(--font-playfair)] text-3xl font-bold">
+        <PageHeading centered className="mb-4">
           Pending Approval
-        </h1>
+        </PageHeading>
         <p className="mb-8 text-foreground/70">
           Your account is waiting for an admin to approve your membership. You&apos;ll get
           access once approved.
