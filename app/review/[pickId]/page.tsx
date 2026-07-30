@@ -80,14 +80,16 @@ export default function ReviewPage() {
     setStatus(null);
 
     try {
+      const payload = {
+        score,
+        review_text: reviewText || null,
+        tags: tags.length > 0 ? tags : [],
+      };
+
       if (existingReview) {
         const { error } = await supabase
           .from("reviews")
-          .update({
-            score,
-            review_text: reviewText || null,
-            tags: tags.length > 0 ? tags : null,
-          })
+          .update(payload)
           .eq("id", existingReview.id);
 
         if (error) throw error;
@@ -95,9 +97,7 @@ export default function ReviewPage() {
         const { error } = await supabase.from("reviews").insert({
           pick_id: params.pickId,
           member_id: user!.id,
-          score,
-          review_text: reviewText || null,
-          tags: tags.length > 0 ? tags : null,
+          ...payload,
         });
 
         if (error) throw error;
