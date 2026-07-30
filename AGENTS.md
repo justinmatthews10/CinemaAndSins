@@ -189,9 +189,29 @@ Tests:
 - **Why it's non-obvious:** Next.js loads `.env.local` transparently. Vitest uses Vite's env system which loads `.env` files into `import.meta.env`, not `process.env`.
 - **Added:** 2026-07-29 (CAS-002)
 
----
+#### Next.js 16: cross-origin dev resources blocked by default
 
-## 8. Next.js Version Note
+- **Symptom:** Client-side hydration silently fails in browser preview — forms do native GET submission, buttons don't fire onClick, no console errors.
+- **Wrong approach:** Debugging the form/component code. The issue is that Next.js 16 blocks cross-origin requests to dev resources (HMR, chunks) when accessed through a proxy like the browser preview at `127.0.0.1`.
+- **Correct fix:** Add `allowedDevOrigins: ["127.0.0.1", "localhost"]` to `next.config.ts`.
+- **Why it's non-obvious:** There are no errors in the browser console — the JS just doesn't load. The only hint is a server-side warning about blocked cross-origin requests.
+- **Added:** 2026-07-30 (CAS-003)
+
+#### AuthProvider: member not loaded before auth-gated pages redirect
+
+- **Symptom:** `/add-movie` redirects to `/login` even when the user is logged in. Console shows `user: true, member: false` on first render.
+- **Wrong approach:** Checking `authLoading` alone. The `onAuthStateChange` callback set `loading(false)` immediately after getting the session, before `fetchMember` completed.
+- **Correct fix:** In `onAuthStateChange`, only set `loading(false)` after `fetchMember` resolves (or immediately if no session).
+- **Why it's non-obvious:** The initial `getSession` path already waited for `fetchMember`, but the `onAuthStateChange` path didn't — and `onAuthStateChange` fires first on page load.
+- **Added:** 2026-07-30 (CAS-005)
+
+#### TMDB: placeholder API key causes 401 with no clear hint
+
+- **Symptom:** TMDB search returns 500 with `{"error":"TMDB API error: 401 Unauthorized"}`.
+- **Wrong approach:** Assuming the TMDB client code is wrong. The actual issue is the `.env.local` has a placeholder value.
+- **Correct fix:** Replace `TMDB_API_KEY` in `.env.local` with a real v3 API key from themoviedb.org/settings/api.
+- **Why it's non-obvious:** The 401 comes from TMDB, not our code, but the error message doesn't mention the API key.
+- **Added:** 2026-07-30 (CAS-005)
 
 <!-- BEGIN:nextjs-agent-rules -->
 
