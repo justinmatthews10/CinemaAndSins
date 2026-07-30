@@ -5,7 +5,7 @@
 | Issue Key | Title                        | GitHub Issue | Status      |
 | --------- | ---------------------------- | ------------ | ----------- |
 | CAS-001   | Project Scaffolding          | —            | Complete    |
-| CAS-002   | Supabase Setup               | —            | Not Started |
+| CAS-002   | Supabase Setup               | —            | Complete    |
 | CAS-003   | Auth (Email Signup/Login)    | —            | Not Started |
 | CAS-004   | TMDB Integration             | —            | Not Started |
 | CAS-005   | Add Movie Page               | —            | Not Started |

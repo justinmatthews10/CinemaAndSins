@@ -19,6 +19,8 @@ const eslintConfig = defineConfig([
     // Playwright artifacts:
     "playwright-report/**",
     "test-results/**",
+    // Supabase generated temp files:
+    "supabase/.temp/**",
   ]),
 ]);
 

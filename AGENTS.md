@@ -165,7 +165,29 @@ Tests:
 - **Added:** YYYY-MM-DD (Issue X.X)
 ```
 
-_(None yet — add entries as discovered.)_
+#### Supabase: auth.users ON CONFLICT (email) fails
+
+- **Symptom:** Seed file fails with "there is no unique or exclusion constraint matching the ON CONFLICT specification" when inserting into `auth.users`.
+- **Wrong approach:** Using `ON CONFLICT (email) DO NOTHING` — `auth.users` has no unique constraint on `email`, only a partial unique index (`users_email_partial_key WHERE is_sso_user = false`), which doesn't match.
+- **Correct fix:** Use `ON CONFLICT (id) DO NOTHING` since `id` is the primary key.
+- **Why it's non-obvious:** Most tables with an email column have a plain unique constraint. Supabase's auth schema uses a partial index to allow SSO users to share emails.
+- **Added:** 2026-07-29 (CAS-002)
+
+#### Supabase: new tables not accessible to anon/authenticated roles
+
+- **Symptom:** RLS policies exist but `SET ROLE anon; SELECT * FROM movies;` returns "permission denied for table movies".
+- **Wrong approach:** Assuming RLS policies alone grant access. They don't — RLS filters rows, but the role still needs `GRANT SELECT` to even attempt the query.
+- **Correct fix:** Add explicit `GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon, authenticated;` and write grants for authenticated.
+- **Why it's non-obvious:** Older Supabase versions auto-exposed new tables. The 2026+ default changed to require explicit grants, and the config option to restore old behavior (`auto_expose_new_tables`) is deprecated.
+- **Added:** 2026-07-29 (CAS-002)
+
+#### Vitest: .env.local not loaded automatically
+
+- **Symptom:** Integration tests fail with "supabaseUrl is required" even though `.env.local` exists.
+- **Wrong approach:** Assuming Vitest loads `.env.local` like Next.js does. It doesn't.
+- **Correct fix:** Manually parse `.env.local` in `tests/setup.ts` using Node's `fs` module — no new dependency needed.
+- **Why it's non-obvious:** Next.js loads `.env.local` transparently. Vitest uses Vite's env system which loads `.env` files into `import.meta.env`, not `process.env`.
+- **Added:** 2026-07-29 (CAS-002)
 
 ---
 
