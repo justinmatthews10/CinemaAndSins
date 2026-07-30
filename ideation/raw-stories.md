@@ -468,7 +468,7 @@
 
 ## CAS-017: Vercel Deployment
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** All above
 
 ### Acceptance Criteria
