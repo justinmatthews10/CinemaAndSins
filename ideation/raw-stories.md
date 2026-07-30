@@ -336,7 +336,7 @@
 
 ## CAS-013: Stats / Insights Page
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-011, CAS-012
 
 ### Acceptance Criteria

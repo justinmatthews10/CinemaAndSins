@@ -192,7 +192,7 @@ v1 Release
 | CAS-010 | Movie Detail page         | Complete    | /movies/[id], ScoreDistribution, ReviewCard, ReviewsSection, 16 tests  |
 | CAS-011 | History / Archive page    | Complete    | /history, MovieCard, HistoryControls, 21 tests                         |
 | CAS-012 | Members + Member Profile  | Complete    | /members, /profile/[memberId], MemberCard, 183 tests                   |
-| CAS-013 | Stats / Insights page     | Not Started | —                                                                      |
+| CAS-013 | Stats / Insights page     | Complete    | /stats, leaderboard, divisive, genres, trend, 196 tests                |
 | CAS-014 | Admin Dashboard           | Not Started | —                                                                      |
 | CAS-015 | Vercel deployment         | Not Started | —                                                                      |
 | CAS-016 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                                   |
