@@ -59,6 +59,8 @@ export default function AddMoviePage() {
   useEffect(() => {
     if (authLoading) return;
 
+    console.log("ADD-MOVIE auth state:", { user: !!user, member: !!member, approved: member?.is_approved });
+
     if (!user || !member) {
       router.push("/login");
       return;

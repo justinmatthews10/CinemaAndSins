@@ -62,11 +62,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       if (newSession?.user?.id) {
-        fetchMember(newSession.user.id);
+        fetchMember(newSession.user.id).finally(() => setLoading(false));
       } else {
         setMember(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => {
