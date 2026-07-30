@@ -56,6 +56,12 @@ export default function Navbar() {
           ) : user ? (
             isApproved ? (
               <div className="flex items-center gap-4">
+                <Link
+                  href="/add-movie"
+                  className="text-foreground/70 transition-colors hover:text-foreground"
+                >
+                  Add Movie
+                </Link>
                 <span className="text-foreground/60">{member?.name}</span>
                 <button
                   onClick={handleSignOut}
