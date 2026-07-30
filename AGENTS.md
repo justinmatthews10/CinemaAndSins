@@ -229,6 +229,14 @@ Tests:
 - **Why it's non-obvious:** The error doesn't clearly state "multiple rows found" — it's a generic PostgREST error. The unique constraint is the real fix, not changing the query.
 - **Added:** 2026-07-30 (CAS-006)
 
+#### Reviews: tags column has NOT NULL constraint
+
+- **Symptom:** Saving a review with no tags selected throws `null value in column "tags" of relation "reviews" violates not-null constraint` (Postgres error 23502).
+- **Wrong approach:** Sending `null` for the tags field when no tags are selected.
+- **Correct fix:** Send an empty array `[]` instead of `null`. The `tags` column has a NOT NULL constraint but accepts arrays.
+- **Why it's non-obvious:** The Review type has `tags: string[] | null`, suggesting null is valid. But the DB schema enforces NOT NULL on the column. The type should be updated to `string[]` to match.
+- **Added:** 2026-07-30 (CAS-009)
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
