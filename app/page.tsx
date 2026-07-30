@@ -1,6 +1,7 @@
 import { getCurrentPick } from "@/lib/supabase/getCurrentPick";
 import { createClient } from "@/lib/supabase/server";
 import { MovieHero } from "@/components/MovieHero";
+import { secondaryLinkClass } from "@/lib/ui";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -56,16 +57,10 @@ export default async function Home() {
             )}
           </div>
           <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <a
-              href="/schedule"
-              className="rounded-full border border-border px-6 py-3 font-medium text-foreground transition-colors hover:bg-foreground/5"
-            >
+            <a href="/schedule" className={secondaryLinkClass}>
               View Schedule
             </a>
-            <a
-              href="/history"
-              className="rounded-full border border-border px-6 py-3 font-medium text-foreground transition-colors hover:bg-foreground/5"
-            >
+            <a href="/history" className={secondaryLinkClass}>
               Browse History
             </a>
           </div>

@@ -14,6 +14,9 @@ import {
 import { TmdbSearch } from "@/components/TmdbSearch";
 import { FormField } from "@/components/FormField";
 import { ErrorBanner } from "@/components/ErrorBanner";
+import { PosterImage } from "@/components/PosterImage";
+import { primaryButtonClass, inputClass } from "@/lib/ui";
+import { formatDate } from "@/lib/utils";
 import type { TmdbSearchResult, TmdbMovieDetails, Movie } from "@/types/movie";
 import type { RotationEntry } from "@/types/rotation";
 import type { Pick } from "@/types/pick";
@@ -326,18 +329,12 @@ export default function AddMoviePage() {
         {existingPick && !editing && (
           <div className="space-y-6">
             <div className="flex gap-6 rounded-2xl border border-border bg-surface p-6">
-              {existingPick.movie.poster_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={existingPick.movie.poster_url}
-                  alt={existingPick.movie.title}
-                  className="h-48 w-32 flex-shrink-0 rounded object-cover"
-                />
-              ) : (
-                <div className="flex h-48 w-32 flex-shrink-0 items-center justify-center rounded bg-foreground/10 text-xs text-foreground/40">
-                  No poster
-                </div>
-              )}
+              <PosterImage
+                src={existingPick.movie.poster_url}
+                alt={existingPick.movie.title}
+                className="h-48 w-32 flex-shrink-0 rounded object-cover"
+                fallbackClassName="flex h-48 w-32 flex-shrink-0 items-center justify-center rounded bg-foreground/10 text-xs text-foreground/40"
+              />
               <div className="flex flex-1 flex-col gap-2">
                 <h2 className="font-[family-name:var(--font-playfair)] text-2xl font-bold">
                   {existingPick.movie.title}
@@ -367,12 +364,7 @@ export default function AddMoviePage() {
                 )}
                 {existingPick.pick.watch_date && (
                   <p className="text-sm text-foreground/60">
-                    Watch by:{" "}
-                    {new Date(existingPick.pick.watch_date).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
+                    Watch by: {formatDate(existingPick.pick.watch_date)}
                   </p>
                 )}
               </div>
@@ -471,12 +463,7 @@ export default function AddMoviePage() {
                   </h2>
 
                   {formData.poster_url && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={formData.poster_url}
-                      alt={formData.title}
-                      className="h-48 w-32 rounded object-cover"
-                    />
+                    <PosterImage src={formData.poster_url} alt={formData.title} />
                   )}
 
                   <FormField
@@ -552,7 +539,7 @@ export default function AddMoviePage() {
                   type="date"
                   value={watchDate}
                   onChange={(e) => setWatchDate(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-foreground focus:border-accent focus:outline-none"
+                  className={inputClass}
                 />
               </div>
 
@@ -565,7 +552,7 @@ export default function AddMoviePage() {
                   value={pickerNote}
                   onChange={(e) => setPickerNote(e.target.value)}
                   rows={4}
-                  className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-foreground focus:border-accent focus:outline-none"
+                  className={inputClass}
                   placeholder="Tell the club why you chose this movie..."
                 />
               </div>
@@ -573,7 +560,7 @@ export default function AddMoviePage() {
               <button
                 type="submit"
                 disabled={submitting || !formData.title.trim()}
-                className="w-full rounded-lg bg-accent px-4 py-3 font-medium text-background transition-colors hover:bg-accent/80 disabled:opacity-50"
+                className={primaryButtonClass}
               >
                 {submitting ? "Saving..." : editing ? "Update Pick" : "Submit Pick"}
               </button>

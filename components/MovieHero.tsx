@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { PosterImage } from "@/components/PosterImage";
+import { formatDate } from "@/lib/utils";
 import type { Movie } from "@/types/movie";
 import type { Pick } from "@/types/pick";
 import type { Member } from "@/types/member";
@@ -37,18 +39,12 @@ export function MovieHero({
       <div className="flex flex-col md:flex-row">
         {/* Poster */}
         <div className="flex-shrink-0">
-          {movie.poster_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={movie.poster_url}
-              alt={movie.title}
-              className="h-full w-full object-cover md:h-auto md:w-64"
-            />
-          ) : (
-            <div className="flex h-64 w-full items-center justify-center bg-foreground/10 md:w-64">
-              <span className="text-sm text-foreground/40">No poster</span>
-            </div>
-          )}
+          <PosterImage
+            src={movie.poster_url}
+            alt={movie.title}
+            className="h-full w-full object-cover md:h-auto md:w-64"
+            fallbackClassName="flex h-64 w-full items-center justify-center bg-foreground/10 md:w-64 text-sm text-foreground/40"
+          />
         </div>
 
         {/* Details */}
@@ -90,11 +86,7 @@ export function MovieHero({
             <div className="flex items-center gap-2 text-sm">
               <span className="text-foreground/60">Watch by:</span>
               <span className="font-medium text-foreground">
-                {new Date(pick.watch_date).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
+                {formatDate(pick.watch_date)}
               </span>
               {daysLeft !== null && daysLeft > 0 && (
                 <span className="rounded-full bg-accent-secondary/20 px-2 py-0.5 text-xs font-medium text-accent-secondary">

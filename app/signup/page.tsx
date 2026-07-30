@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { validateSignupForm, mapAuthError } from "@/lib/supabase/auth";
 import { AuthFormShell } from "@/components/AuthFormShell";
 import { FormField } from "@/components/FormField";
+import { primaryButtonClass } from "@/lib/ui";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -88,11 +89,7 @@ export default function SignupPage() {
           autoComplete="new-password"
           error={errors.password}
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-accent px-4 py-3 font-medium text-background transition-colors hover:bg-accent/80 disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading} className={primaryButtonClass}>
           {loading ? "Creating account..." : "Sign Up"}
         </button>
       </form>

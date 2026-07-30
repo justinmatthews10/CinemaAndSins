@@ -2,6 +2,57 @@ import type { RotationEntry } from "@/types/rotation";
 import type { Pick } from "@/types/pick";
 import type { TmdbMovieDetails } from "@/types/movie";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { getActiveRotation } from "@/lib/rotation";
+
+type MovieInput =
+  | TmdbMovieDetails
+  | {
+      tmdb_id: null;
+      title: string;
+      year: number | null;
+      director: string | null;
+      runtime: number | null;
+      poster_url: string | null;
+      synopsis: string | null;
+      genres: string[];
+    };
+
+/**
+ * Finds an existing movie by tmdb_id, or creates a new record.
+ * Used by both createMovieAndPick and updatePick.
+ */
+async function findOrCreateMovie(
+  supabase: SupabaseClient,
+  movie: MovieInput,
+): Promise<string> {
+  if (movie.tmdb_id) {
+    const { data: existing } = await supabase
+      .from("movies")
+      .select("id")
+      .eq("tmdb_id", movie.tmdb_id)
+      .maybeSingle();
+
+    if (existing) return existing.id;
+  }
+
+  const { data: newMovie, error } = await supabase
+    .from("movies")
+    .insert({
+      tmdb_id: movie.tmdb_id,
+      title: movie.title,
+      year: movie.year,
+      director: movie.director,
+      runtime: movie.runtime,
+      poster_url: movie.poster_url,
+      synopsis: movie.synopsis,
+      genres: movie.genres,
+    })
+    .select("id")
+    .single();
+
+  if (error) throw error;
+  return newMovie!.id;
+}
 
 /**
  * Determines which member is assigned to pick for a given month/year.
@@ -20,9 +71,7 @@ export function getAssignedPicker(
   targetMonth: number,
   targetYear: number,
 ): string | null {
-  const active = rotation
-    .filter((r) => r.is_active)
-    .sort((a, b) => a.order_index - b.order_index);
+  const active = getActiveRotation(rotation);
 
   if (active.length === 0) return null;
 
@@ -95,18 +144,7 @@ function monthsBetween(
 export async function createMovieAndPick(
   supabase: SupabaseClient,
   params: {
-    movie:
-      | TmdbMovieDetails
-      | {
-          tmdb_id: null;
-          title: string;
-          year: number | null;
-          director: string | null;
-          runtime: number | null;
-          poster_url: string | null;
-          synopsis: string | null;
-          genres: string[];
-        };
+    movie: MovieInput;
     pickerMemberId: string;
     month: number;
     year: number;
@@ -116,43 +154,8 @@ export async function createMovieAndPick(
 ): Promise<{ movieId: string; pickId: string }> {
   const { movie, pickerMemberId, month, year, watchDate, pickerNote } = params;
 
-  // Check if movie already exists (by tmdb_id if available)
-  let movieId: string;
+  const movieId = await findOrCreateMovie(supabase, movie);
 
-  if (movie.tmdb_id) {
-    const { data: existing } = await supabase
-      .from("movies")
-      .select("id")
-      .eq("tmdb_id", movie.tmdb_id)
-      .maybeSingle();
-
-    if (existing) {
-      movieId = existing.id;
-    }
-  }
-
-  // Create movie if not found
-  if (!movieId!) {
-    const { data: newMovie, error: movieError } = await supabase
-      .from("movies")
-      .insert({
-        tmdb_id: movie.tmdb_id,
-        title: movie.title,
-        year: movie.year,
-        director: movie.director,
-        runtime: movie.runtime,
-        poster_url: movie.poster_url,
-        synopsis: movie.synopsis,
-        genres: movie.genres,
-      })
-      .select("id")
-      .single();
-
-    if (movieError) throw movieError;
-    movieId = newMovie!.id;
-  }
-
-  // Create the pick
   const { data: pick, error: pickError } = await supabase
     .from("picks")
     .insert({
@@ -180,60 +183,15 @@ export async function updatePick(
   supabase: SupabaseClient,
   params: {
     pickId: string;
-    movie:
-      | TmdbMovieDetails
-      | {
-          tmdb_id: null;
-          title: string;
-          year: number | null;
-          director: string | null;
-          runtime: number | null;
-          poster_url: string | null;
-          synopsis: string | null;
-          genres: string[];
-        };
+    movie: MovieInput;
     watchDate: string | null;
     pickerNote: string | null;
   },
 ): Promise<{ movieId: string }> {
   const { pickId, movie, watchDate, pickerNote } = params;
 
-  // Find or create the movie
-  let movieId: string;
+  const movieId = await findOrCreateMovie(supabase, movie);
 
-  if (movie.tmdb_id) {
-    const { data: existing } = await supabase
-      .from("movies")
-      .select("id")
-      .eq("tmdb_id", movie.tmdb_id)
-      .maybeSingle();
-
-    if (existing) {
-      movieId = existing.id;
-    }
-  }
-
-  if (!movieId!) {
-    const { data: newMovie, error: movieError } = await supabase
-      .from("movies")
-      .insert({
-        tmdb_id: movie.tmdb_id,
-        title: movie.title,
-        year: movie.year,
-        director: movie.director,
-        runtime: movie.runtime,
-        poster_url: movie.poster_url,
-        synopsis: movie.synopsis,
-        genres: movie.genres,
-      })
-      .select("id")
-      .single();
-
-    if (movieError) throw movieError;
-    movieId = newMovie!.id;
-  }
-
-  // Update the pick
   const { error: pickError } = await supabase
     .from("picks")
     .update({

@@ -3,6 +3,14 @@
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
+import { navLinkClass } from "@/lib/ui";
+
+const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/schedule", label: "Schedule" },
+  { href: "/history", label: "History" },
+  { href: "/stats", label: "Stats" },
+];
 
 export default function Navbar() {
   const { user, member, loading, signOut } = useAuth();
@@ -26,40 +34,18 @@ export default function Navbar() {
           Cinema and Sins
         </Link>
         <div className="flex items-center gap-6 text-sm">
-          <Link
-            href="/"
-            className="text-foreground/70 transition-colors hover:text-foreground"
-          >
-            Home
-          </Link>
-          <Link
-            href="/schedule"
-            className="text-foreground/70 transition-colors hover:text-foreground"
-          >
-            Schedule
-          </Link>
-          <Link
-            href="/history"
-            className="text-foreground/70 transition-colors hover:text-foreground"
-          >
-            History
-          </Link>
-          <Link
-            href="/stats"
-            className="text-foreground/70 transition-colors hover:text-foreground"
-          >
-            Stats
-          </Link>
+          {NAV_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} className={navLinkClass}>
+              {link.label}
+            </Link>
+          ))}
 
           {loading ? (
             <span className="text-foreground/40">...</span>
           ) : user ? (
             isApproved ? (
               <div className="flex items-center gap-4">
-                <Link
-                  href="/add-movie"
-                  className="text-foreground/70 transition-colors hover:text-foreground"
-                >
+                <Link href="/add-movie" className={navLinkClass}>
                   Add Movie
                 </Link>
                 <span className="text-foreground/60">{member?.name}</span>
