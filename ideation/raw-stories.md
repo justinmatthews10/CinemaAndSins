@@ -300,27 +300,37 @@
 
 ---
 
-## CAS-012: Member Profile Page
+## CAS-012: Members Page + Member Profile
 
 **Status:** Not Started
 **Dependencies:** CAS-010
 
 ### Acceptance Criteria
 
+- [ ] `/members` page (server component) — grid of all approved members
+- [ ] Each member card: avatar, name, average score, top movie, worst movie, harsh/easy badge
+- [ ] Top movie = highest-scored review, worst movie = lowest-scored review (with poster + score)
+- [ ] Click member card → `/profile/[memberId]`
 - [ ] `/profile/[memberId]` page (server component)
 - [ ] Avatar, name, member since
 - [ ] Stats: number of reviews, average score given, average vs. club average
-- [ ] "Harsh critic" / "Easy grader" badge
+- [ ] "Harsh critic" / "Easy grader" badge (avg 1+ points below/above club average)
 - [ ] Most-rated genre
-- [ ] Pick history (which movies they've picked)
-- [ ] Review history (sortable)
+- [ ] Pick history (which movies they've picked, with posters, links to /movies/[id])
+- [ ] Review history (sortable by score or date)
+- [ ] Navbar: replace "Stats" link with "Members"
+- [ ] ReviewCard, MovieCard, ScheduleTimeline: link member/picker names to /profile/[memberId]
 - [ ] Tests for stat calculations
 
 ### Files
 
+- `app/members/page.tsx`
 - `app/profile/[memberId]/page.tsx`
-- `lib/supabase/getMembers.ts`, `lib/supabase/getReviews.ts`
-- `tests/unit/lib/stats.test.ts`
+- `components/MemberCard.tsx`, `components/ProfileHeader.tsx`, `components/ProfileStats.tsx`
+- `components/ProfilePickHistory.tsx`, `components/ProfileReviewHistory.tsx`
+- `lib/supabase/getMembers.ts`, `lib/supabase/getProfile.ts`
+- `lib/stats.ts`
+- `tests/unit/lib/stats.test.ts`, `tests/unit/components/MemberCard.test.tsx`
 
 ---
 
@@ -334,7 +344,6 @@
 - [ ] `/stats` page (server component)
 - [ ] Club leaderboard: highest-rated and lowest-rated movies of all time
 - [ ] Most divisive movies (highest score variance)
-- [ ] Rating tendencies per member (toughest grader)
 - [ ] Genre breakdown of watched movies
 - [ ] Club average over time trend
 - [ ] Tests for aggregate queries

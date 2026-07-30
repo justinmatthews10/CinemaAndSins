@@ -168,8 +168,8 @@ v1 Release
   │     ├── CAS-009: Submit Review page (score slider + markdown review)
   │     ├── CAS-010: Movie Detail page (metadata + score distribution + individual reviews)
   │     ├── CAS-011: History / Archive page (grid, sort, filter, search)
-  │     ├── CAS-012: Member Profile page (stats, pick/review history)
-  │     ├── CAS-013: Stats / Insights page (club-wide analytics)
+  │     ├── CAS-012: Members page + Member Profile (grid, top/worst movies, full history)
+  │     ├── CAS-013: Stats / Insights page (club-wide analytics, no per-member — moved to CAS-012)
   │     └── CAS-014: Admin Dashboard (member management, lock/unlock months)
   └── CAS-015: Vercel deployment + production env setup
 ```
@@ -191,7 +191,7 @@ v1 Release
 | CAS-009 | Submit Review page        | Complete    | /review/[pickId], ReviewForm, score slider + badges, 11 unit tests     |
 | CAS-010 | Movie Detail page         | Complete    | /movies/[id], ScoreDistribution, ReviewCard, ReviewsSection, 16 tests  |
 | CAS-011 | History / Archive page    | Complete    | /history, MovieCard, HistoryControls, 21 tests                         |
-| CAS-012 | Member Profile page       | Not Started | —                                                                      |
+| CAS-012 | Members + Member Profile  | Not Started | —                                                                      |
 | CAS-013 | Stats / Insights page     | Not Started | —                                                                      |
 | CAS-014 | Admin Dashboard           | Not Started | —                                                                      |
 | CAS-015 | Vercel deployment         | Not Started | —                                                                      |

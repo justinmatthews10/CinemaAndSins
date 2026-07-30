@@ -26,11 +26,13 @@ CinemaAndSins/
 │   ├── review/
 │   │   └── [pickId]/
 │   │       └── page.tsx          # Submit/edit review (score slider, markdown)
+│   ├── members/
+│   │   └── page.tsx              # Members grid (top/worst movies, avg score)
 │   ├── profile/
 │   │   └── [memberId]/
-│   │       └── page.tsx          # Member profile with stats
+│   │       └── page.tsx          # Full member profile (stats, pick/review history)
 │   ├── stats/
-│   │   └── page.tsx              # Club-wide insights
+│   │   └── page.tsx              # Club-wide insights (planned)
 │   ├── admin/
 │   │   └── page.tsx              # Admin dashboard
 │   ├── login/
