@@ -8,13 +8,13 @@ A private, members-only web app where the club schedules monthly movie picks, re
 
 ## Tech Stack
 
-| Layer | Choice | Why |
-|-------|--------|-----|
-| Frontend | Next.js (React) + TypeScript | SSR/SSG, routing, ecosystem |
-| Styling | Tailwind CSS | Fast, consistent, easy dark theme |
+| Layer               | Choice                                 | Why                                                                       |
+| ------------------- | -------------------------------------- | ------------------------------------------------------------------------- |
+| Frontend            | Next.js (React) + TypeScript           | SSR/SSG, routing, ecosystem                                               |
+| Styling             | Tailwind CSS                           | Fast, consistent, easy dark theme                                         |
 | Backend / Auth / DB | Supabase (Postgres + email auth + RLS) | Free tier covers a club this size; email-based signup; row-level security |
-| Movie data | TMDB API (free) | Posters, synopsis, year, director, runtime, genre |
-| Hosting | Vercel | Auto-deploys from GitHub on every push |
+| Movie data          | TMDB API (free)                        | Posters, synopsis, year, director, runtime, genre                         |
+| Hosting             | Vercel                                 | Auto-deploys from GitHub on every push                                    |
 
 **Why this stack:** Free to run, scales fine for 9+ members, email-based signup matches the access requirement, and the GitHub → Vercel pipeline means every push goes live automatically.
 
@@ -23,16 +23,19 @@ A private, members-only web app where the club schedules monthly movie picks, re
 ## User Roles & Access
 
 ### Public (no login)
+
 - Can view the schedule, history, and movie detail pages.
 - Read-only.
 
 ### Member (email-verified)
+
 - Add a movie pick when it's their turn.
 - Submit their score + review for the current movie.
 - Edit their own reviews.
 - View their profile and stats.
 
 ### Admin
+
 - Everything a member can do, plus:
   - Invite / approve members.
   - Set and reorder the rotation.
@@ -40,6 +43,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
   - Lock a month's reviews after the meeting.
 
 ### Signup Flow
+
 1. Admin invites members by email (or approves pending signups).
 2. Members create an account with email + password.
 3. Only approved emails get member access — keeps it club-only.
@@ -49,6 +53,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 ## Pages
 
 ### 1. Home / Current Movie of the Month
+
 - Hero banner with the current movie's poster, title, year, director, runtime.
 - "Picked by [member name]" badge.
 - Watch-by date / meeting date with countdown.
@@ -58,6 +63,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - Next up teaser: who picks next month.
 
 ### 2. Schedule
+
 - Timeline / calendar view of upcoming months.
 - Each slot shows: month, assigned picker, status (not picked yet / movie selected / locked).
 - Members can click their slot to add their pick.
@@ -66,6 +72,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - Past months collapse into the history view.
 
 ### 3. History / Archive
+
 - Grid or list of all past movies, newest first.
 - Each card: poster, title, year, average score (big), number of reviewers, picker.
 - Sort / filter: by year, by average score, by genre, by picker, by "most divisive" (highest score variance).
@@ -73,6 +80,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - Click any movie → movie detail page.
 
 ### 4. Movie Detail Page
+
 - Full poster + metadata (director, year, runtime, genre, TMDB rating for comparison).
 - "Picked by [member] in [month year]".
 - **Average score** prominently displayed, with a score distribution chart (how many 10s, 9s, etc.).
@@ -81,6 +89,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - Comments thread (optional — for post-meeting discussion).
 
 ### 5. Add a Movie (member's pick submission)
+
 - Search TMDB by title → auto-fills poster, metadata.
 - Or enter manually if not on TMDB.
 - Set the watch-by / meeting date.
@@ -88,6 +97,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - Submit → appears on schedule + becomes the current movie of the month when its month arrives.
 
 ### 6. Submit a Review
+
 - Score slider 1–10 (whole numbers or decimals — TBD).
 - Written review (markdown supported, character limit optional).
 - Optional: tags like "rewatch", "first time".
@@ -95,6 +105,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - Visible to other members as they come in (default).
 
 ### 7. Member Profile
+
 - Avatar, name, member since.
 - Stats:
   - Number of reviews.
@@ -106,6 +117,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - "Harsh critic" / "Easy grader" badge based on their average vs. the club's.
 
 ### 8. Stats / Insights (club-wide)
+
 - Club leaderboard: highest-rated movies of all time, lowest-rated.
 - Most divisive movies (highest score variance).
 - Rating tendencies per member (who's the toughest grader).
@@ -113,6 +125,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - "Club average over time" trend.
 
 ### 9. Admin Dashboard
+
 - Member management: invite, approve, remove, set admin.
 - Rotation editor: drag-to-reorder the picking order.
 - Lock / unlock months (freezes reviews after the meeting).
@@ -123,53 +136,58 @@ A private, members-only web app where the club schedules monthly movie picks, re
 ## Data Model (simplified)
 
 ### `members`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| email | text | unique |
-| name | text | |
-| avatar_url | text | |
-| is_admin | boolean | default false |
-| created_at | timestamptz | |
+
+| Column     | Type        | Notes         |
+| ---------- | ----------- | ------------- |
+| id         | uuid        | PK            |
+| email      | text        | unique        |
+| name       | text        |               |
+| avatar_url | text        |               |
+| is_admin   | boolean     | default false |
+| created_at | timestamptz |               |
 
 ### `movies`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| tmdb_id | integer | nullable (if entered manually) |
-| title | text | |
-| year | integer | |
-| director | text | |
-| runtime | integer | minutes |
-| poster_url | text | |
-| synopsis | text | |
-| genre | text[] | |
+
+| Column     | Type    | Notes                          |
+| ---------- | ------- | ------------------------------ |
+| id         | uuid    | PK                             |
+| tmdb_id    | integer | nullable (if entered manually) |
+| title      | text    |                                |
+| year       | integer |                                |
+| director   | text    |                                |
+| runtime    | integer | minutes                        |
+| poster_url | text    |                                |
+| synopsis   | text    |                                |
+| genre      | text[]  |                                |
 
 ### `picks`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| movie_id | uuid | FK → movies |
-| picker_member_id | uuid | FK → members |
-| month | integer | 1–12 |
-| year | integer | |
-| watch_date | date | |
-| picker_note | text | "Why I picked this" |
-| status | text | `upcoming` / `current` / `locked` |
-| created_at | timestamptz | |
+
+| Column           | Type        | Notes                             |
+| ---------------- | ----------- | --------------------------------- |
+| id               | uuid        | PK                                |
+| movie_id         | uuid        | FK → movies                       |
+| picker_member_id | uuid        | FK → members                      |
+| month            | integer     | 1–12                              |
+| year             | integer     |                                   |
+| watch_date       | date        |                                   |
+| picker_note      | text        | "Why I picked this"               |
+| status           | text        | `upcoming` / `current` / `locked` |
+| created_at       | timestamptz |                                   |
 
 ### `reviews`
-| Column | Type | Notes |
-|--------|------|-------|
-| id | uuid | PK |
-| pick_id | uuid | FK → picks |
-| member_id | uuid | FK → members |
-| score | numeric(3,1) | 1.0–10.0 |
-| review_text | text | markdown |
-| created_at | timestamptz | |
-| updated_at | timestamptz | |
+
+| Column      | Type         | Notes        |
+| ----------- | ------------ | ------------ |
+| id          | uuid         | PK           |
+| pick_id     | uuid         | FK → picks   |
+| member_id   | uuid         | FK → members |
+| score       | numeric(3,1) | 1.0–10.0     |
+| review_text | text         | markdown     |
+| created_at  | timestamptz  |              |
+| updated_at  | timestamptz  |              |
 
 ### `rotation`
+
 - Ordered list of member IDs, managed by admin.
 - Stored as a separate table or a JSON column on a club-settings row.
 

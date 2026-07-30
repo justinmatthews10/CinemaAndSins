@@ -65,9 +65,20 @@ describe("scoreVariance", () => {
   });
 
   it("calculates variance for multiple reviews", () => {
+    // mean = 6; ((10-6)^2 + (2-6)^2) / 2 = (16 + 16) / 2 = 16
     const reviews = [makeReview(10, "1"), makeReview(2, "2")];
-    const variance = scoreVariance(reviews);
-    expect(variance).toBe(16); // (6^2 + 4^2) / 2 = (36+16)/2 = 26... no
+    expect(scoreVariance(reviews)).toBe(16);
+  });
+
+  it("returns 0 when all reviewers agree", () => {
+    const reviews = [makeReview(7, "1"), makeReview(7, "2"), makeReview(7, "3")];
+    expect(scoreVariance(reviews)).toBe(0);
+  });
+
+  it("reports higher variance for a more divisive set", () => {
+    const divisive = [makeReview(10, "1"), makeReview(2, "2")];
+    const agreeable = [makeReview(7, "3"), makeReview(6, "4")];
+    expect(scoreVariance(divisive)).toBeGreaterThan(scoreVariance(agreeable));
   });
 });
 

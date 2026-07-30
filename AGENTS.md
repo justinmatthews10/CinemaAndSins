@@ -8,11 +8,12 @@
 
 - **Repo:** `CinemaAndSins` — CinemaAndSins Movie Club
 - **Purpose:** Members-only web app for scheduling monthly movie picks, recording 1–10 scores and written reviews, and archiving club history
-- **Runtime:** `Node.js 20+, Next.js 15 (App Router), TypeScript 5+, Tailwind CSS 4`
+- **Runtime:** `Node.js 20+, Next.js 16 (App Router), TypeScript 5+, Tailwind CSS 4`
 - **Backend/Auth/DB:** Supabase (Postgres + email auth + row-level security)
 - **Movie data:** TMDB API (free) for posters, synopsis, year, director, runtime, genre
 - **Testing:** `npm run test` (Vitest), `npm run test:e2e` (Playwright)
-- **Linting:** `npm run lint` (ESLint), `npm run lint:fix`
+- **Linting:** `npm run lint` (ESLint), `npm run format` (Prettier)
+- **Full gate:** `npm run verify`
 - **Base branch:** `main`
 
 ---
@@ -31,7 +32,7 @@
 ### Forbidden Actions
 
 - Hardcode API URLs, credentials, timeouts, or cache TTLs — use env vars or config
-- Install new npm packages without verifying compatibility with `Node.js 20+, Next.js 15, TypeScript 5+`
+- Install new npm packages without verifying compatibility with `Node.js 20+, Next.js 16, TypeScript 5+`
 - Delete or weaken existing tests
 - Commit `.env.local` or secrets
 - Create files outside the established directory structure (see `harness/codebase-layout.md`)
@@ -48,18 +49,18 @@
 
 **Do NOT read everything upfront. Fetch context only when needed.**
 
-| If you need to... | Read this file |
-| --- | --- |
-| Understand architecture, data model, or project state | `harness/cinemaandins-harness.md` |
-| Check feature statuses | `harness/cinemaandins-harness.md` Section 6 |
-| Check what's in progress | `harness/checkpoints/` (one `{ISSUE-KEY}.md` per active story) |
-| Implement a story | `.devin/skills/cas-story/SKILL.md` + the story in `ideation/raw-stories.md` |
-| Plan a story | `.devin/skills/cas-plan/SKILL.md` |
-| Run iterative loop engineering | `.devin/skills/cas-loop/SKILL.md` |
-| Review a PR | `.devin/skills/cas-review/SKILL.md` |
-| Check GitHub issue statuses | `ideation/issue-tracker.md` |
-| Look up API endpoints, schema, or env vars | `harness/api-contracts.md` |
-| Look up planned directory structure | `harness/codebase-layout.md` |
+| If you need to...                                     | Read this file                                                              |
+| ----------------------------------------------------- | --------------------------------------------------------------------------- |
+| Understand architecture, data model, or project state | `harness/cinemaandins-harness.md`                                           |
+| Check feature statuses                                | `harness/cinemaandins-harness.md` Section 6                                 |
+| Check what's in progress                              | `harness/checkpoints/` (one `{ISSUE-KEY}.md` per active story)              |
+| Implement a story                                     | `.devin/skills/cas-story/SKILL.md` + the story in `ideation/raw-stories.md` |
+| Plan a story                                          | `.devin/skills/cas-plan/SKILL.md`                                           |
+| Run iterative loop engineering                        | `.devin/skills/cas-loop/SKILL.md`                                           |
+| Review a PR                                           | `.devin/skills/cas-review/SKILL.md`                                         |
+| Check GitHub issue statuses                           | `ideation/issue-tracker.md`                                                 |
+| Look up API endpoints, schema, or env vars            | `harness/api-contracts.md`                                                  |
+| Look up planned directory structure                   | `harness/codebase-layout.md`                                                |
 
 ---
 
@@ -67,7 +68,7 @@
 
 ### Coding Standards
 
-- **Runtime:** `Node.js 20+, Next.js 15 (App Router), TypeScript 5+, Tailwind CSS 4`
+- **Runtime:** `Node.js 20+, Next.js 16 (App Router), TypeScript 5+, Tailwind CSS 4`
 - ESLint + Prettier for TS/JS
 - Type-hint all function parameters and return types
 - Use **environment variables** for all tunables
@@ -86,28 +87,33 @@
 
 ### Naming Conventions
 
-| Type | Pattern | Example |
-| ---- | ------- | ------- |
-| Page | `app/{route}/page.tsx` | `app/movies/[id]/page.tsx` |
-| Component | `{Name}.tsx` (PascalCase) | `MovieCard.tsx` |
-| Hook | `use{Feature}.ts` | `useMember.ts` |
-| Service / lib | `{feature}.ts` | `tmdb.ts`, `supabase.ts` |
-| Test | `{Name}.test.ts(x)` | `MovieCard.test.tsx` |
-| E2E test | `{feature}.spec.ts` | `auth.spec.ts` |
-| Type | `{Name}` (PascalCase) | `Movie`, `Review` |
-| DB table | snake_case, plural | `members`, `movies` |
-| DB column | snake_case | `created_at`, `picker_member_id` |
+| Type          | Pattern                   | Example                          |
+| ------------- | ------------------------- | -------------------------------- |
+| Page          | `app/{route}/page.tsx`    | `app/movies/[id]/page.tsx`       |
+| Component     | `{Name}.tsx` (PascalCase) | `MovieCard.tsx`                  |
+| Hook          | `use{Feature}.ts`         | `useMember.ts`                   |
+| Service / lib | `{feature}.ts`            | `tmdb.ts`, `supabase.ts`         |
+| Test          | `{Name}.test.ts(x)`       | `MovieCard.test.tsx`             |
+| E2E test      | `{feature}.spec.ts`       | `auth.spec.ts`                   |
+| Type          | `{Name}` (PascalCase)     | `Movie`, `Review`                |
+| DB table      | snake_case, plural        | `members`, `movies`              |
+| DB column     | snake_case                | `created_at`, `picker_member_id` |
 
 ### Commands
 
 ```bash
+npm run verify        # Full gate: format:check + lint + typecheck + test + build
 npm run test          # Unit/integration (Vitest) — run before every submission
 npm run test:e2e      # E2E (Playwright)
 npm run lint          # ESLint check
 npm run lint:fix      # Auto-fix lint
+npm run format        # Prettier — write
+npm run format:check  # Prettier — check only
 npm run typecheck     # TypeScript check
 npm run build         # Production build
 ```
+
+`npm run verify` is the single command to run before opening a PR.
 
 ---
 
@@ -151,6 +157,7 @@ Tests:
 
 ```markdown
 #### [Short title]
+
 - **Symptom:** [What went wrong]
 - **Wrong approach:** [What didn't work and why]
 - **Correct fix:** [What solved it]
@@ -158,14 +165,16 @@ Tests:
 - **Added:** YYYY-MM-DD (Issue X.X)
 ```
 
-*(None yet — add entries as discovered.)*
+_(None yet — add entries as discovered.)_
 
 ---
 
 ## 8. Next.js Version Note
 
 <!-- BEGIN:nextjs-agent-rules -->
+
 # This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+
 <!-- END:nextjs-agent-rules -->

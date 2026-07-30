@@ -11,7 +11,10 @@ export default function Navbar() {
           CinemaAndSins
         </Link>
         <div className="flex items-center gap-6 text-sm">
-          <Link href="/" className="text-foreground/70 transition-colors hover:text-foreground">
+          <Link
+            href="/"
+            className="text-foreground/70 transition-colors hover:text-foreground"
+          >
             Home
           </Link>
           <Link

@@ -20,20 +20,24 @@
 2. **Attempt a fix** — Make the smallest reasonable change that could work.
 
 3. **Test immediately** — Run the relevant test (not the full suite — just the failing one):
+
    ```bash
    npm run test -- --run {test-file}
    ```
 
 4. **Evaluate** — Did it pass?
+
    - **Yes** → Run the full suite (`npm run test`) + typecheck (`npm run typecheck`) to confirm no regressions. If clean, exit the loop.
    - **No** → Read the error, understand why, go to step 2.
 
 5. **Checkpoint every 3 attempts** — After 3 failed attempts, STOP and:
+
    - Summarize what you've tried and why each failed
    - Ask the developer for guidance or permission to try a different approach
    - This prevents spinning on the same problem indefinitely
 
 6. **Exit gate** — The loop exits when:
+
    - The targeted test passes
    - The full test suite passes (`npm run test`)
    - Typecheck passes (`npm run typecheck`)

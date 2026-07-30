@@ -6,27 +6,39 @@
 
 ## CAS-001: Project Scaffolding
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** None
 
 ### Acceptance Criteria
 
-- [ ] Next.js 15 project initialized with App Router, TypeScript, Tailwind CSS 4
-- [ ] ESLint + Prettier configured
-- [ ] Vitest configured with React Testing Library
-- [ ] Playwright configured for E2E tests
-- [ ] `.env.example` created with all required env vars (see `harness/api-contracts.md`)
-- [ ] `.gitignore` includes `.env.local`, `node_modules`, `.next`, `.harness-ack`
-- [ ] `npm run test`, `npm run lint`, `npm run typecheck`, `npm run build` all pass
-- [ ] Project structure matches `harness/codebase-layout.md` (directories created)
+- [x] Next.js 16 project initialized with App Router, TypeScript, Tailwind CSS 4
+- [x] ESLint + Prettier configured
+- [x] Vitest configured with React Testing Library
+- [x] Playwright configured for E2E tests (browsers installed, smoke test passing)
+- [x] `.env.example` created with all required env vars (see `harness/api-contracts.md`)
+- [x] `.gitignore` includes `.env.local`, `node_modules`, `.next`, `.harness-ack`
+- [x] `npm run test`, `npm run lint`, `npm run typecheck`, `npm run build` all pass
+- [x] Project structure matches `harness/codebase-layout.md` (directories created)
 
 ### Files
 
-- `package.json`, `tsconfig.json`, `next.config.ts`, `tailwind.config.ts`
+- `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`
 - `vitest.config.ts`, `playwright.config.ts`, `eslint.config.mjs`
+- `.prettierrc.json`, `.prettierignore`
 - `.env.example`, `.gitignore`
 - `app/layout.tsx`, `app/page.tsx`, `app/globals.css`
+- `components/Navbar.tsx`
+- `lib/scoring.ts`, `lib/rotation.ts`, `lib/utils.ts`, `lib/tmdb.ts`, `lib/supabase/{client,server}.ts`
+- `types/{member,movie,pick,review,rotation}.ts`
+- `tests/setup.ts`, `tests/unit/lib/{scoring,rotation,env}.test.ts`, `tests/e2e/smoke.spec.ts`
 - Directory structure: `components/`, `lib/`, `types/`, `tests/`, `supabase/`
+
+### Notes
+
+- Tailwind 4 uses CSS-first configuration (`@theme` in `app/globals.css`); there is no
+  `tailwind.config.ts`. The original file list incorrectly assumed Tailwind 3.
+- Next.js resolved to 16.2.12, not 15. Docs were corrected to match the installed version.
+- `npm run verify` runs the full gate: format:check, lint, typecheck, test, build.
 
 ---
 
@@ -378,3 +390,29 @@
 - `README.md`
 - `.env.example` (finalized)
 - `vercel.json` (if needed)
+
+---
+
+## CAS-016: CI Pipeline (GitHub Actions)
+
+**Status:** Not Started
+**Dependencies:** CAS-001
+
+### Acceptance Criteria
+
+- [ ] GitHub Actions workflow runs on every PR targeting `main`
+- [ ] Workflow runs `format:check`, `lint`, `typecheck`, `test`, `build`
+- [ ] Playwright E2E tests run in CI (browsers installed via cache)
+- [ ] Workflow fails the PR if any gate fails
+- [ ] Node version pinned to match local (`20+`)
+- [ ] npm dependency cache configured for speed
+- [ ] Branch protection on `main` requires the workflow to pass
+
+### Files
+
+- `.github/workflows/ci.yml`
+
+### Notes
+
+Split out of CAS-001. Without this, nothing mechanically enforces the quality gates
+before merge — they rely on the developer remembering to run `npm run verify`.
