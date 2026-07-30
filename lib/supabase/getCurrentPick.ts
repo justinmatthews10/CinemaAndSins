@@ -23,15 +23,17 @@ export async function getCurrentPick(userId: string | null): Promise<CurrentPick
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
 
-  // Get current month's pick
-  const { data: pickData } = await supabase
+  // Get current month's pick (prefer "current" status, fall back to any)
+  const { data: picksData } = await supabase
     .from("picks")
     .select("*")
     .eq("month", month)
     .eq("year", year)
-    .maybeSingle();
+    .order("status", { ascending: false });
 
-  if (!pickData) return null;
+  if (!picksData || picksData.length === 0) return null;
+
+  const pickData = picksData[0];
 
   const pick = pickData as Pick;
 
