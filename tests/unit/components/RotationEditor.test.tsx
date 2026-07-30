@@ -50,7 +50,6 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={vi.fn()}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
       />,
     );
 
@@ -65,7 +64,6 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={vi.fn()}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
       />,
     );
 
@@ -82,7 +80,6 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={onReorder}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
       />,
     );
 
@@ -100,7 +97,6 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={onReorder}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
       />,
     );
 
@@ -117,7 +113,6 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={vi.fn()}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
       />,
     );
 
@@ -132,7 +127,6 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={vi.fn()}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
       />,
     );
 
@@ -148,7 +142,6 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={vi.fn()}
         onToggleActive={onToggleActive}
-        onSkip={vi.fn()}
       />,
     );
 
@@ -171,29 +164,10 @@ describe("RotationEditor", () => {
         members={mockMembers}
         onReorder={vi.fn()}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
       />,
     );
 
     expect(screen.getAllByLabelText(/^activate/i)).toHaveLength(1);
-  });
-
-  it("calls onSkip when skip button clicked", () => {
-    const onSkip = vi.fn();
-    render(
-      <RotationEditor
-        rotation={mockRotation}
-        members={mockMembers}
-        onReorder={vi.fn()}
-        onToggleActive={vi.fn()}
-        onSkip={onSkip}
-      />,
-    );
-
-    const skipButtons = screen.getAllByLabelText(/skip/i);
-    fireEvent.click(skipButtons[0]);
-
-    expect(onSkip).toHaveBeenCalledWith("1");
   });
 
   it("shows members not in rotation with add button", () => {
@@ -206,7 +180,6 @@ describe("RotationEditor", () => {
         members={allMembers}
         onReorder={vi.fn()}
         onToggleActive={vi.fn()}
-        onSkip={vi.fn()}
         onAdd={vi.fn()}
       />,
     );

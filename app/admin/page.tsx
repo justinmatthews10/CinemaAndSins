@@ -138,10 +138,6 @@ export default function AdminPage() {
     setStatus({ msg: successMsg, variant: "success" });
   }
 
-  function memberName(id: string) {
-    return members.find((m) => m.id === id)?.name ?? "Unknown";
-  }
-
   // === Rotation handlers ===
   async function handleReorder(index: number, direction: "up" | "down") {
     const active = getActiveRotation(rotation);
@@ -174,21 +170,6 @@ export default function AdminPage() {
           .update({ is_active: isActive })
           .eq("member_id", memberId),
       isActive ? "Member activated" : "Member deactivated",
-    );
-  }
-
-  async function handleSkip(memberId: string) {
-    const active = getActiveRotation(rotation);
-    const entry = active.find((r) => r.member_id === memberId);
-    if (!entry) return;
-
-    await mutate(
-      async () =>
-        supabase
-          .from("rotation")
-          .update({ order_index: entry.order_index + active.length })
-          .eq("id", entry.id),
-      `${memberName(memberId)} skipped to next cycle`,
     );
   }
 
@@ -311,7 +292,6 @@ export default function AdminPage() {
             members={members}
             onReorder={handleReorder}
             onToggleActive={handleToggleActive}
-            onSkip={handleSkip}
             onAdd={handleAdd}
           />
         )}

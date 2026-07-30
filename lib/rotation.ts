@@ -21,13 +21,3 @@ export function advanceRotation(rotation: RotationEntry[]): RotationEntry[] {
     r.id === first.id ? { ...r, order_index: r.order_index + active.length } : r,
   );
 }
-
-export function skipMember(rotation: RotationEntry[], memberId: string): RotationEntry[] {
-  const active = getActiveRotation(rotation);
-  const target = active.find((r) => r.member_id === memberId);
-  if (!target) return rotation;
-
-  return rotation.map((r) =>
-    r.id === target.id ? { ...r, order_index: r.order_index + active.length } : r,
-  );
-}

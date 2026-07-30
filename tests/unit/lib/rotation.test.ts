@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getNextPicker, advanceRotation, skipMember } from "@/lib/rotation";
+import { getNextPicker, advanceRotation } from "@/lib/rotation";
 import type { RotationEntry } from "@/types/rotation";
 
 function makeEntry(
@@ -45,17 +45,5 @@ describe("advanceRotation", () => {
   it("moves the first member to the end", () => {
     const advanced = advanceRotation(baseRotation);
     expect(advanced.find((r) => r.member_id === "member-a")?.order_index).toBe(3);
-  });
-});
-
-describe("skipMember", () => {
-  it("bumps the skipped member to the end of the cycle", () => {
-    const skipped = skipMember(baseRotation, "member-a");
-    expect(skipped.find((r) => r.member_id === "member-a")?.order_index).toBe(3);
-  });
-
-  it("does nothing if member not found", () => {
-    const skipped = skipMember(baseRotation, "member-x");
-    expect(skipped).toEqual(baseRotation);
   });
 });

@@ -8,7 +8,6 @@ type RotationEditorProps = {
   members: Member[];
   onReorder: (index: number, direction: "up" | "down") => void;
   onToggleActive: (memberId: string, isActive: boolean) => void;
-  onSkip: (memberId: string) => void;
   onAdd?: (memberId: string) => void;
 };
 
@@ -17,7 +16,6 @@ export function RotationEditor({
   members,
   onReorder,
   onToggleActive,
-  onSkip,
   onAdd,
 }: RotationEditorProps) {
   const sorted = [...rotation].sort((a, b) => a.order_index - b.order_index);
@@ -71,13 +69,6 @@ export function RotationEditor({
                 className="rounded border border-border px-2 py-1 text-sm text-foreground/70 transition-colors hover:bg-foreground/5 disabled:opacity-30"
               >
                 ↓
-              </button>
-              <button
-                onClick={() => onSkip(entry.member_id)}
-                aria-label={`Skip ${memberName(entry.member_id)}`}
-                className="rounded border border-border px-3 py-1 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
-              >
-                Skip
               </button>
               <button
                 onClick={() => onToggleActive(entry.member_id, false)}
