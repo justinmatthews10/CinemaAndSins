@@ -25,7 +25,7 @@ CinemaAndSins/
 │   │   └── page.tsx              # Admin dashboard (rotation management)
 │   ├── review/
 │   │   └── [pickId]/
-│   │       └── page.tsx          # Submit/edit review
+│   │       └── page.tsx          # Submit/edit review (score slider, markdown)
 │   ├── profile/
 │   │   └── [memberId]/
 │   │       └── page.tsx          # Member profile with stats
@@ -49,6 +49,7 @@ CinemaAndSins/
 │   ├── PageHeading.tsx           # Standard page heading (Playfair font)
 │   ├── ScheduleTimeline.tsx      # Schedule timeline with pick status
 │   ├── RotationEditor.tsx        # Admin rotation management (reorder, skip, toggle)
+│   ├── ReviewForm.tsx            # Score slider + markdown review + tags
 │   ├── TmdbSearch.tsx            # TMDB search input + results
 │   ├── FormField.tsx             # Reusable input + label + error
 │   ├── ErrorBanner.tsx           # Reusable error alert
