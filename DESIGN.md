@@ -98,7 +98,7 @@ A private, members-only web app where the club schedules monthly movie picks, re
 
 ### 6. Submit a Review
 
-- Score slider 1–10 (whole numbers or decimals — TBD).
+- Score slider 1.0–10.0 with 0.1 step (full decimal precision).
 - Written review (markdown supported, character limit optional).
 - Optional: tags like "rewatch", "first time".
 - Editable until the month is locked by admin.
@@ -195,9 +195,9 @@ A private, members-only web app where the club schedules monthly movie picks, re
 
 ## Scoring Rules
 
-- Scale: 1–10. (Whole numbers vs. decimals — TBD.)
+- Scale: 1–10 with full decimal precision (e.g. 7.3, 8.7). Database column: `numeric(3,1)`.
 - Average is a straight mean across all members who reviewed.
-- A movie needs a minimum number of reviews (e.g. 5) to appear in "all-time" rankings, to avoid a single 10/10 skewing the list.
+- A movie needs a minimum number of reviews (5, configurable) to appear in "all-time" rankings, to avoid a single 10.0 skewing the list.
 
 ---
 
@@ -226,9 +226,9 @@ A private, members-only web app where the club schedules monthly movie picks, re
 
 ---
 
-## Open Questions
+## Resolved Questions
 
-1. **Scores:** whole numbers (1–10) or allow decimals (7.5)?
-2. **Reviews visible as submitted, or hidden until you post yours?** (Default: visible.)
-3. **Public visibility:** should non-members be able to browse the history, or is the whole site members-only top to bottom?
-4. **Club name confirmation:** "CinemaAndSins" — is that the club name, or just the repo name? Any tagline?
+1. **Scores:** Full decimals (1.0–10.0, 0.1 step). Database: `numeric(3,1)`.
+2. **Reviews visible as submitted.** No hiding mechanism — scores and text are visible to everyone immediately.
+3. **Public visibility:** Non-members can read schedule, history, movie details, and stats. Only members can add picks, submit reviews, and access admin.
+4. **Club name:** "Cinema and Sins" (with spaces). No tagline.

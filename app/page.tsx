@@ -3,7 +3,7 @@ export default function Home() {
     <main className="flex flex-1 flex-col items-center justify-center px-6 py-24">
       <div className="w-full max-w-4xl text-center">
         <h1 className="font-[family-name:var(--font-playfair)] text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-          CinemaAndSins
+          Cinema and Sins
         </h1>
         <p className="mt-6 text-lg text-foreground/70 sm:text-xl">
           Our movie club. Every month, one of us picks a movie, we all watch it, rate it

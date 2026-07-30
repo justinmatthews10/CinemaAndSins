@@ -19,7 +19,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "CinemaAndSins — Movie Club",
+  title: "Cinema and Sins — Movie Club",
   description: "Our movie club: monthly picks, scores, and reviews.",
 };
 

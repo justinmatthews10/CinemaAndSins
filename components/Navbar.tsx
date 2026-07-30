@@ -8,7 +8,7 @@ export default function Navbar() {
           href="/"
           className="font-[family-name:var(--font-playfair)] text-xl font-bold text-foreground"
         >
-          CinemaAndSins
+          Cinema and Sins
         </Link>
         <div className="flex items-center gap-6 text-sm">
           <Link

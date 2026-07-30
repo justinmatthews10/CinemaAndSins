@@ -206,9 +206,10 @@ v1 Release
 
 ### Standing Conventions
 
-- **Scoring:** 1–10 scale. Decimal support TBD (see DESIGN.md Open Questions).
-- **Reviews visibility:** Visible to all as submitted (default).
-- **Public visibility:** TBD — should non-members browse history, or is the whole site members-only? (see DESIGN.md Open Questions).
+- **Club name:** "Cinema and Sins" (with spaces). Repo: `CinemaAndSins`.
+- **Scoring:** 1.0–10.0 with full decimal precision (0.1 step). DB column: `numeric(3,1)`.
+- **Reviews visibility:** Visible to all immediately as submitted. No hiding mechanism.
+- **Public visibility:** Non-members can read schedule, history, movie details, stats. Only members can write. Admin-only for management.
 - **Minimum reviews for rankings:** 5 (configurable).
 
 ---

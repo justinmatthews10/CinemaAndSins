@@ -4,7 +4,7 @@ test.describe("smoke", () => {
   test("home page renders the club name and nav links", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("CinemaAndSins");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Cinema and Sins");
     await expect(page.getByRole("link", { name: "View Schedule" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Browse History" })).toBeVisible();
   });
