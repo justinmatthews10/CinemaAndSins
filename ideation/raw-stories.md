@@ -387,21 +387,34 @@
 ### Acceptance Criteria
 
 - [ ] All pages render correctly on mobile (320px), tablet (768px), and desktop (1024px+)
-- [ ] Navbar collapses to hamburger menu on mobile
+- [ ] Navbar collapses to hamburger menu on mobile (nav links + user menu all inside)
 - [ ] Touch-friendly tap targets (min 44x44px) for all interactive elements
 - [ ] Score sliders, sort buttons, and filter controls work on touch
 - [ ] Grid layouts collapse to single column on mobile (members, history, stats)
 - [ ] Posters and images scale proportionally
 - [ ] No horizontal scroll on any page
 - [ ] Forms (login, signup, add-movie, review) are usable on mobile
-- [ ] Test key pages with Playwright mobile viewport
+- [ ] Unit tests for MobileMenu component
+
+### Implementation Plan
+
+**Critical fixes:**
+
+1. `Navbar.tsx` — hamburger menu below `sm` breakpoint, all links + user menu inside
+2. `HistoryControls.tsx` — reduce `min-w-[200px]` to `min-w-[140px]`
+3. `add-movie/page.tsx` — reduce `min-w-[200px]` to `min-w-[140px]`
+
+**Tap target fixes (min 44px height):** 4. `ReviewsSection.tsx` — sort buttons `px-3 py-1` → `px-4 py-2` 5. `ProfileReviewHistory.tsx` — sort buttons `px-3 py-1` → `px-4 py-2` 6. `RotationEditor.tsx` — action buttons → `px-3 py-2` 7. `MemberManager.tsx` — action buttons → `px-4 py-2` 8. `PickManager.tsx` — action buttons → `px-4 py-2` 9. `ContentManager.tsx` — tab buttons → `px-4 py-2.5` 10. `ReviewForm.tsx` — checkbox labels → `px-3 py-2`
+
+**Minor layout fixes:** 11. `movies/[id]/page.tsx` — poster `w-48` → `w-32 sm:w-48` 12. `review/[pickId]/page.tsx` — add `flex-wrap` to tag container 13. `ScheduleTimeline.tsx` — add `flex-wrap` to slot content 14. `StatsGenreBreakdown.tsx` — genre label `w-28` → `w-20 sm:w-28`
 
 ### Files
 
 - `components/Navbar.tsx` (hamburger menu)
 - `components/MobileMenu.tsx` (new)
-- `app/globals.css` (responsive utilities)
-- `tests/e2e/mobile.spec.ts`
+- `app/globals.css` (responsive utilities if needed)
+- `tests/unit/components/MobileMenu.test.tsx` (new)
+- Multiple component files (tap target + layout fixes)
 
 ---
 
