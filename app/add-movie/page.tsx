@@ -78,11 +78,14 @@ export default function AddMoviePage() {
       const pks = (pickData ?? []) as Pick[];
 
       // Find the next month where this user is the assigned picker
-      // and no pick has been submitted yet
+      // and no pick has been submitted yet.
+      // Search up to 2x the rotation length to guarantee coverage.
+      const activeCount = rot.filter((r) => r.is_active).length;
+      const searchRange = Math.max(12, activeCount * 2);
       const now = new Date();
       let foundMonth: { month: number; year: number } | null = null;
 
-      for (let i = 0; i < 12; i++) {
+      for (let i = 0; i < searchRange; i++) {
         const checkDate = new Date(now.getFullYear(), now.getMonth() + i, 1);
         const m = checkDate.getMonth() + 1;
         const y = checkDate.getFullYear();
