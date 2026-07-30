@@ -70,11 +70,11 @@ export function ReviewForm({
       {/* Tags */}
       <div>
         <label className="mb-2 block text-sm font-medium">Tags (optional)</label>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-3">
           {TAGS.map((tag) => (
             <label
               key={tag.value}
-              className="flex items-center gap-2 text-sm text-foreground/70"
+              className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
             >
               <input
                 type="checkbox"

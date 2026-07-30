@@ -137,7 +137,7 @@ export default function ReviewPage() {
     <main className="flex flex-1 flex-col px-6 py-12">
       <div className="mx-auto w-full max-w-2xl">
         {/* Movie context */}
-        <div className="mb-8 flex gap-4">
+        <div className="mb-8 flex flex-wrap gap-4">
           <PosterImage
             src={movie.poster_url}
             alt={movie.title}

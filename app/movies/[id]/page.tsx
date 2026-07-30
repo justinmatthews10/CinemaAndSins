@@ -54,8 +54,8 @@ export default async function MovieDetailPage({
           <PosterImage
             src={movie.poster_url}
             alt={movie.title}
-            className="h-72 w-48 flex-shrink-0 rounded-lg object-cover"
-            fallbackClassName="flex h-72 w-48 flex-shrink-0 items-center justify-center rounded-lg bg-foreground/10 text-sm text-foreground/40"
+            className="h-56 w-32 flex-shrink-0 rounded-lg object-cover sm:h-72 sm:w-48"
+            fallbackClassName="flex h-56 w-32 flex-shrink-0 items-center justify-center rounded-lg bg-foreground/10 text-sm text-foreground/40 sm:h-72 sm:w-48"
           />
 
           <div className="flex flex-1 flex-col gap-4">

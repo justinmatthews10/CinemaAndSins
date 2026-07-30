@@ -46,13 +46,13 @@ export function ContentManager({
       <div className="flex items-center gap-2">
         <button
           onClick={() => setTab("movies")}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${tab === "movies" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
+          className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${tab === "movies" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
         >
           Movies ({movies.length})
         </button>
         <button
           onClick={() => setTab("reviews")}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${tab === "reviews" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
+          className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${tab === "reviews" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
         >
           Reviews ({reviews.length})
         </button>
@@ -83,7 +83,7 @@ export function ContentManager({
                 </div>
                 <button
                   onClick={() => onDeleteMovie(movie.id)}
-                  className="rounded border border-accent-secondary/40 px-3 py-1.5 text-sm text-accent-secondary transition-colors hover:bg-accent-secondary/10"
+                  className="rounded border border-accent-secondary/40 px-4 py-2 text-sm text-accent-secondary transition-colors hover:bg-accent-secondary/10"
                 >
                   Delete
                 </button>
@@ -123,7 +123,7 @@ export function ContentManager({
                   </div>
                   <button
                     onClick={() => onDeleteReview(review.id)}
-                    className="rounded border border-accent-secondary/40 px-3 py-1.5 text-sm text-accent-secondary transition-colors hover:bg-accent-secondary/10"
+                    className="rounded border border-accent-secondary/40 px-4 py-2 text-sm text-accent-secondary transition-colors hover:bg-accent-secondary/10"
                   >
                     Delete
                   </button>

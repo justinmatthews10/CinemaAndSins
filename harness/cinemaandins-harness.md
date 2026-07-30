@@ -195,7 +195,7 @@ v1 Release
 | CAS-012 | Members + Member Profile  | Complete    | /members, /profile/[memberId], MemberCard, 183 tests                   |
 | CAS-013 | Stats / Insights page     | Complete    | /stats, leaderboard, divisive, genres, trend, 196 tests                |
 | CAS-014 | Admin Dashboard           | Complete    | Tabs: rotation, members, picks, content; 214 tests                     |
-| CAS-015 | Mobile responsive design  | Not Started | Hamburger nav, touch targets, grid collapse, no horizontal scroll      |
+| CAS-015 | Mobile responsive design  | Complete    | Hamburger nav, tap targets, layout fixes, 225 tests                    |
 | CAS-016 | Vercel deployment         | Not Started | —                                                                      |
 | CAS-017 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                                   |
 

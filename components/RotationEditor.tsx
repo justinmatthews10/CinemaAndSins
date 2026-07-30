@@ -58,7 +58,7 @@ export function RotationEditor({
                 onClick={() => onReorder(index, "up")}
                 disabled={index === 0}
                 aria-label={`Move ${memberName(entry.member_id)} up`}
-                className="rounded border border-border px-2 py-1 text-sm text-foreground/70 transition-colors hover:bg-foreground/5 disabled:opacity-30"
+                className="rounded border border-border px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5 disabled:opacity-30"
               >
                 ↑
               </button>
@@ -66,14 +66,14 @@ export function RotationEditor({
                 onClick={() => onReorder(index, "down")}
                 disabled={index === active.length - 1}
                 aria-label={`Move ${memberName(entry.member_id)} down`}
-                className="rounded border border-border px-2 py-1 text-sm text-foreground/70 transition-colors hover:bg-foreground/5 disabled:opacity-30"
+                className="rounded border border-border px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5 disabled:opacity-30"
               >
                 ↓
               </button>
               <button
                 onClick={() => onToggleActive(entry.member_id, false)}
                 aria-label={`Deactivate ${memberName(entry.member_id)}`}
-                className="rounded border border-border px-3 py-1 text-sm text-foreground/60 transition-colors hover:bg-foreground/5"
+                className="rounded border border-border px-3 py-2 text-sm text-foreground/60 transition-colors hover:bg-foreground/5"
               >
                 Deactivate
               </button>
@@ -99,7 +99,7 @@ export function RotationEditor({
               <button
                 onClick={() => onToggleActive(entry.member_id, true)}
                 aria-label={`Activate ${memberName(entry.member_id)}`}
-                className="rounded border border-border px-3 py-1 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
+                className="rounded border border-border px-3 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
               >
                 Activate
               </button>
@@ -123,7 +123,7 @@ export function RotationEditor({
               <button
                 onClick={() => onAdd(member.id)}
                 aria-label={`Add ${member.name} to rotation`}
-                className="rounded bg-accent px-3 py-1 text-sm font-medium text-background transition-colors hover:bg-accent/80"
+                className="rounded bg-accent px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-accent/80"
               >
                 Add to rotation
               </button>

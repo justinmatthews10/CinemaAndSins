@@ -63,14 +63,14 @@ export function PickManager({ picks, onLock, onUnlock }: PickManagerProps) {
           {pick.status === "locked" ? (
             <button
               onClick={() => onUnlock(pick.id)}
-              className="rounded border border-border px-3 py-1.5 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
+              className="rounded border border-border px-4 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
             >
               Unlock
             </button>
           ) : (
             <button
               onClick={() => onLock(pick.id)}
-              className="rounded border border-border px-3 py-1.5 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
+              className="rounded border border-border px-4 py-2 text-sm text-foreground/70 transition-colors hover:bg-foreground/5"
             >
               Lock
             </button>

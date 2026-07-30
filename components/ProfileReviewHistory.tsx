@@ -50,13 +50,13 @@ export function ProfileReviewHistory({ reviews }: ProfileReviewHistoryProps) {
         </span>
         <button
           onClick={() => setSortMode("date")}
-          className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${sortMode === "date" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
+          className={`rounded-full px-4 py-2 text-xs font-medium transition-colors ${sortMode === "date" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
         >
           Date
         </button>
         <button
           onClick={() => setSortMode("score")}
-          className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${sortMode === "score" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
+          className={`rounded-full px-4 py-2 text-xs font-medium transition-colors ${sortMode === "score" ? "bg-accent text-background" : "border border-border text-foreground/60 hover:bg-foreground/5"}`}
         >
           Score
         </button>

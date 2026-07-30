@@ -58,7 +58,8 @@ CinemaAndSins/
 │   ├── TmdbSearch.tsx            # TMDB search input + results
 │   ├── FormField.tsx             # Reusable input + label + error
 │   ├── AuthFormShell.tsx         # Shared auth form layout (card, title, footer)
-│   ├── Navbar.tsx                # Top navigation with user dropdown
+│   ├── Navbar.tsx                # Top navigation (desktop nav + mobile hamburger)
+│   ├── MobileMenu.tsx            # Hamburger menu for mobile (nav links + user menu)
 │   ├── AuthProvider.tsx          # Supabase auth context provider
 │   ├── MovieCard.tsx             # Poster + title + score (history grid card)
 │   ├── ReviewCard.tsx            # Individual review (name, score badge, text, tags)
