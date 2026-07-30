@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CinemaAndSins — Movie Club
+
+A members-only web app for our movie club. Every month one of us picks a movie, we all watch it, review it on a scale of 1–10, and then talk about it.
+
+## Tech Stack
+
+- **Frontend:** Next.js 15 (App Router) + TypeScript + Tailwind CSS 4
+- **Backend/Auth/DB:** Supabase (Postgres + email auth + row-level security)
+- **Movie data:** TMDB API (posters, synopsis, metadata)
+- **Hosting:** Vercel
+- **Testing:** Vitest (unit/integration) + Playwright (E2E)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- npm
+
+### Installation
+
+```bash
+git clone https://github.com/justinmatthews10/CinemaAndSins.git
+cd CinemaAndSins
+npm install
+```
+
+### Environment Variables
+
+Copy the example file and fill in your values:
+
+```bash
+cp .env.example .env.local
+```
+
+Required variables (see `.env.example`):
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key (safe for client) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (server only) |
+| `TMDB_API_KEY` | TMDB Bearer token (server only) |
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run test         # Unit/integration tests (Vitest)
+npm run test:e2e     # E2E tests (Playwright)
+npm run lint         # ESLint check
+npm run lint:fix     # Auto-fix lint
+npm run typecheck    # TypeScript check
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+This project uses a documentation harness for AI-assisted development. See:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `AGENTS.md` — Agent rules and conventions
+- `harness/README.md` — Harness developer guide
+- `harness/cinemaandins-harness.md` — Architecture and data model
+- `DESIGN.md` — Full design document
+- `ideation/raw-stories.md` — Story breakdown with acceptance criteria
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

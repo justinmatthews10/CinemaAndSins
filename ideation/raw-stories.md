@@ -1,0 +1,380 @@
+# Raw Stories
+
+> All stories with acceptance criteria for CinemaAndSins v1.
+
+---
+
+## CAS-001: Project Scaffolding
+
+**Status:** Not Started
+**Dependencies:** None
+
+### Acceptance Criteria
+
+- [ ] Next.js 15 project initialized with App Router, TypeScript, Tailwind CSS 4
+- [ ] ESLint + Prettier configured
+- [ ] Vitest configured with React Testing Library
+- [ ] Playwright configured for E2E tests
+- [ ] `.env.example` created with all required env vars (see `harness/api-contracts.md`)
+- [ ] `.gitignore` includes `.env.local`, `node_modules`, `.next`, `.harness-ack`
+- [ ] `npm run test`, `npm run lint`, `npm run typecheck`, `npm run build` all pass
+- [ ] Project structure matches `harness/codebase-layout.md` (directories created)
+
+### Files
+
+- `package.json`, `tsconfig.json`, `next.config.ts`, `tailwind.config.ts`
+- `vitest.config.ts`, `playwright.config.ts`, `eslint.config.mjs`
+- `.env.example`, `.gitignore`
+- `app/layout.tsx`, `app/page.tsx`, `app/globals.css`
+- Directory structure: `components/`, `lib/`, `types/`, `tests/`, `supabase/`
+
+---
+
+## CAS-002: Supabase Setup
+
+**Status:** Not Started
+**Dependencies:** CAS-001
+
+### Acceptance Criteria
+
+- [ ] Supabase project created (local dev + production)
+- [ ] Database migrations created for all tables (members, movies, picks, reviews, rotation)
+- [ ] RLS policies created for all tables (see `harness/api-contracts.md`)
+- [ ] Supabase client libraries installed (`@supabase/supabase-js`, `@supabase/ssr`)
+- [ ] `lib/supabase/client.ts` (browser client, anon key) created
+- [ ] `lib/supabase/server.ts` (server client, service role key) created
+- [ ] Seed data script created for local dev (`supabase/seed.sql`)
+- [ ] Tests for RLS policies pass
+
+### Files
+
+- `supabase/migrations/001_create_members.sql` through `006_rls_policies.sql`
+- `supabase/seed.sql`
+- `lib/supabase/client.ts`, `lib/supabase/server.ts`
+- `types/member.ts`, `types/movie.ts`, `types/pick.ts`, `types/review.ts`, `types/rotation.ts`
+
+---
+
+## CAS-003: Auth (Email Signup/Login)
+
+**Status:** Not Started
+**Dependencies:** CAS-002
+
+### Acceptance Criteria
+
+- [ ] Signup page (`/signup`) with email + password form
+- [ ] Login page (`/login`) with email + password form
+- [ ] Logout functionality in navbar
+- [ ] `AuthProvider` context wrapping the app
+- [ ] Member approval flow: new signups have `is_approved = false` until admin approves
+- [ ] Unapproved members see a "pending approval" screen, cannot access member features
+- [ ] Auth state persists across page navigations
+- [ ] Redirect to home after login/signup
+- [ ] Form validation (email format, password length)
+- [ ] Error messages for invalid credentials, existing email
+- [ ] Tests for auth flow (unit + E2E)
+
+### Files
+
+- `app/login/page.tsx`, `app/signup/page.tsx`
+- `components/AuthProvider.tsx`, `components/Navbar.tsx`
+- `lib/supabase/auth.ts`
+- `tests/unit/components/AuthProvider.test.tsx`
+- `tests/e2e/auth.spec.ts`
+
+---
+
+## CAS-004: TMDB Integration
+
+**Status:** Not Started
+**Dependencies:** CAS-002
+
+### Acceptance Criteria
+
+- [ ] `lib/tmdb.ts` client created (server-side only, uses `TMDB_API_KEY`)
+- [ ] `GET /api/tmdb/search?query={query}` route handler — searches TMDB, returns normalized results
+- [ ] `GET /api/tmdb/{id}` route handler — fetches movie details, returns normalized data
+- [ ] TMDB API key never exposed to client (server-side only)
+- [ ] Error handling for TMDB API failures (rate limits, not found, network errors)
+- [ ] Response types defined in `types/movie.ts`
+- [ ] Tests for both API routes (mocked TMDB responses)
+
+### Files
+
+- `lib/tmdb.ts`
+- `app/api/tmdb/search/route.ts`, `app/api/tmdb/[id]/route.ts`
+- `tests/unit/api/tmdb.test.ts`
+
+---
+
+## CAS-005: Add Movie Page
+
+**Status:** Not Started
+**Dependencies:** CAS-003, CAS-004
+
+### Acceptance Criteria
+
+- [ ] `/add-movie` page (client component, members only)
+- [ ] TMDB search input with live results (poster, title, year)
+- [ ] Selecting a movie auto-fills metadata from TMDB
+- [ ] Manual entry fallback if movie not on TMDB
+- [ ] Set watch date / meeting date
+- [ ] "Why I picked this" note field
+- [ ] Submit creates a `movie` record (if new) and a `pick` record
+- [ ] Only the assigned picker for the target month can submit
+- [ ] Confirmation screen after submission
+- [ ] Tests for the form and submission flow
+
+### Files
+
+- `app/add-movie/page.tsx`
+- `components/TmdbSearch.tsx`, `components/ReviewForm.tsx` (shared form patterns)
+- `lib/supabase/getPicks.ts`
+- `tests/unit/components/TmdbSearch.test.tsx`
+
+---
+
+## CAS-006: Home / Current Movie of the Month
+
+**Status:** Not Started
+**Dependencies:** CAS-003, CAS-004
+
+### Acceptance Criteria
+
+- [ ] `/` page (server component) shows the current month's pick
+- [ ] Hero banner with poster, title, year, director, runtime
+- [ ] "Picked by [member name]" badge
+- [ ] Watch-by date with countdown
+- [ ] Synopsis from TMDB
+- [ ] Personal status: "You haven't reviewed this yet" → link to review, or "You rated this X/10"
+- [ ] Quick stat: "N of M reviewed"
+- [ ] Next up teaser: who picks next month
+- [ ] Empty state if no current movie
+- [ ] Tests for the page rendering
+
+### Files
+
+- `app/page.tsx`
+- `components/MovieHero.tsx`, `components/MemberBadge.tsx`
+- `lib/supabase/getPicks.ts`, `lib/supabase/getReviews.ts`
+- `tests/unit/components/MovieHero.test.tsx`
+
+---
+
+## CAS-007: Schedule Page
+
+**Status:** Not Started
+**Dependencies:** CAS-003
+
+### Acceptance Criteria
+
+- [ ] `/schedule` page (server component) shows upcoming months
+- [ ] Each slot: month, assigned picker, status (not picked / movie selected / locked)
+- [ ] Members can click their slot to add a pick (links to `/add-movie`)
+- [ ] Past months collapse into history
+- [ ] Rotation logic: cycles through all active members, repeats
+- [ ] Empty state if no rotation set up
+- [ ] Tests for schedule rendering and rotation logic
+
+### Files
+
+- `app/schedule/page.tsx`
+- `components/ScheduleTimeline.tsx`
+- `lib/rotation.ts`, `lib/supabase/getRotation.ts`
+- `tests/unit/lib/rotation.test.ts`
+
+---
+
+## CAS-008: Rotation Management (Admin)
+
+**Status:** Not Started
+**Dependencies:** CAS-007
+
+### Acceptance Criteria
+
+- [ ] Admin can view the rotation order
+- [ ] Admin can drag-to-reorder members
+- [ ] Admin can skip a member (bumps to next cycle)
+- [ ] Admin can add/remove members from rotation
+- [ ] Changes persist to Supabase `rotation` table
+- [ ] Only admin can access (RLS + UI guard)
+- [ ] Tests for rotation management
+
+### Files
+
+- `app/admin/page.tsx` (rotation section)
+- `components/RotationEditor.tsx`
+- `lib/supabase/getRotation.ts`
+
+---
+
+## CAS-009: Submit Review Page
+
+**Status:** Not Started
+**Dependencies:** CAS-003, CAS-006
+
+### Acceptance Criteria
+
+- [ ] `/review/[pickId]` page (client component, members only)
+- [ ] Score slider 1–10 (whole numbers or decimals — per DESIGN.md open question)
+- [ ] Written review (markdown supported)
+- [ ] Optional tags: "rewatch", "first time"
+- [ ] Submit creates/updates a `review` record (one per member per pick)
+- [ ] Editable until the pick is locked by admin
+- [ ] Score badge color updates with slider (gold/green/yellow/red)
+- [ ] Confirmation after submit
+- [ ] Tests for the review form
+
+### Files
+
+- `app/review/[pickId]/page.tsx`
+- `components/ReviewForm.tsx`, `components/ui/Slider.tsx`, `components/ui/Badge.tsx`
+- `lib/scoring.ts`
+- `tests/unit/components/ReviewForm.test.tsx`
+
+---
+
+## CAS-010: Movie Detail Page
+
+**Status:** Not Started
+**Dependencies:** CAS-006
+
+### Acceptance Criteria
+
+- [ ] `/movies/[id]` page (server component)
+- [ ] Full poster + metadata (director, year, runtime, genres, TMDB rating for comparison)
+- [ ] "Picked by [member] in [month year]"
+- [ ] Average score prominently displayed
+- [ ] Score distribution chart (how many 10s, 9s, etc.)
+- [ ] Individual reviews section: member name, score badge, written review
+- [ ] Sort reviews by score or by name
+- [ ] "Most divisive" indicator if score variance is high
+- [ ] Empty state if no reviews yet
+- [ ] Tests for the page and scoring logic
+
+### Files
+
+- `app/movies/[id]/page.tsx`
+- `components/ReviewCard.tsx`, `components/ScoreDistribution.tsx`
+- `lib/scoring.ts`
+- `tests/unit/lib/scoring.test.ts`, `tests/unit/components/ScoreDistribution.test.tsx`
+
+---
+
+## CAS-011: History / Archive Page
+
+**Status:** Not Started
+**Dependencies:** CAS-010
+
+### Acceptance Criteria
+
+- [ ] `/history` page (server component)
+- [ ] Grid of past movies, newest first
+- [ ] Each card: poster, title, year, average score, number of reviewers, picker
+- [ ] Sort by: year, average score, genre, picker, most divisive
+- [ ] Filter by: genre, picker
+- [ ] Search by title
+- [ ] Click any movie → movie detail page
+- [ ] Minimum review count (5) for all-time rankings
+- [ ] Pagination or infinite scroll
+- [ ] Tests for filtering, sorting, search
+
+### Files
+
+- `app/history/page.tsx`
+- `components/MovieCard.tsx`
+- `lib/supabase/getMovies.ts`, `lib/supabase/getPicks.ts`
+- `tests/unit/components/MovieCard.test.tsx`
+
+---
+
+## CAS-012: Member Profile Page
+
+**Status:** Not Started
+**Dependencies:** CAS-010
+
+### Acceptance Criteria
+
+- [ ] `/profile/[memberId]` page (server component)
+- [ ] Avatar, name, member since
+- [ ] Stats: number of reviews, average score given, average vs. club average
+- [ ] "Harsh critic" / "Easy grader" badge
+- [ ] Most-rated genre
+- [ ] Pick history (which movies they've picked)
+- [ ] Review history (sortable)
+- [ ] Tests for stat calculations
+
+### Files
+
+- `app/profile/[memberId]/page.tsx`
+- `lib/supabase/getMembers.ts`, `lib/supabase/getReviews.ts`
+- `tests/unit/lib/stats.test.ts`
+
+---
+
+## CAS-013: Stats / Insights Page
+
+**Status:** Not Started
+**Dependencies:** CAS-011, CAS-012
+
+### Acceptance Criteria
+
+- [ ] `/stats` page (server component)
+- [ ] Club leaderboard: highest-rated and lowest-rated movies of all time
+- [ ] Most divisive movies (highest score variance)
+- [ ] Rating tendencies per member (toughest grader)
+- [ ] Genre breakdown of watched movies
+- [ ] Club average over time trend
+- [ ] Tests for aggregate queries
+
+### Files
+
+- `app/stats/page.tsx`
+- `lib/supabase/getReviews.ts`, `lib/scoring.ts`
+- `tests/unit/lib/stats.test.ts`
+
+---
+
+## CAS-014: Admin Dashboard
+
+**Status:** Not Started
+**Dependencies:** CAS-008
+
+### Acceptance Criteria
+
+- [ ] `/admin` page (client component, admin only)
+- [ ] Member management: approve pending, remove, set admin
+- [ ] Rotation editor (from CAS-008)
+- [ ] Lock/unlock months (freezes reviews after meeting)
+- [ ] Edit/delete any movie or review
+- [ ] Only admin can access (RLS + UI guard)
+- [ ] Tests for admin actions
+
+### Files
+
+- `app/admin/page.tsx`
+- `components/RotationEditor.tsx`
+- `lib/supabase/getMembers.ts`
+
+---
+
+## CAS-015: Vercel Deployment
+
+**Status:** Not Started
+**Dependencies:** All above
+
+### Acceptance Criteria
+
+- [ ] Vercel project connected to GitHub repo
+- [ ] Environment variables configured in Vercel
+- [ ] Auto-deploy on push to `main`
+- [ ] Preview deployments for PRs
+- [ ] Production site accessible at the Vercel URL
+- [ ] All env vars documented in `.env.example`
+- [ ] README.md with setup instructions
+
+### Files
+
+- `README.md`
+- `.env.example` (finalized)
+- `vercel.json` (if needed)

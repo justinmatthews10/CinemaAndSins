@@ -1,0 +1,41 @@
+# repo-config.yml — CinemaAndSins facts for cas-* skills.
+
+schema_version: 1
+
+repo:
+  name: CinemaAndSins
+  prefix: cas
+  base_branch: main
+  feature_branch_format: "feature/<ISSUE_KEY>"
+
+harness:
+  main_file: harness/cinemaandins-harness.md
+  amendments_dir: harness/amendments/
+  progress_heading: "Story Status Matrix"
+
+commands:
+  test: npm run test
+  test_e2e: npm run test:e2e
+  lint: npm run lint
+  lint_fix: npm run lint:fix
+  typecheck: npm run typecheck
+  build: npm run build
+
+context:
+  story: [ideation/raw-stories.md]
+  plan: [ideation/raw-stories.md, harness/api-contracts.md, harness/codebase-layout.md]
+
+workflow_notes:
+  story: >
+    Active status belongs in harness/checkpoints/{ISSUE-KEY}.md. Create it from
+    harness/checkpoints/TEMPLATE.md at session start and read it to recover
+    prior state. Fold test/verify/commit/PR/harness-update into one workflow.
+  plan: >
+    Permanent decisions go in a new amendment. Active status goes in the story
+    checkpoint, never the main checkpoint heading.
+  loop: >
+    Exit gate: unit tests and typecheck pass. Supabase RLS policies must be
+    tested. TMDB calls must remain server-side only.
+  review: >
+    Run the checklist, address feedback, squash merge into main. Delete the
+    feature branch and checkpoint file after merge.
