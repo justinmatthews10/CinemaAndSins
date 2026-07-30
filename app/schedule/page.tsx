@@ -1,5 +1,6 @@
 import { getSchedule } from "@/lib/supabase/getSchedule";
 import { ScheduleTimeline } from "@/components/ScheduleTimeline";
+import { PageHeading } from "@/components/PageHeading";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function SchedulePage() {
@@ -13,9 +14,7 @@ export default async function SchedulePage() {
   return (
     <main className="flex flex-1 flex-col px-6 py-12">
       <div className="mx-auto w-full max-w-3xl">
-        <h1 className="mb-8 font-[family-name:var(--font-playfair)] text-3xl font-bold">
-          Schedule
-        </h1>
+        <PageHeading>Schedule</PageHeading>
         <ScheduleTimeline
           slots={upcoming}
           pastSlots={past}
