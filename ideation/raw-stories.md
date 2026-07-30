@@ -431,13 +431,41 @@
 - [ ] Preview deployments for PRs
 - [ ] Production site accessible at the Vercel URL
 - [ ] All env vars documented in `.env.example`
-- [ ] README.md with setup instructions
+- [ ] README.md with full setup instructions (Supabase + Vercel)
+- [ ] Admin bootstrap: `ADMIN_EMAIL` env var auto-sets admin+approved on signup
+- [ ] New migration updates `handle_new_user` trigger to check admin email
+
+### Implementation Plan
+
+**1. Admin bootstrap migration:**
+
+- New migration file: modify `handle_new_user()` to check if `NEW.email` matches `current_setting('app.admin_email', true)`
+- If match: set `is_admin = TRUE`, `is_approved = TRUE`
+- If no match: default behavior (unapproved, non-admin)
+- Add `ADMIN_EMAIL` to `.env.example`
+
+**2. README.md — full setup guide:**
+
+- Prerequisites (Node 20+, Supabase account, Vercel account, TMDB API key)
+- Step 1: Create Supabase project
+- Step 2: Run migrations (via Supabase CLI or SQL Editor)
+- Step 3: Get API keys from Supabase
+- Step 4: Get TMDB API key
+- Step 5: Create Vercel project (import from GitHub)
+- Step 6: Set environment variables in Vercel
+- Step 7: Deploy
+- Step 8: Sign up with admin email → auto-admin
+- Step 9: Invite members
+
+**3. `.env.example` — finalized:**
+
+- Add `ADMIN_EMAIL` variable
 
 ### Files
 
-- `README.md`
-- `.env.example` (finalized)
-- `vercel.json` (if needed)
+- `README.md` (full rewrite with deployment guide)
+- `.env.example` (add ADMIN_EMAIL)
+- `supabase/migrations/20260730000001_admin_bootstrap.sql` (new)
 
 ---
 
