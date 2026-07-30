@@ -14,7 +14,7 @@
 | CAS-008   | Rotation Management (Admin)  | —            | Not Started |
 | CAS-009   | Submit Review Page           | —            | Not Started |
 | CAS-010   | Movie Detail Page            | #10          | Complete    |
-| CAS-011   | History / Archive Page       | —            | Not Started |
+| CAS-011   | History / Archive Page       | #11          | Complete    |
 | CAS-012   | Member Profile Page          | —            | Not Started |
 | CAS-013   | Stats / Insights Page        | —            | Not Started |
 | CAS-014   | Admin Dashboard              | —            | Not Started |

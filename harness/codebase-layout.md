@@ -15,7 +15,7 @@ CinemaAndSins/
 │   ├── schedule/
 │   │   └── page.tsx              # Schedule timeline
 │   ├── history/
-│   │   └── page.tsx              # Archive grid
+│   │   └── page.tsx              # Archive grid (sort, filter, search)
 │   ├── movies/
 │   │   └── [id]/
 │   │       └── page.tsx          # Movie detail with reviews
@@ -55,8 +55,9 @@ CinemaAndSins/
 │   ├── AuthFormShell.tsx         # Shared auth form layout (card, title, footer)
 │   ├── Navbar.tsx                # Top navigation with user dropdown
 │   ├── AuthProvider.tsx          # Supabase auth context provider
-│   ├── MovieCard.tsx             # (planned) Poster + title + score (history grid)
+│   ├── MovieCard.tsx             # Poster + title + score (history grid card)
 │   ├── ReviewCard.tsx            # Individual review (name, score badge, text, tags)
+│   ├── HistoryControls.tsx       # Sort/filter/search/pagination for history grid
 │   ├── ReviewsSection.tsx        # Sortable reviews list + distribution chart
 │   ├── ScoreDistribution.tsx     # Horizontal bar chart showing score spread
 │   └── RotationEditor.tsx        # Admin drag-to-reorder rotation
@@ -66,7 +67,10 @@ CinemaAndSins/
 │   │   ├── server.ts             # Server Supabase client (service role)
 │   │   ├── auth.ts               # Auth validation + error mapping
 │   │   ├── picks.ts              # Pick CRUD + getAssignedPicker logic
-│   │   └── getCurrentPick.ts     # Server-side fetcher for home page
+│   │   ├── getCurrentPick.ts     # Server-side fetcher for home page
+│   │   ├── getSchedule.ts        # Server-side fetcher for schedule page
+│   │   ├── getMovieDetail.ts     # Server-side fetcher for movie detail page
+│   │   └── getHistory.ts         # Server-side fetcher for history page
 │   ├── tmdb.ts                   # TMDB API client (server-side)
 │   ├── scoring.ts                # Average calculation, score distribution
 │   ├── rotation.ts               # Rotation logic (next picker, skip/bump)
@@ -77,7 +81,8 @@ CinemaAndSins/
 │   ├── pick.ts
 │   ├── review.ts
 │   ├── member.ts
-│   └── rotation.ts
+│   ├── rotation.ts
+│   └── history.ts                # HistoryEntry, HistoryData, DIVISIVE_MIN_REVIEWS
 ├── supabase/                     # Supabase migrations and policies
 │   ├── migrations/
 │   │   ├── 001_create_members.sql
