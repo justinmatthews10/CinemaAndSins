@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/schedule", label: "Schedule" },
   { href: "/history", label: "History" },
-  { href: "/stats", label: "Stats" },
+  { href: "/members", label: "Members" },
 ];
 
 export default function Navbar() {

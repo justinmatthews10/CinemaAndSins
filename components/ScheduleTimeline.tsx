@@ -114,7 +114,15 @@ function ScheduleSlotRow({ slot, canPick }: { slot: ScheduleSlot; canPick: boole
         <p className="font-medium text-foreground">
           {formatMonthYear(slot.month, slot.year)}
         </p>
-        <p className="text-sm text-foreground/60">Picked by {slot.picker.name}</p>
+        <p className="text-sm text-foreground/60">
+          Picked by{" "}
+          <Link
+            href={`/profile/${slot.picker.id}`}
+            className="hover:text-accent hover:underline"
+          >
+            {slot.picker.name}
+          </Link>
+        </p>
         {slot.movie && (
           <Link
             href={`/movies/${slot.movie.id}`}

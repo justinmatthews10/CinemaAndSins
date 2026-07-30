@@ -19,26 +19,25 @@ export function MovieCard({ entry }: MovieCardProps) {
     entry.score_variance > DIVISIVE_THRESHOLD;
 
   return (
-    <Link
-      href={`/movies/${entry.movie_id}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition-colors hover:border-accent/50"
-    >
+    <div className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition-colors hover:border-accent/50">
       {/* Poster */}
-      <div className="aspect-[2/3] overflow-hidden">
-        <PosterImage
-          src={entry.poster_url}
-          alt={entry.title}
-          className="h-full w-full object-cover transition-opacity group-hover:opacity-90"
-          fallbackClassName="flex h-full w-full items-center justify-center bg-foreground/10 text-xs text-foreground/40"
-        />
-      </div>
+      <Link href={`/movies/${entry.movie_id}`} className="block">
+        <div className="aspect-[2/3] overflow-hidden">
+          <PosterImage
+            src={entry.poster_url}
+            alt={entry.title}
+            className="h-full w-full object-cover transition-opacity group-hover:opacity-90"
+            fallbackClassName="flex h-full w-full items-center justify-center bg-foreground/10 text-xs text-foreground/40"
+          />
+        </div>
+      </Link>
 
       {/* Details */}
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <div>
+        <Link href={`/movies/${entry.movie_id}`} className="hover:opacity-80">
           <h3 className="font-medium text-foreground">{entry.title}</h3>
           {entry.year && <p className="text-sm text-foreground/50">{entry.year}</p>}
-        </div>
+        </Link>
 
         {entry.genres.length > 0 && (
           <p className="text-xs text-foreground/40">{entry.genres.join(", ")}</p>
@@ -65,10 +64,16 @@ export function MovieCard({ entry }: MovieCardProps) {
 
         {/* Picker */}
         <p className="mt-auto text-xs text-foreground/50">
-          Picked by {entry.picker_name} ·{" "}
-          {formatMonthYear(entry.pick_month, entry.pick_year)}
+          Picked by{" "}
+          <Link
+            href={`/profile/${entry.picker_id}`}
+            className="text-foreground/60 hover:text-accent hover:underline"
+          >
+            {entry.picker_name}
+          </Link>{" "}
+          · {formatMonthYear(entry.pick_month, entry.pick_year)}
         </p>
       </div>
-    </Link>
+    </div>
   );
 }

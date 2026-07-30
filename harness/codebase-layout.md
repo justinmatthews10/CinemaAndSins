@@ -27,7 +27,7 @@ CinemaAndSins/
 │   │   └── [pickId]/
 │   │       └── page.tsx          # Submit/edit review (score slider, markdown)
 │   ├── members/
-│   │   └── page.tsx              # Members grid (top/worst movies, avg score)
+│   │   └── page.tsx              # Members grid (top/worst movies, avg score, badges)
 │   ├── profile/
 │   │   └── [memberId]/
 │   │       └── page.tsx          # Full member profile (stats, pick/review history)
@@ -60,6 +60,11 @@ CinemaAndSins/
 │   ├── MovieCard.tsx             # Poster + title + score (history grid card)
 │   ├── ReviewCard.tsx            # Individual review (name, score badge, text, tags)
 │   ├── HistoryControls.tsx       # Sort/filter/search/pagination for history grid
+│   ├── MemberCard.tsx            # Member card (avatar, avg, top/worst movies, badge)
+│   ├── ProfileHeader.tsx         # Profile avatar, name, avg score, harsh/easy badge
+│   ├── ProfileStats.tsx          # Profile stats grid (reviews, avg, vs club, genre)
+│   ├── ProfilePickHistory.tsx    # Member's pick history (posters, links to movies)
+│   ├── ProfileReviewHistory.tsx  # Sortable review history (client component)
 │   ├── ReviewsSection.tsx        # Sortable reviews list + distribution chart
 │   ├── ScoreDistribution.tsx     # Horizontal bar chart showing score spread
 │   └── RotationEditor.tsx        # Admin drag-to-reorder rotation
@@ -72,9 +77,12 @@ CinemaAndSins/
 │   │   ├── getCurrentPick.ts     # Server-side fetcher for home page
 │   │   ├── getSchedule.ts        # Server-side fetcher for schedule page
 │   │   ├── getMovieDetail.ts     # Server-side fetcher for movie detail page
-│   │   └── getHistory.ts         # Server-side fetcher for history page
+│   │   ├── getHistory.ts         # Server-side fetcher for history page
+│   │   ├── getMembers.ts         # Server-side fetcher for members page
+│   │   └── getProfile.ts         # Server-side fetcher for member profile page
 │   ├── tmdb.ts                   # TMDB API client (server-side)
 │   ├── scoring.ts                # Average calculation, score distribution
+│   ├── stats.ts                  # Member stat calculations (avg, harsh/easy, genre)
 │   ├── rotation.ts               # Rotation logic (next picker, skip/bump)
 │   ├── ui.ts                     # Shared CSS class constants
 │   └── utils.ts                  # General utilities (formatDate, formatScore, cn)
@@ -84,7 +92,8 @@ CinemaAndSins/
 │   ├── review.ts
 │   ├── member.ts
 │   ├── rotation.ts
-│   └── history.ts                # HistoryEntry, HistoryData, DIVISIVE_MIN_REVIEWS
+│   ├── history.ts                # HistoryEntry, HistoryData, DIVISIVE_MIN_REVIEWS
+│   └── member-summary.ts         # MemberSummary, ProfileData
 ├── supabase/                     # Supabase migrations and policies
 │   ├── migrations/
 │   │   ├── 001_create_members.sql

@@ -78,7 +78,7 @@ describe("ScheduleTimeline", () => {
 
     render(<ScheduleTimeline slots={slots} currentUserId={null} pastSlots={[]} />);
 
-    expect(screen.getByText(/Picked by Justin/i)).toBeInTheDocument();
+    expect(screen.getByText("Justin")).toBeInTheDocument();
   });
 
   it("shows picker name even when movie is picked", () => {
@@ -86,7 +86,7 @@ describe("ScheduleTimeline", () => {
 
     render(<ScheduleTimeline slots={slots} currentUserId={null} pastSlots={[]} />);
 
-    expect(screen.getByText(/Picked by Justin/i)).toBeInTheDocument();
+    expect(screen.getByText("Justin")).toBeInTheDocument();
     expect(screen.getByText("Inception")).toBeInTheDocument();
   });
 
