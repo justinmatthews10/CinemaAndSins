@@ -188,7 +188,7 @@ v1 Release
 | CAS-006 | Home / Current Movie      | Complete    | / page, MovieHero, getCurrentPick, PosterImage, ui constants, 21 tests |
 | CAS-007 | Schedule page             | Complete    | /schedule page, ScheduleTimeline, getSchedule helper, 12 unit tests    |
 | CAS-008 | Rotation management       | Complete    | /admin page, RotationEditor, up/down reorder, 10 unit tests            |
-| CAS-009 | Submit Review page        | Not Started | —                                                                      |
+| CAS-009 | Submit Review page        | Complete    | /review/[pickId], ReviewForm, score slider + badges, 11 unit tests     |
 | CAS-010 | Movie Detail page         | Not Started | —                                                                      |
 | CAS-011 | History / Archive page    | Not Started | —                                                                      |
 | CAS-012 | Member Profile page       | Not Started | —                                                                      |
