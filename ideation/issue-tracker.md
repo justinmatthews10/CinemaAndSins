@@ -18,8 +18,9 @@
 | CAS-012   | Members + Member Profile     | #12          | Complete    |
 | CAS-013   | Stats / Insights Page        | #13          | Complete    |
 | CAS-014   | Admin Dashboard              | —            | Not Started |
-| CAS-015   | Vercel Deployment            | —            | Not Started |
-| CAS-016   | CI Pipeline (GitHub Actions) | —            | Not Started |
+| CAS-015   | Mobile Responsive Design     | —            | Not Started |
+| CAS-016   | Vercel Deployment            | —            | Not Started |
+| CAS-017   | CI Pipeline (GitHub Actions) | —            | Not Started |
 
 ---
 

@@ -171,7 +171,8 @@ v1 Release
   │     ├── CAS-012: Members page + Member Profile (grid, top/worst movies, full history)
   │     ├── CAS-013: Stats / Insights page (club-wide analytics, no per-member — moved to CAS-012)
   │     └── CAS-014: Admin Dashboard (member management, lock/unlock months)
-  └── CAS-015: Vercel deployment + production env setup
+  └── CAS-015: Mobile responsive design (hamburger nav, touch targets, grid collapse)
+  └── CAS-016: Vercel deployment + production env setup
 ```
 
 ---
@@ -194,8 +195,9 @@ v1 Release
 | CAS-012 | Members + Member Profile  | Complete    | /members, /profile/[memberId], MemberCard, 183 tests                   |
 | CAS-013 | Stats / Insights page     | Complete    | /stats, leaderboard, divisive, genres, trend, 196 tests                |
 | CAS-014 | Admin Dashboard           | Not Started | —                                                                      |
-| CAS-015 | Vercel deployment         | Not Started | —                                                                      |
-| CAS-016 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                                   |
+| CAS-015 | Mobile responsive design  | Not Started | Hamburger nav, touch targets, grid collapse, no horizontal scroll      |
+| CAS-016 | Vercel deployment         | Not Started | —                                                                      |
+| CAS-017 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                                   |
 
 ---
 

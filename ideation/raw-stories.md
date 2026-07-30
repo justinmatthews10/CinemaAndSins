@@ -379,7 +379,33 @@
 
 ---
 
-## CAS-015: Vercel Deployment
+## CAS-015: Mobile Responsive Design
+
+**Status:** Not Started
+**Dependencies:** CAS-013
+
+### Acceptance Criteria
+
+- [ ] All pages render correctly on mobile (320px), tablet (768px), and desktop (1024px+)
+- [ ] Navbar collapses to hamburger menu on mobile
+- [ ] Touch-friendly tap targets (min 44x44px) for all interactive elements
+- [ ] Score sliders, sort buttons, and filter controls work on touch
+- [ ] Grid layouts collapse to single column on mobile (members, history, stats)
+- [ ] Posters and images scale proportionally
+- [ ] No horizontal scroll on any page
+- [ ] Forms (login, signup, add-movie, review) are usable on mobile
+- [ ] Test key pages with Playwright mobile viewport
+
+### Files
+
+- `components/Navbar.tsx` (hamburger menu)
+- `components/MobileMenu.tsx` (new)
+- `app/globals.css` (responsive utilities)
+- `tests/e2e/mobile.spec.ts`
+
+---
+
+## CAS-016: Vercel Deployment
 
 **Status:** Not Started
 **Dependencies:** All above
@@ -402,7 +428,7 @@
 
 ---
 
-## CAS-016: CI Pipeline (GitHub Actions)
+## CAS-017: CI Pipeline (GitHub Actions)
 
 **Status:** Not Started
 **Dependencies:** CAS-001
