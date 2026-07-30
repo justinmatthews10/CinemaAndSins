@@ -185,7 +185,7 @@ v1 Release
 | CAS-003 | Auth (email signup/login) | Complete    | AuthProvider, login/signup/pending pages, proxy.ts, 11 unit tests |
 | CAS-004 | TMDB integration          | Complete    | lib/tmdb.ts, 2 API routes, 19 unit tests                          |
 | CAS-005 | Add Movie page            | Complete    | /add-movie page, TmdbSearch, picks helper, 16 unit tests          |
-| CAS-006 | Home / Current Movie      | Not Started | —                                                                 |
+| CAS-006 | Home / Current Movie      | Complete    | / page, MovieHero, getCurrentPick helper, 11 unit tests           |
 | CAS-007 | Schedule page             | Not Started | —                                                                 |
 | CAS-008 | Rotation management       | Not Started | —                                                                 |
 | CAS-009 | Submit Review page        | Not Started | —                                                                 |
