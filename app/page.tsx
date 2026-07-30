@@ -8,9 +8,14 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const currentPick = await getCurrentPick(user?.id ?? null);
+  const data = await getCurrentPick(user?.id ?? null);
 
-  if (!currentPick) {
+  // No pick yet — show who's turn it is
+  if (!data.pick || !data.movie || !data.picker) {
+    const monthName = new Date(data.year, data.month - 1).toLocaleDateString("en-US", {
+      month: "long",
+    });
+
     return (
       <main className="flex flex-1 flex-col items-center justify-center px-6 py-24">
         <div className="w-full max-w-2xl text-center">
@@ -22,16 +27,32 @@ export default async function Home() {
             1–10, and talk about it.
           </p>
           <div className="mt-8 rounded-xl border border-border bg-surface p-8">
-            <p className="text-foreground/60">
-              No movie has been picked for this month yet.
-            </p>
-            {user && (
-              <a
-                href="/add-movie"
-                className="mt-4 inline-block rounded-full bg-accent px-6 py-3 font-medium text-background transition-colors hover:bg-accent/80"
-              >
-                Add a Pick
-              </a>
+            {data.assignedPicker ? (
+              <>
+                <p className="text-sm uppercase tracking-wide text-foreground/50">
+                  {monthName} {data.year}
+                </p>
+                <p className="mt-2 text-lg text-foreground">
+                  It&apos;s{" "}
+                  <span className="font-bold text-accent">
+                    {data.assignedPicker.name}
+                  </span>
+                  &apos;s turn to pick
+                </p>
+                <p className="mt-1 text-sm text-foreground/60">
+                  No movie has been picked yet.
+                </p>
+                {user && data.assignedPicker.id === user.id && (
+                  <a
+                    href="/add-movie"
+                    className="mt-4 inline-block rounded-full bg-accent px-6 py-3 font-medium text-background transition-colors hover:bg-accent/80"
+                  >
+                    Pick a Movie
+                  </a>
+                )}
+              </>
+            ) : (
+              <p className="text-foreground/60">No rotation has been set up yet.</p>
             )}
           </div>
           <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-center">
@@ -60,12 +81,12 @@ export default async function Home() {
           Movie of the Month
         </h2>
         <MovieHero
-          movie={currentPick.movie}
-          pick={currentPick.pick}
-          picker={currentPick.picker}
-          reviewStats={currentPick.reviewStats}
-          userReview={currentPick.userReview}
-          nextPicker={currentPick.nextPicker}
+          movie={data.movie}
+          pick={data.pick}
+          picker={data.picker}
+          reviewStats={data.reviewStats}
+          userReview={data.userReview}
+          nextPicker={data.nextPicker}
         />
       </div>
     </main>

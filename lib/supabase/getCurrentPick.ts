@@ -7,14 +7,21 @@ import type { RotationEntry } from "@/types/rotation";
 import { getAssignedPicker } from "@/lib/supabase/picks";
 
 export type CurrentPickData = {
-  pick: Pick;
-  movie: Movie;
-  picker: Member;
+  /** The assigned picker for this month (always present if rotation exists) */
+  assignedPicker: Member | null;
+  /** The pick for this month, or null if no movie has been picked yet */
+  pick: Pick | null;
+  /** The movie for the pick, or null if no pick exists */
+  movie: Movie | null;
+  /** The picker who made the pick (same as assignedPicker if pick exists) */
+  picker: Member | null;
   reviews: Review[];
   reviewStats: { reviewed: number; total: number };
   userReview: { score: number; review_text: string | null } | null;
   nextPicker: Member | null;
-} | null;
+  month: number;
+  year: number;
+};
 
 export async function getCurrentPick(userId: string | null): Promise<CurrentPickData> {
   const supabase = await createClient();
@@ -23,41 +30,47 @@ export async function getCurrentPick(userId: string | null): Promise<CurrentPick
   const month = now.getMonth() + 1;
   const year = now.getFullYear();
 
-  // Get current month's pick (one per month)
-  const { data: pickData } = await supabase
-    .from("picks")
-    .select("*")
-    .eq("month", month)
-    .eq("year", year)
-    .maybeSingle();
-
-  if (!pickData) return null;
-
-  const pick = pickData as Pick;
-
-  // Get movie, picker, and reviews in parallel
+  // Fetch rotation, members, and all picks in parallel (always needed)
   const [
-    { data: movieData },
-    { data: pickerData },
-    { data: reviewData },
     { data: rotationData },
     { data: membersData },
     { data: allPicksData },
+    { data: pickData },
   ] = await Promise.all([
-    supabase.from("movies").select("*").eq("id", pick.movie_id).single(),
-    supabase.from("members").select("*").eq("id", pick.picker_member_id).single(),
-    supabase.from("reviews").select("*").eq("pick_id", pick.id),
     supabase.from("rotation").select("*").order("order_index"),
     supabase.from("members").select("*"),
     supabase.from("picks").select("*").order("created_at"),
+    supabase.from("picks").select("*").eq("month", month).eq("year", year).maybeSingle(),
   ]);
 
-  const movie = movieData as Movie;
-  const picker = pickerData as Member;
-  const reviews = (reviewData ?? []) as Review[];
   const rotation = (rotationData ?? []) as RotationEntry[];
   const members = (membersData ?? []) as Member[];
   const allPicks = (allPicksData ?? []) as Pick[];
+  const pick = (pickData as Pick) ?? null;
+
+  // Determine the assigned picker for this month
+  const assignedPickerId = getAssignedPicker(rotation, allPicks, month, year);
+  const assignedPicker = assignedPickerId
+    ? (members.find((m) => m.id === assignedPickerId) ?? null)
+    : null;
+
+  // If there's a pick, fetch movie, picker, and reviews
+  let movie: Movie | null = null;
+  let picker: Member | null = null;
+  let reviews: Review[] = [];
+
+  if (pick) {
+    const [{ data: movieData }, { data: pickerData }, { data: reviewData }] =
+      await Promise.all([
+        supabase.from("movies").select("*").eq("id", pick.movie_id).single(),
+        supabase.from("members").select("*").eq("id", pick.picker_member_id).single(),
+        supabase.from("reviews").select("*").eq("pick_id", pick.id),
+      ]);
+
+    movie = (movieData as Movie) ?? null;
+    picker = (pickerData as Member) ?? null;
+    reviews = (reviewData ?? []) as Review[];
+  }
 
   // Get total member count for review stats
   const approvedMembers = members.filter((m) => m.is_approved);
@@ -66,7 +79,7 @@ export async function getCurrentPick(userId: string | null): Promise<CurrentPick
 
   // Find user's review
   let userReview: { score: number; review_text: string | null } | null = null;
-  if (userId) {
+  if (userId && pick) {
     const userRev = reviews.find((r) => r.member_id === userId);
     if (userRev) {
       userReview = {
@@ -85,6 +98,7 @@ export async function getCurrentPick(userId: string | null): Promise<CurrentPick
     : null;
 
   return {
+    assignedPicker,
     pick,
     movie,
     picker,
@@ -92,5 +106,7 @@ export async function getCurrentPick(userId: string | null): Promise<CurrentPick
     reviewStats: { reviewed, total },
     userReview,
     nextPicker,
+    month,
+    year,
   };
 }
