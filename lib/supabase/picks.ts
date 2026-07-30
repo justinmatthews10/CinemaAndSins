@@ -75,9 +75,16 @@ export function getAssignedPicker(
 
   if (active.length === 0) return null;
 
-  // If no picks exist yet, the first active member picks for the target month
+  // If no picks exist yet, use the current month as the anchor point.
+  // The first active member picks for the current month, and we advance
+  // by the month offset so each future month gets the next person.
   if (picks.length === 0) {
-    return active[0].member_id;
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear();
+    const monthsSinceNow = (targetYear - currentYear) * 12 + (targetMonth - currentMonth);
+    const offset = ((monthsSinceNow % active.length) + active.length) % active.length;
+    return active[offset].member_id;
   }
 
   // Find the earliest pick as the anchor

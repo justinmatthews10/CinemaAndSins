@@ -28,12 +28,58 @@ function makePicks(pickers: { memberId: string; month: number; year: number }[])
 }
 
 describe("getAssignedPicker", () => {
-  it("returns first active rotation member when no picks exist", () => {
+  it("returns first active rotation member when no picks exist (current month)", () => {
     const rotation = makeRotation(["member-a", "member-b", "member-c"]);
     const picks: Pick[] = [];
 
-    const result = getAssignedPicker(rotation, picks, 7, 2026);
+    // Current month should get the first member
+    const now = new Date();
+    const result = getAssignedPicker(
+      rotation,
+      picks,
+      now.getMonth() + 1,
+      now.getFullYear(),
+    );
     expect(result).toBe("member-a");
+  });
+
+  it("advances rotation by month when no picks exist", () => {
+    const rotation = makeRotation(["member-a", "member-b", "member-c"]);
+    const picks: Pick[] = [];
+
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear();
+
+    // Next month should get the second member
+    const nextDate = new Date(currentYear, currentMonth, 1); // currentMonth is 0-indexed here
+    const nextResult = getAssignedPicker(
+      rotation,
+      picks,
+      nextDate.getMonth() + 1,
+      nextDate.getFullYear(),
+    );
+    expect(nextResult).toBe("member-b");
+
+    // Month after that should get the third member
+    const afterDate = new Date(currentYear, currentMonth + 1, 1);
+    const afterResult = getAssignedPicker(
+      rotation,
+      picks,
+      afterDate.getMonth() + 1,
+      afterDate.getFullYear(),
+    );
+    expect(afterResult).toBe("member-c");
+
+    // Third month should wrap back to first
+    const wrapDate = new Date(currentYear, currentMonth + 2, 1);
+    const wrapResult = getAssignedPicker(
+      rotation,
+      picks,
+      wrapDate.getMonth() + 1,
+      wrapDate.getFullYear(),
+    );
+    expect(wrapResult).toBe("member-a");
   });
 
   it("returns second member when first member already picked", () => {
@@ -82,7 +128,14 @@ describe("getAssignedPicker", () => {
     ];
     const picks: Pick[] = [];
 
-    const result = getAssignedPicker(rotation, picks, 7, 2026);
+    // Current month with no picks → first active member
+    const now = new Date();
+    const result = getAssignedPicker(
+      rotation,
+      picks,
+      now.getMonth() + 1,
+      now.getFullYear(),
+    );
     expect(result).toBe("member-a");
   });
 
