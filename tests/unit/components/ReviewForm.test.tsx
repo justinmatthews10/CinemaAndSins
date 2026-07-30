@@ -34,7 +34,7 @@ describe("ReviewForm", () => {
 
     // Gold badge for 9+
     const badge = screen.getByText(/9\.5/);
-    expect(badge.className).toContain("text-accent");
+    expect(badge.className).toContain("text-[#ffd700]");
   });
 
   it("shows yellow badge for score 5-6", () => {

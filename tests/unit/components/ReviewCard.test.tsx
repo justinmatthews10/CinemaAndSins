@@ -95,7 +95,7 @@ describe("ReviewCard", () => {
     );
 
     const badge = screen.getByText("10");
-    expect(badge.className).toContain("text-accent");
+    expect(badge.className).toContain("text-[#ffd700]");
   });
 
   it("applies red badge color for score below 5", () => {
