@@ -40,7 +40,7 @@ export default function Navbar() {
   const isAdmin = member?.is_admin === true;
 
   return (
-    <nav className="border-b border-border bg-surface">
+    <nav className="relative z-50 border-b border-border bg-surface">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link
           href="/"
