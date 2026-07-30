@@ -1,5 +1,3 @@
-import type { Member } from "@/types/member";
-
 export type SignupInput = {
   email: string;
   password: string;

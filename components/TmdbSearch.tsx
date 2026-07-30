@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { PosterImage } from "@/components/PosterImage";
+import { inputClass } from "@/lib/ui";
 import type { TmdbSearchResult } from "@/types/movie";
 
 type TmdbSearchProps = {
@@ -71,7 +73,7 @@ export function TmdbSearch({ onSelect }: TmdbSearchProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search for a movie on TMDB..."
-        className="w-full rounded-lg border border-border bg-surface px-4 py-3 text-foreground focus:border-accent focus:outline-none"
+        className={inputClass}
         aria-label="Search for a movie"
       />
 
@@ -94,18 +96,12 @@ export function TmdbSearch({ onSelect }: TmdbSearchProps) {
                 onClick={() => handleSelect(result)}
                 className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-foreground/5"
               >
-                {result.poster_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={result.poster_url}
-                    alt={result.title}
-                    className="h-16 w-12 flex-shrink-0 rounded object-cover"
-                  />
-                ) : (
-                  <div className="flex h-16 w-12 flex-shrink-0 items-center justify-center rounded bg-foreground/10 text-xs text-foreground/40">
-                    No poster
-                  </div>
-                )}
+                <PosterImage
+                  src={result.poster_url}
+                  alt={result.title}
+                  className="h-16 w-12 flex-shrink-0 rounded object-cover"
+                  fallbackClassName="flex h-16 w-12 flex-shrink-0 items-center justify-center rounded bg-foreground/10 text-xs text-foreground/40"
+                />
                 <div className="min-w-0">
                   <p className="truncate font-medium text-foreground">{result.title}</p>
                   {result.year && (

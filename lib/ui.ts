@@ -1,0 +1,12 @@
+/** Shared CSS class strings to avoid duplication across components. */
+
+export const inputClass =
+  "w-full rounded-lg border border-border bg-surface px-4 py-3 text-foreground focus:border-accent focus:outline-none";
+
+export const primaryButtonClass =
+  "w-full rounded-lg bg-accent px-4 py-3 font-medium text-background transition-colors hover:bg-accent/80 disabled:opacity-50";
+
+export const navLinkClass = "text-foreground/70 transition-colors hover:text-foreground";
+
+export const secondaryLinkClass =
+  "rounded-full border border-border px-6 py-3 font-medium text-foreground transition-colors hover:bg-foreground/5";

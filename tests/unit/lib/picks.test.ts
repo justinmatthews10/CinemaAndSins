@@ -151,4 +151,36 @@ describe("getAssignedPicker", () => {
     const result = getAssignedPicker(rotation, picks, 1, 2026);
     expect(result).toBe("member-a");
   });
+
+  it("advances correctly when months are skipped (gaps in picks)", () => {
+    // Rotation: a, b, c, d, e
+    // Picks: a picks month 5, b picks month 6, then no pick for month 7
+    // Month 7 should be c (not b again), month 8 should be d, month 9 should be e
+    const rotation = makeRotation(["a", "b", "c", "d", "e"]);
+    const picks = makePicks([
+      { memberId: "a", month: 5, year: 2026 },
+      { memberId: "b", month: 6, year: 2026 },
+    ]);
+
+    // Month 7 (skipped) should still advance to c
+    expect(getAssignedPicker(rotation, picks, 7, 2026)).toBe("c");
+    // Month 8 should be d
+    expect(getAssignedPicker(rotation, picks, 8, 2026)).toBe("d");
+    // Month 9 should be e
+    expect(getAssignedPicker(rotation, picks, 9, 2026)).toBe("e");
+    // Month 10 should wrap to a
+    expect(getAssignedPicker(rotation, picks, 10, 2026)).toBe("a");
+  });
+
+  it("handles target month before earliest pick (negative offset)", () => {
+    const rotation = makeRotation(["a", "b", "c"]);
+    // Only pick is for month 8 by member b
+    const picks = makePicks([{ memberId: "b", month: 8, year: 2026 }]);
+
+    // Month 7 is before the anchor (month 8), should go backwards in rotation
+    // anchor is b (index 1), monthsSinceAnchor = -1, offset = (1-1+3)%3 = 0 = a
+    expect(getAssignedPicker(rotation, picks, 7, 2026)).toBe("a");
+    // Month 6: monthsSinceAnchor = -2, offset = (1-2+3)%3 = 2 = c
+    expect(getAssignedPicker(rotation, picks, 6, 2026)).toBe("c");
+  });
 });

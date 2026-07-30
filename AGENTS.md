@@ -213,6 +213,22 @@ Tests:
 - **Why it's non-obvious:** The 401 comes from TMDB, not our code, but the error message doesn't mention the API key.
 - **Added:** 2026-07-30 (CAS-005)
 
+#### Rotation: month-based offset, not pick count
+
+- **Symptom:** `getAssignedPicker` returns the wrong picker when months are skipped (gaps in picks). The rotation gets stuck on the same member.
+- **Wrong approach:** Using `pastPicks.length % active.length` to calculate the offset. This only counts existing picks, not months elapsed, so gaps don't advance the rotation.
+- **Correct fix:** Use the earliest pick as an anchor point. Calculate months between anchor and target, then advance the rotation by that count: `((anchorIndex + monthsSinceAnchor) % len + len) % len`. Use proper modulo for negative offsets.
+- **Why it's non-obvious:** The algorithm works perfectly when picks are contiguous. It only breaks when months are skipped, which happens during development/testing but also in production if someone forgets to pick.
+- **Added:** 2026-07-30 (CAS-006)
+
+#### Supabase: maybeSingle fails on multiple rows
+
+- **Symptom:** `getCurrentPick` throws when two picks exist for the same month (e.g. "current" and "upcoming" status).
+- **Wrong approach:** Using `.maybeSingle()` which returns an error if more than one row matches.
+- **Correct fix:** Add a unique index on `picks(month, year)` to enforce one pick per month at the DB level, then `.maybeSingle()` is safe.
+- **Why it's non-obvious:** The error doesn't clearly state "multiple rows found" — it's a generic PostgREST error. The unique constraint is the real fix, not changing the query.
+- **Added:** 2026-07-30 (CAS-006)
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
