@@ -87,28 +87,28 @@ export function getAssignedPicker(
     return active[offset].member_id;
   }
 
-  // Find the earliest pick as the anchor
-  const earliestPick = picks.reduce((earliest, p) => {
-    if (
-      p.year < earliest.year ||
-      (p.year === earliest.year && p.month < earliest.month)
-    ) {
+  // Find the latest pick as the anchor (most recent by month/year).
+  // Using the latest pick instead of the earliest ensures that manually
+  // added historical past picks (which may not follow rotation order)
+  // don't shift the anchor and break future month assignments.
+  const latestPick = picks.reduce((latest, p) => {
+    if (p.year > latest.year || (p.year === latest.year && p.month > latest.month)) {
       return p;
     }
-    return earliest;
+    return latest;
   }, picks[0]);
 
   // Find the anchor picker's position in the active rotation
   const anchorPickerIndex = active.findIndex(
-    (r) => r.member_id === earliestPick.picker_member_id,
+    (r) => r.member_id === latestPick.picker_member_id,
   );
 
   // If the anchor picker is no longer in the active rotation, fall back to
   // counting months from the anchor and using that as the offset directly
   if (anchorPickerIndex === -1) {
     const monthsSinceAnchor = monthsBetween(
-      earliestPick.month,
-      earliestPick.year,
+      latestPick.month,
+      latestPick.year,
       targetMonth,
       targetYear,
     );
@@ -118,8 +118,8 @@ export function getAssignedPicker(
 
   // Calculate months between anchor and target
   const monthsSinceAnchor = monthsBetween(
-    earliestPick.month,
-    earliestPick.year,
+    latestPick.month,
+    latestPick.year,
     targetMonth,
     targetYear,
   );
