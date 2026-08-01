@@ -1,7 +1,7 @@
 # CinemaAndSins — Integration Harness
 
-> **Status:** Initialization — harness and skills scaffolded, no stories implemented yet
-> **Last Updated:** 2026-07-29
+> **Status:** Production — deployed to Vercel, all stories through CAS-017 complete
+> **Last Updated:** 2026-07-30
 > **Purpose:** Single source of truth for architecture, data model, page inventory, and implementation state.
 
 ---
@@ -25,7 +25,7 @@
 - **Auth Layer:** Supabase email authentication. Members sign up with email + password. Admin approves pending signups. Only approved emails get member access.
 - **Data Layer:** Supabase Postgres with row-level security (RLS). Public can read approved content; only authenticated members can write. Admin has elevated privileges.
 - **Movie Data Layer:** TMDB API integration via server-side API routes. Search, fetch metadata, posters. API key never exposed to client.
-- **Rotation System:** Admin-managed ordered list of member IDs. Cycles through all members for monthly picks. Handles absences (skip + bump).
+- **Rotation System:** Admin-managed ordered list of member IDs. Cycles through all members for monthly picks. Handles absences (deactivate + reorder).
 - **Scoring System:** 1–10 scale (whole numbers or decimals — TBD, see Open Questions in DESIGN.md). Straight mean average across all reviewers. Minimum review count for all-time rankings.
 - **UI Layer:** Next.js App Router. Server Components by default. Client Components only for interactive forms (review submission, movie search, admin actions).
 
@@ -121,35 +121,46 @@
 | is_active   | boolean     | default true         |
 | updated_at  | timestamptz | default now()        |
 
+### `app_config`
+
+| Column      | Type        | Notes                                    |
+| ----------- | ----------- | ---------------------------------------- |
+| key         | text        | PK (e.g. `admin_email`)                  |
+| value       | text        | config value                             |
+| updated_at  | timestamptz | default now()                            |
+
 ### RLS Policies (summary)
 
-| Table    | Public                                    | Member                                                      | Admin |
-| -------- | ----------------------------------------- | ----------------------------------------------------------- | ----- |
-| members  | SELECT (id, name, avatar_url, created_at) | SELECT (all own) + UPDATE (own profile)                     | ALL   |
-| movies   | SELECT                                    | SELECT + INSERT (when assigned picker)                      | ALL   |
-| picks    | SELECT                                    | SELECT + INSERT (when assigned picker) + UPDATE (own picks) | ALL   |
-| reviews  | SELECT                                    | SELECT + INSERT/UPDATE (own reviews)                        | ALL   |
-| rotation | SELECT                                    | SELECT                                                      | ALL   |
+| Table      | Public                                    | Member                                                      | Admin |
+| ---------- | ----------------------------------------- | ----------------------------------------------------------- | ----- |
+| members    | SELECT (id, name, avatar_url, created_at) | SELECT (all own) + UPDATE (own profile)                     | ALL   |
+| movies     | SELECT                                    | SELECT + INSERT (when assigned picker)                      | ALL   |
+| picks      | SELECT                                    | SELECT + INSERT (when assigned picker) + UPDATE (own picks) | ALL   |
+| reviews    | SELECT                                    | SELECT + INSERT/UPDATE (own reviews)                        | ALL   |
+| rotation   | SELECT                                    | SELECT                                                      | ALL   |
+| app_config | SELECT                                    | SELECT                                                      | ALL   |
 
 ---
 
 ## 4. Page Inventory
 
-| Route                 | Type             | Description                            |
-| --------------------- | ---------------- | -------------------------------------- |
-| `/`                   | Server Component | Home / Current Movie of the Month      |
-| `/schedule`           | Server Component | Upcoming picks timeline                |
-| `/history`            | Server Component | Archive grid with sort/filter/search   |
-| `/movies/[id]`        | Server Component | Movie detail with reviews              |
-| `/add-movie`          | Client Component | Member's pick submission (TMDB search) |
-| `/review/[pickId]`    | Client Component | Submit/edit review                     |
-| `/profile/[memberId]` | Server Component | Member profile with stats              |
-| `/stats`              | Server Component | Club-wide insights                     |
-| `/admin`              | Client Component | Admin dashboard                        |
-| `/login`              | Client Component | Email + password login                 |
-| `/signup`             | Client Component | Email + password signup                |
-| `/api/tmdb/search`    | Route Handler    | TMDB movie search (server-side)        |
-| `/api/tmdb/[id]`      | Route Handler    | TMDB movie details (server-side)       |
+| Route                 | Type             | Description                                       |
+| --------------------- | ---------------- | ------------------------------------------------- |
+| `/`                   | Server Component | Home / Current Movie of the Month                 |
+| `/schedule`           | Server Component | Upcoming picks timeline                           |
+| `/history`            | Server Component | Archive grid with sort/filter/search              |
+| `/movies/[id]`        | Server Component | Movie detail with reviews                         |
+| `/members`            | Server Component | Members grid (avg score, top/worst movies)        |
+| `/profile/[memberId]` | Server Component | Member profile with stats                         |
+| `/stats`              | Server Component | Club-wide insights                                |
+| `/add-movie`          | Client Component | Member's pick submission (TMDB search)            |
+| `/review/[pickId]`    | Client Component | Submit/edit review                                |
+| `/admin`              | Client Component | Admin dashboard (rotation, members, picks, past pick, content) |
+| `/login`              | Client Component | Email + password login                            |
+| `/signup`             | Client Component | Email + password signup                           |
+| `/pending`            | Client Component | Pending approval landing page                     |
+| `/api/tmdb/search`    | Route Handler    | TMDB movie search (server-side)                   |
+| `/api/tmdb/[id]`      | Route Handler    | TMDB movie details (server-side)                  |
 
 ---
 
@@ -247,3 +258,7 @@ v1 Release
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
   - `SUPABASE_SERVICE_ROLE_KEY`
   - `TMDB_API_KEY`
+  - `ADMIN_EMAIL`
+- Database migrations applied via `supabase db push`
+- Admin bootstrap: `app_config` table stores `admin_email`, trigger auto-approves matching signups
+- Supabase auth URLs must be updated to Vercel URL (Authentication → URL Configuration)

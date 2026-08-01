@@ -22,7 +22,7 @@ CinemaAndSins/
 │   ├── add-movie/
 │   │   └── page.tsx              # Member pick page (TMDB search, change/remove)
 │   ├── admin/
-│   │   └── page.tsx              # Admin dashboard (rotation management)
+│   │   └── page.tsx              # Admin dashboard (rotation, members, picks, past pick, content)
 │   ├── review/
 │   │   └── [pickId]/
 │   │       └── page.tsx          # Submit/edit review (score slider, markdown)
@@ -33,12 +33,12 @@ CinemaAndSins/
 │   │       └── page.tsx          # Full member profile (stats, pick/review history)
 │   ├── stats/
 │   │   └── page.tsx              # Club-wide insights (leaderboard, divisive, genres, trend)
-│   ├── admin/
-│   │   └── page.tsx              # Admin dashboard
 │   ├── login/
 │   │   └── page.tsx              # Email + password login
 │   ├── signup/
 │   │   └── page.tsx              # Email + password signup
+│   ├── pending/
+│   │   └── page.tsx              # Pending approval landing page
 │   └── api/
 │       └── tmdb/
 │           ├── search/
@@ -50,7 +50,7 @@ CinemaAndSins/
 │   ├── PosterImage.tsx           # Poster with no-poster fallback
 │   ├── PageHeading.tsx           # Standard page heading (Playfair font)
 │   ├── ScheduleTimeline.tsx      # Schedule timeline with pick status
-│   ├── RotationEditor.tsx        # Admin rotation management (reorder, skip, toggle)
+│   ├── RotationEditor.tsx        # Admin rotation management (reorder, toggle active)
 │   ├── MemberManager.tsx         # Admin member management (approve, remove, admin)
 │   ├── PickManager.tsx           # Admin pick locking (lock/unlock months)
 │   ├── ContentManager.tsx        # Admin content management (delete movies/reviews)
@@ -76,7 +76,8 @@ CinemaAndSins/
 │   ├── StatsTrendChart.tsx       # Club average over time (bar chart)
 │   ├── ReviewsSection.tsx        # Sortable reviews list + distribution chart
 │   ├── ScoreDistribution.tsx     # Horizontal bar chart showing score spread
-│   └── RotationEditor.tsx        # Admin drag-to-reorder rotation
+│   ├── LoadingState.tsx          # Loading spinner / placeholder
+│   └── StatusBanner.tsx          # Success/error message banner
 ├── lib/                          # Shared utilities
 │   ├── supabase/
 │   │   ├── client.ts             # Browser Supabase client (anon key)
@@ -94,7 +95,7 @@ CinemaAndSins/
 │   ├── scoring.ts                # Average calculation, score distribution
 │   ├── stats.ts                  # Member stat calculations (avg, harsh/easy, genre)
 │   ├── stats-aggregate.ts        # Club-wide stat aggregations (leaderboard, divisive, genres, trend)
-│   ├── rotation.ts               # Rotation logic (next picker, skip/bump)
+│   ├── rotation.ts               # Rotation logic (next picker, advance)
 │   ├── ui.ts                     # Shared CSS class constants
 │   └── utils.ts                  # General utilities (formatDate, formatScore, cn)
 ├── types/                        # TypeScript type definitions
@@ -107,13 +108,20 @@ CinemaAndSins/
 │   └── member-summary.ts         # MemberSummary, ProfileData
 ├── supabase/                     # Supabase migrations and policies
 │   ├── migrations/
-│   │   ├── 001_create_members.sql
-│   │   ├── 002_create_movies.sql
-│   │   ├── 003_create_picks.sql
-│   │   ├── 004_create_reviews.sql
-│   │   ├── 005_create_rotation.sql
-│   │   └── 006_rls_policies.sql
-│   └── seed.sql                  # Seed data for local dev
+│   │   ├── 20260729000001_create_members.sql
+│   │   ├── 20260729000002_create_movies.sql
+│   │   ├── 20260729000003_create_picks.sql
+│   │   ├── 20260729000004_create_reviews.sql
+│   │   ├── 20260729000005_create_rotation.sql
+│   │   ├── 20260729000006_rls_policies.sql
+│   │   ├── 20260730000001_picks_unique_month_year.sql
+│   │   ├── 20260730000003_app_config_admin_bootstrap.sql
+│   │   ├── 20260730000004_set_admin_email.sql
+│   │   └── 20260730000005_drop_single_current_constraint.sql
+│   ├── seed.sql                  # Seed data for local dev
+│   ├── seed-users.sh             # Create test users via Auth API
+│   ├── seed-movies.sh            # Fetch movie data from TMDB
+│   └── seed-relations.sh         # Create picks, reviews, rotation
 ├── tests/                        # Vitest unit/integration tests
 │   ├── unit/
 │   │   ├── components/

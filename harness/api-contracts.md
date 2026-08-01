@@ -12,6 +12,7 @@
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client + Server | Supabase anon key (safe for client)                |
 | `SUPABASE_SERVICE_ROLE_KEY`     | Server only     | Supabase service role key (never expose to client) |
 | `TMDB_API_KEY`                  | Server only     | TMDB Bearer token for API access                   |
+| `ADMIN_EMAIL`                   | Server only     | Email of the initial admin (auto-approved on signup) |
 
 ---
 
@@ -88,6 +89,16 @@ CREATE TABLE rotation (
   order_index INTEGER NOT NULL,
   member_id UUID NOT NULL REFERENCES members(id) ON DELETE CASCADE,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+```
+
+### `app_config`
+
+```sql
+CREATE TABLE app_config (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 ```
@@ -193,6 +204,20 @@ CREATE POLICY "rotation_public_read" ON rotation
 
 -- Admins can do everything
 CREATE POLICY "rotation_admin_all" ON rotation
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM members m WHERE m.id = auth.uid() AND m.is_admin)
+  );
+```
+
+### `app_config`
+
+```sql
+-- Public can read
+CREATE POLICY "app_config_public_read" ON app_config
+  FOR SELECT USING (true);
+
+-- Admins can do everything
+CREATE POLICY "app_config_admin_all" ON app_config
   FOR ALL USING (
     EXISTS (SELECT 1 FROM members m WHERE m.id = auth.uid() AND m.is_admin)
   );

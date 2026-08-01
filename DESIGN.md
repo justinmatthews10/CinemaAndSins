@@ -67,8 +67,8 @@ A private, members-only web app where the club schedules monthly movie picks, re
 - Timeline / calendar view of upcoming months.
 - Each slot shows: month, assigned picker, status (not picked yet / movie selected / locked).
 - Members can click their slot to add their pick.
-- Admin can reorder the rotation, skip someone, or assign a substitute.
-- Rotation logic: cycles through all members, then repeats. Handles absences (skip + bump).
+- Admin can reorder the rotation or deactivate a member temporarily.
+- Rotation logic: cycles through all members, then repeats. Handles absences (deactivate + reorder).
 - Past months collapse into the history view.
 
 ### 3. History / Archive

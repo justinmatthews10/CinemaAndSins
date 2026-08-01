@@ -6,13 +6,13 @@
 | --------- | ---------------------------- | ------------ | ----------- |
 | CAS-001   | Project Scaffolding          | —            | Complete    |
 | CAS-002   | Supabase Setup               | —            | Complete    |
-| CAS-003   | Auth (Email Signup/Login)    | —            | Not Started |
-| CAS-004   | TMDB Integration             | —            | Not Started |
-| CAS-005   | Add Movie Page               | —            | Not Started |
-| CAS-006   | Home / Current Movie         | —            | Not Started |
-| CAS-007   | Schedule Page                | —            | Not Started |
-| CAS-008   | Rotation Management (Admin)  | —            | Not Started |
-| CAS-009   | Submit Review Page           | —            | Not Started |
+| CAS-003   | Auth (Email Signup/Login)    | —            | Complete    |
+| CAS-004   | TMDB Integration             | —            | Complete    |
+| CAS-005   | Add Movie Page               | —            | Complete    |
+| CAS-006   | Home / Current Movie         | —            | Complete    |
+| CAS-007   | Schedule Page                | —            | Complete    |
+| CAS-008   | Rotation Management (Admin)  | —            | Complete    |
+| CAS-009   | Submit Review Page           | —            | Complete    |
 | CAS-010   | Movie Detail Page            | #10          | Complete    |
 | CAS-011   | History / Archive Page       | #11          | Complete    |
 | CAS-012   | Members + Member Profile     | #12          | Complete    |
