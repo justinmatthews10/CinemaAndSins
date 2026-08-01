@@ -69,7 +69,7 @@
 
 ## CAS-003: Auth (Email Signup/Login)
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-002
 
 ### Acceptance Criteria
@@ -98,7 +98,7 @@
 
 ## CAS-004: TMDB Integration
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-002
 
 ### Acceptance Criteria
@@ -121,7 +121,7 @@
 
 ## CAS-005: Add Movie Page
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-003, CAS-004
 
 ### Acceptance Criteria
@@ -148,7 +148,7 @@
 
 ## CAS-006: Home / Current Movie of the Month
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-003, CAS-004
 
 ### Acceptance Criteria
@@ -175,7 +175,7 @@
 
 ## CAS-007: Schedule Page
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-003
 
 ### Acceptance Criteria
@@ -199,7 +199,7 @@
 
 ## CAS-008: Rotation Management (Admin)
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-007
 
 ### Acceptance Criteria
@@ -222,7 +222,7 @@
 
 ## CAS-009: Submit Review Page
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-003, CAS-006
 
 ### Acceptance Criteria
@@ -248,7 +248,7 @@
 
 ## CAS-010: Movie Detail Page
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-006
 
 ### Acceptance Criteria
@@ -275,7 +275,7 @@
 
 ## CAS-011: History / Archive Page
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-010
 
 ### Acceptance Criteria
@@ -302,7 +302,7 @@
 
 ## CAS-012: Members Page + Member Profile
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-010
 
 ### Acceptance Criteria

@@ -236,4 +236,26 @@ describe("getAssignedPicker", () => {
     // Month 6: monthsSinceAnchor = -2, offset = (1-2+3)%3 = 2 = c
     expect(getAssignedPicker(rotation, picks, 6, 2026)).toBe("c");
   });
+
+  it("historical past picks at bottom of rotation don't break future months", () => {
+    // Rotation: Sam(0), Luke(1), Hank(2), D(3), E(4)
+    const rotation = makeRotation(["sam", "luke", "hank", "d", "e"]);
+
+    // Sam picked for June (real pick through the system)
+    // User added historical picks for D and E at the bottom for earlier months
+    const picks = makePicks([
+      { memberId: "d", month: 3, year: 2026 },
+      { memberId: "e", month: 4, year: 2026 },
+      { memberId: "sam", month: 6, year: 2026 },
+    ]);
+
+    // July should be Luke (next after Sam), not Hank
+    // Latest pick is Sam (June), anchor index 0, monthsSinceAnchor = 1
+    // offset = (0 + 1) % 5 = 1 = luke
+    expect(getAssignedPicker(rotation, picks, 7, 2026)).toBe("luke");
+    // August should be Hank
+    expect(getAssignedPicker(rotation, picks, 8, 2026)).toBe("hank");
+    // September should be D
+    expect(getAssignedPicker(rotation, picks, 9, 2026)).toBe("d");
+  });
 });
