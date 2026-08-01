@@ -237,6 +237,14 @@ Tests:
 - **Why it's non-obvious:** The Review type has `tags: string[] | null`, suggesting null is valid. But the DB schema enforces NOT NULL on the column. The type should be updated to `string[]` to match.
 - **Added:** 2026-07-30 (CAS-009)
 
+#### Rotation: earliest pick anchor breaks when historical picks are added
+
+- **Symptom:** After adding historical past picks for people at the bottom of the rotation, the schedule shows the wrong picker for future months (e.g. shows Hank for July when it should be Luke).
+- **Wrong approach:** Using the earliest pick as the rotation anchor. Historical picks for earlier months shift the anchor to someone at the bottom of the rotation, throwing off the offset calculation for all future months.
+- **Correct fix:** Use the latest pick (most recent by month/year) as the anchor. Historical picks for earlier months don't shift the anchor, so the rotation continues correctly from the most recent real pick.
+- **Why it's non-obvious:** The earliest-pick anchor works perfectly when picks are added in order through the normal flow. It only breaks when the Past Pick form is used to add picks for earlier months — which is a post-launch feature.
+- **Added:** 2026-07-30 (CAS-016)
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
