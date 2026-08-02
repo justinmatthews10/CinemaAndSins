@@ -123,11 +123,11 @@
 
 ### `app_config`
 
-| Column      | Type        | Notes                                    |
-| ----------- | ----------- | ---------------------------------------- |
-| key         | text        | PK (e.g. `admin_email`)                  |
-| value       | text        | config value                             |
-| updated_at  | timestamptz | default now()                            |
+| Column     | Type        | Notes                   |
+| ---------- | ----------- | ----------------------- |
+| key        | text        | PK (e.g. `admin_email`) |
+| value      | text        | config value            |
+| updated_at | timestamptz | default now()           |
 
 ### RLS Policies (summary)
 
@@ -144,23 +144,23 @@
 
 ## 4. Page Inventory
 
-| Route                 | Type             | Description                                       |
-| --------------------- | ---------------- | ------------------------------------------------- |
-| `/`                   | Server Component | Home / Current Movie of the Month                 |
-| `/schedule`           | Server Component | Upcoming picks timeline                           |
-| `/history`            | Server Component | Archive grid with sort/filter/search              |
-| `/movies/[id]`        | Server Component | Movie detail with reviews                         |
-| `/members`            | Server Component | Members grid (avg score, top/worst movies)        |
-| `/profile/[memberId]` | Server Component | Member profile with stats                         |
-| `/stats`              | Server Component | Club-wide insights                                |
-| `/add-movie`          | Client Component | Member's pick submission (TMDB search)            |
-| `/review/[pickId]`    | Client Component | Submit/edit review                                |
+| Route                 | Type             | Description                                                    |
+| --------------------- | ---------------- | -------------------------------------------------------------- |
+| `/`                   | Server Component | Home / Current Movie of the Month                              |
+| `/schedule`           | Server Component | Upcoming picks timeline                                        |
+| `/history`            | Server Component | Archive grid with sort/filter/search                           |
+| `/movies/[id]`        | Server Component | Movie detail with reviews                                      |
+| `/members`            | Server Component | Members grid (avg score, top/worst movies)                     |
+| `/profile/[memberId]` | Server Component | Member profile with stats                                      |
+| `/stats`              | Server Component | Club-wide insights                                             |
+| `/add-movie`          | Client Component | Member's pick submission (TMDB search)                         |
+| `/review/[pickId]`    | Client Component | Submit/edit review                                             |
 | `/admin`              | Client Component | Admin dashboard (rotation, members, picks, past pick, content) |
-| `/login`              | Client Component | Email + password login                            |
-| `/signup`             | Client Component | Email + password signup                           |
-| `/pending`            | Client Component | Pending approval landing page                     |
-| `/api/tmdb/search`    | Route Handler    | TMDB movie search (server-side)                   |
-| `/api/tmdb/[id]`      | Route Handler    | TMDB movie details (server-side)                  |
+| `/login`              | Client Component | Email + password login                                         |
+| `/signup`             | Client Component | Email + password signup                                        |
+| `/pending`            | Client Component | Pending approval landing page                                  |
+| `/api/tmdb/search`    | Route Handler    | TMDB movie search (server-side)                                |
+| `/api/tmdb/[id]`      | Route Handler    | TMDB movie details (server-side)                               |
 
 ---
 
@@ -262,3 +262,53 @@ v1 Release
 - Database migrations applied via `supabase db push`
 - Admin bootstrap: `app_config` table stores `admin_email`, trigger auto-approves matching signups
 - Supabase auth URLs must be updated to Vercel URL (Authentication → URL Configuration)
+
+---
+
+## 9. Maintenance Guide
+
+> **Last reviewed:** 2026-07-30
+> Living checklist of ongoing maintenance tasks. Review quarterly.
+
+### Monthly (club operations)
+
+| Task                          | How                            | Who   |
+| ----------------------------- | ------------------------------ | ----- |
+| Lock each month's pick        | Admin → Picks tab → Lock       | Admin |
+| Approve new member signups    | Admin → Members tab → Approve  | Admin |
+| Rotation changes (join/leave) | Admin → Rotation tab → Reorder | Admin |
+
+### Periodic (every 1–3 months)
+
+| Task                  | How                                   | Risk if skipped                                |
+| --------------------- | ------------------------------------- | ---------------------------------------------- |
+| Dependency updates    | `npm update` → `npm run verify`       | Security vulnerabilities, stale packages       |
+| Database backup       | `supabase db dump -f backup.sql`      | Data loss — no automated backups on free tier  |
+| Review Supabase usage | Supabase dashboard → Settings → Usage | Hit free tier limits (500MB DB, 2GB bandwidth) |
+
+### Free tier limits to monitor
+
+| Service              | Limit               | Current risk                               |
+| -------------------- | ------------------- | ------------------------------------------ |
+| Supabase DB          | 500MB               | Low — small club, text-only reviews        |
+| Supabase bandwidth   | 2GB/month           | Low — posters served from TMDB CDN         |
+| Supabase auth emails | Rate-limited (free) | Mitigated — email confirmation disabled    |
+| Vercel bandwidth     | 100GB/month         | Low — SSR traffic only, posters from TMDB  |
+| TMDB API             | Free, rate-limited  | Low — server-side calls only, cached in DB |
+
+### Not yet automated (future work)
+
+| Item                      | Story       | Impact                              |
+| ------------------------- | ----------- | ----------------------------------- |
+| CI pipeline (tests on PR) | CAS-018     | Tests only run manually right now   |
+| Auto-lock past picks      | Not planned | Admin must manually lock each month |
+| Error monitoring (Sentry) | Not planned | Silent failures in production       |
+| Uptime monitoring         | Not planned | No alerting if site goes down       |
+| Automated DB backups      | Not planned | Manual `supabase db dump` required  |
+
+### Things that could break
+
+- **TMDB API changes** — If response format changes, update `lib/tmdb.ts` and `app/api/tmdb/` routes
+- **Next.js major upgrade** — App Router patterns or config may change; check `node_modules/next/dist/docs/`
+- **Supabase SDK update** — `@supabase/ssr` auth handling could break; test login/signup flow after updates
+- **New tables/columns** — Must add RLS policies + `GRANT` statements (see pitfall in AGENTS.md Section 7)
