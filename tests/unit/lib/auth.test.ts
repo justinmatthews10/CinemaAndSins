@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { validateEmail, validatePassword, validateSignupForm } from "@/lib/supabase/auth";
+import {
+  validateEmail,
+  validatePassword,
+  validateSignupForm,
+  validateResetPasswordForm,
+} from "@/lib/supabase/auth";
 
 describe("validateEmail", () => {
   it("accepts valid email addresses", () => {
@@ -63,5 +68,47 @@ describe("validateSignupForm", () => {
       name: "",
     });
     expect(result.name).toBeDefined();
+  });
+});
+
+describe("validateResetPasswordForm", () => {
+  it("returns no errors for valid matching passwords", () => {
+    const result = validateResetPasswordForm({
+      password: "password123",
+      confirmPassword: "password123",
+    });
+    expect(result).toEqual({});
+  });
+
+  it("returns password error for short password", () => {
+    const result = validateResetPasswordForm({
+      password: "12345",
+      confirmPassword: "12345",
+    });
+    expect(result.password).toBeDefined();
+  });
+
+  it("returns confirmPassword error when passwords don't match", () => {
+    const result = validateResetPasswordForm({
+      password: "password123",
+      confirmPassword: "different123",
+    });
+    expect(result.confirmPassword).toBeDefined();
+  });
+
+  it("returns password error for empty password", () => {
+    const result = validateResetPasswordForm({
+      password: "",
+      confirmPassword: "",
+    });
+    expect(result.password).toBeDefined();
+  });
+
+  it("returns confirmPassword error for empty confirm", () => {
+    const result = validateResetPasswordForm({
+      password: "password123",
+      confirmPassword: "",
+    });
+    expect(result.confirmPassword).toBeDefined();
   });
 });

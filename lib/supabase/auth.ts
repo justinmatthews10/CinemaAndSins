@@ -9,12 +9,20 @@ export type LoginInput = {
   password: string;
 };
 
+export type ResetPasswordInput = {
+  password: string;
+  confirmPassword: string;
+};
+
 export type AuthResult = {
   error: string | null;
   needsApproval?: boolean;
 };
 
 export type ValidationResult = Partial<Record<keyof SignupInput, string>>;
+export type ResetPasswordValidationResult = Partial<
+  Record<keyof ResetPasswordInput, string>
+>;
 
 export function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -49,6 +57,19 @@ export function validateLoginForm(input: LoginInput): ValidationResult {
   return errors;
 }
 
+export function validateResetPasswordForm(
+  input: ResetPasswordInput,
+): ResetPasswordValidationResult {
+  const errors: ResetPasswordValidationResult = {};
+  if (!validatePassword(input.password)) {
+    errors.password = "Password must be at least 6 characters";
+  }
+  if (!input.confirmPassword || input.password !== input.confirmPassword) {
+    errors.confirmPassword = "Passwords do not match";
+  }
+  return errors;
+}
+
 /**
  * Maps a Supabase auth error code/message to a user-friendly message.
  */
@@ -60,5 +81,7 @@ export function mapAuthError(error: { message?: string } | null): string {
     return "An account with this email already exists";
   if (msg.includes("email not confirmed"))
     return "Please check your email to confirm your account";
+  if (msg.includes("rate limit") || msg.includes("too many"))
+    return "Too many requests. Please wait a few minutes before trying again.";
   return error.message;
 }

@@ -215,7 +215,7 @@ v1 Release
 | CAS-016 | Historical Data Entry     | Complete    | Past Pick tab on admin, PastPickForm, 233 tests                        |
 | CAS-017 | Vercel deployment         | Complete    | Admin bootstrap migration, full README setup guide, 233 tests          |
 | CAS-018 | CI pipeline (GH Actions)  | Not Started | Split out of CAS-001                                                   |
-| CAS-019 | Forgot password (reset)   | Not Started | Password reset email flow, depends on CAS-003                          |
+| CAS-019 | Forgot password (reset)   | Complete    | /forgot-password + /reset-password pages, 247 tests                    |
 
 ---
 

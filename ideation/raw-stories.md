@@ -543,7 +543,7 @@ before merge — they rely on the developer remembering to run `npm run verify`.
 
 ## CAS-019: Forgot Password (Password Reset Flow)
 
-**Status:** Not Started
+**Status:** Complete
 **Dependencies:** CAS-003
 
 ### Acceptance Criteria

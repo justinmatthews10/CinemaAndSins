@@ -16,6 +16,7 @@ When a user added historical past picks via the Past Pick form for people at the
 **Root cause:** The algorithm anchored on the earliest pick (by month/year). Historical picks for earlier months shifted the anchor to someone at the bottom of the rotation, throwing off the offset calculation for all future months.
 
 **Example:**
+
 - Rotation: Sam(0), Luke(1), Hank(2), D(3), E(4)
 - Sam picked for June (real pick through the app)
 - User added historical picks: D for March, E for April
