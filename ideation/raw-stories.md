@@ -540,3 +540,35 @@
 
 Split out of CAS-001. Without this, nothing mechanically enforces the quality gates
 before merge — they rely on the developer remembering to run `npm run verify`.
+
+## CAS-019: Forgot Password (Password Reset Flow)
+
+**Status:** Not Started
+**Dependencies:** CAS-003
+
+### Acceptance Criteria
+
+- [ ] "Forgot password?" link on the login page opens a password reset request form
+- [ ] User enters their email and submits — Supabase sends a password reset email
+- [ ] Email contains a link that redirects to a `/reset-password` page on the app
+- [ ] `/reset-password` page lets the user enter a new password and confirm it
+- [ ] New password is validated (min length, matches confirmation)
+- [ ] After successful reset, user is redirected to `/login` with a success message
+- [ ] Error states handled: email not found, network error, expired token
+- [ ] Rate limiting handled gracefully (Supabase auth email limits)
+- [ ] Mobile responsive (matches existing auth form styling)
+- [ ] Unit tests for form validation, error mapping, and reset flow
+
+### Files
+
+- `app/forgot-password/page.tsx` — email entry form (client component)
+- `app/reset-password/page.tsx` — new password entry form (client component)
+- `lib/supabase/auth.ts` — add `validateResetPasswordForm` helper
+- `app/login/page.tsx` — add "Forgot password?" link
+
+### Notes
+
+Supabase provides built-in password reset via `supabase.auth.resetPasswordForEmail()`.
+The redirect URL must be configured in Supabase Auth settings (already done for
+Vercel URL). Email confirmation is currently disabled, but password reset emails
+are a separate Supabase auth setting and should work independently.
