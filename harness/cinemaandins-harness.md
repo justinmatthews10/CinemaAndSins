@@ -158,6 +158,8 @@
 | `/admin`              | Client Component | Admin dashboard (rotation, members, picks, past pick, content) |
 | `/login`              | Client Component | Email + password login                                         |
 | `/signup`             | Client Component | Email + password signup                                        |
+| `/forgot-password`    | Client Component | Password reset email request                                   |
+| `/reset-password`     | Client Component | Set new password after email reset                             |
 | `/pending`            | Client Component | Pending approval landing page                                  |
 | `/api/tmdb/search`    | Route Handler    | TMDB movie search (server-side)                                |
 | `/api/tmdb/[id]`      | Route Handler    | TMDB movie details (server-side)                               |

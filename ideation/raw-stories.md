@@ -548,23 +548,29 @@ before merge — they rely on the developer remembering to run `npm run verify`.
 
 ### Acceptance Criteria
 
-- [ ] "Forgot password?" link on the login page opens a password reset request form
-- [ ] User enters their email and submits — Supabase sends a password reset email
-- [ ] Email contains a link that redirects to a `/reset-password` page on the app
-- [ ] `/reset-password` page lets the user enter a new password and confirm it
-- [ ] New password is validated (min length, matches confirmation)
-- [ ] After successful reset, user is redirected to `/login` with a success message
-- [ ] Error states handled: email not found, network error, expired token
-- [ ] Rate limiting handled gracefully (Supabase auth email limits)
-- [ ] Mobile responsive (matches existing auth form styling)
-- [ ] Unit tests for form validation, error mapping, and reset flow
+- [ ] "Forgot password?" text link appears below the Log In button on `/login`
+- [ ] Link navigates to `/forgot-password` page with email entry form
+- [ ] User enters email and submits — Supabase sends a password reset email via `resetPasswordForEmail()`
+- [ ] After submitting, the form is hidden and a success message "Check your email for a reset link" is shown on the same page
+- [ ] Reset email link redirects to `/reset-password` page on the app (configured in Supabase auth settings)
+- [ ] `/reset-password` page has new password + confirm password fields
+- [ ] Password validation: min 6 characters (same as signup), must match confirmation
+- [ ] On submit, calls `supabase.auth.updateUser({ password })` to set the new password
+- [ ] After successful reset, redirect to `/login` with a "Password updated successfully" success banner
+- [ ] Error states handled gracefully: network error, expired/invalid token, rate limit
+- [ ] Rate limit errors show friendly message (Supabase free tier limits auth emails)
+- [ ] Mobile responsive (matches existing auth form styling via AuthFormShell)
+- [ ] Unit tests for form validation, error mapping, and component rendering
 
 ### Files
 
 - `app/forgot-password/page.tsx` — email entry form (client component)
 - `app/reset-password/page.tsx` — new password entry form (client component)
 - `lib/supabase/auth.ts` — add `validateResetPasswordForm` helper
-- `app/login/page.tsx` — add "Forgot password?" link
+- `app/login/page.tsx` — add "Forgot password?" link below the Log In button
+- `tests/unit/components/ForgotPasswordForm.test.tsx` — form rendering + validation tests
+- `tests/unit/components/ResetPasswordForm.test.tsx` — form rendering + validation tests
+- `tests/unit/lib/auth.test.ts` — add `validateResetPasswordForm` tests
 
 ### Notes
 
@@ -572,3 +578,10 @@ Supabase provides built-in password reset via `supabase.auth.resetPasswordForEma
 The redirect URL must be configured in Supabase Auth settings (already done for
 Vercel URL). Email confirmation is currently disabled, but password reset emails
 are a separate Supabase auth setting and should work independently.
+
+**Decisions made during planning:**
+
+- Post-reset: redirect to `/login` with success banner (not auto-login)
+- Password rules: min 6 chars (consistent with signup)
+- Email sent UX: success message on same page, form hidden
+- Link placement: text link below the Log In button on `/login`
