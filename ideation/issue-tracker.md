@@ -22,7 +22,7 @@
 | CAS-016   | Historical Data Entry        | #16          | Complete    |
 | CAS-017   | Vercel Deployment            | #17          | Complete    |
 | CAS-018   | CI Pipeline (GitHub Actions) | —            | Not Started |
-| CAS-019   | Forgot Password (Reset Flow) | —            | Not Started |
+| CAS-019   | Forgot Password (Reset Flow) | #19          | Complete    |
 
 ---
 

@@ -6,12 +6,12 @@
 
 ## Environment Variables
 
-| Variable                        | Scope           | Description                                        |
-| ------------------------------- | --------------- | -------------------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Client + Server | Supabase project URL                               |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client + Server | Supabase anon key (safe for client)                |
-| `SUPABASE_SERVICE_ROLE_KEY`     | Server only     | Supabase service role key (never expose to client) |
-| `TMDB_API_KEY`                  | Server only     | TMDB Bearer token for API access                   |
+| Variable                        | Scope           | Description                                          |
+| ------------------------------- | --------------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Client + Server | Supabase project URL                                 |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client + Server | Supabase anon key (safe for client)                  |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Server only     | Supabase service role key (never expose to client)   |
+| `TMDB_API_KEY`                  | Server only     | TMDB Bearer token for API access                     |
 | `ADMIN_EMAIL`                   | Server only     | Email of the initial admin (auto-approved on signup) |
 
 ---
